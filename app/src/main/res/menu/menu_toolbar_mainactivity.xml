@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/ic_ico_group_24dp"
+        android:title="cuenta"
+        app:showAsAction="collapseActionView">
+        <menu>
+            <item android:title="planes" />
+            <item android:title="pago de plan" />
+            <item android:title="cancelar plan" />
+        </menu>
+    </item>
+    <item android:title="configuración" />
+    <item
+        android:id="@+id/logOut_menuItem_main"
+        android:icon="@drawable/ic_ico_coin_20dp"
+        android:title="cerrar sesión" />
+</menu>

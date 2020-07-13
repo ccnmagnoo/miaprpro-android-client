@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "250762937878",
+    "firebase_url": "https://myappt50.firebaseio.com",
+    "project_id": "myappt50",
+    "storage_bucket": "myappt50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250762937878:android:55060eba741e594d6e9737",
+        "android_client_info": {
+          "package_name": "cl.dvt.miaguaruralapr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "250762937878-tpe02388uvpqq5791m92ot1c6llf6lq5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxxra8kDCqJkeShDp_fu32Fh01jKqf-kg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "250762937878-tpe02388uvpqq5791m92ot1c6llf6lq5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="20dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="20dp">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/dateLimitAUX_textView_consumptionAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ya ha estás sobre la fecha límite de uso" />
+
+    <TextView
+        android:id="@+id/dateLimit_textView_consumptionAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="24 de diciembre 2019"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/daysDeudaAUX_textView_consumptionAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="con días de deuda" />
+
+    <TextView
+        android:id="@+id/daysDeuda_textView_consumptionAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="10 días"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

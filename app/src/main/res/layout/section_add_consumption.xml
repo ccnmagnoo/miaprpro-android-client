@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:paddingTop="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="230dp">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/photo_button_consumption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:foregroundGravity="center"
+            app:backgroundTint="@color/purpleMedium"
+            app:layout_constraintBottom_toBottomOf="@+id/photo_imageView_consumption"
+            app:layout_constraintEnd_toEndOf="@+id/photo_imageView_consumption"
+            app:layout_constraintStart_toStartOf="@+id/photo_imageView_consumption"
+            app:layout_constraintTop_toTopOf="@+id/photo_imageView_consumption"
+            app:srcCompat="@drawable/ic_ico_photo" />
+
+        <ImageView
+            android:id="@+id/photo_imageView_consumption"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/app_draw_edittext_dark"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/currentDate_textView_consumption"
+        style="@style/app_bar_style_digit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:drawableStart="@drawable/ic_ico_date"
+        android:text="fecha actual"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <AutoCompleteTextView
+            android:id="@+id/number_autoTextView_consumption"
+            style="@style/app_bar_style_digit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_ico_clock_24dp"
+            android:hint="Cliente"
+            android:inputType="number"
+            android:textAlignment="textStart"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/logEntero_editText_consumption"
+            style="@style/app_bar_style_digit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="3"
+            android:hint="0000"
+            android:inputType="number"
+            android:numeric="integer"
+            android:textAlignment="viewEnd" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:text="."
+            android:textColor="@color/purpleMedium"
+            android:textSize="40sp" />
+
+        <EditText
+            android:id="@+id/logDecimal_editText_consumption"
+            style="@style/app_bar_style_digit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="2"
+            android:hint="00"
+            android:inputType="number"
+            android:numeric="integer"
+            android:textAlignment="center"
+            android:textColor="#C42727"
+            android:textColorHint="#80FF4444" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="32dp">
+
+        <Button
+            android:id="@+id/cancel_button_consumption"
+            style="@style/app_button_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
+            android:text="cancel" />
+
+        <Button
+            android:id="@+id/save_button_consumption"
+            style="@style/app_button_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableEnd="@android:drawable/ic_menu_save"
+            android:text="guardar" />
+    </LinearLayout>
+
+</LinearLayout>

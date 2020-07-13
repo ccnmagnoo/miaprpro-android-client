@@ -1,0 +1,2097 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="comuna_nombre">
+        <item>Arica</item>
+        <item>Camarones</item>
+        <item>Putre</item>
+        <item>General Lagos</item>
+        <item>Iquique</item>
+        <item>Camiña</item>
+        <item>Colchane</item>
+        <item>Huara</item>
+        <item>Pica</item>
+        <item>Pozo Almonte</item>
+        <item>Alto Hospicio</item>
+        <item>Antofagasta</item>
+        <item>Mejillones</item>
+        <item>Sierra Gorda</item>
+        <item>Taltal</item>
+        <item>Calama</item>
+        <item>Ollagüe</item>
+        <item>San Pedro de Atacama</item>
+        <item>Tocopilla</item>
+        <item>María Elena</item>
+        <item>Copiapó</item>
+        <item>Caldera</item>
+        <item>Tierra Amarilla</item>
+        <item>Chañaral</item>
+        <item>Diego de Almagro</item>
+        <item>Vallenar</item>
+        <item>Alto del Carmen</item>
+        <item>Freirina</item>
+        <item>Huasco</item>
+        <item>La Serena</item>
+        <item>Coquimbo</item>
+        <item>Andacollo</item>
+        <item>La Higuera</item>
+        <item>Paiguano</item>
+        <item>Vicuña</item>
+        <item>Illapel</item>
+        <item>Canela</item>
+        <item>Los Vilos</item>
+        <item>Salamanca</item>
+        <item>Ovalle</item>
+        <item>Combarbalá</item>
+        <item>Monte Patria</item>
+        <item>Punitaqui</item>
+        <item>Río Hurtado</item>
+        <item>Valparaíso</item>
+        <item>Casablanca</item>
+        <item>Concón</item>
+        <item>Juan Fernández</item>
+        <item>Puchuncaví</item>
+        <item>Quilpué</item>
+        <item>Quintero</item>
+        <item>Villa Alemana</item>
+        <item>Viña del Mar</item>
+        <item>Isla  de Pascua</item>
+        <item>Los Andes</item>
+        <item>Calle Larga</item>
+        <item>Rinconada</item>
+        <item>San Esteban</item>
+        <item>La Ligua</item>
+        <item>Cabildo</item>
+        <item>Papudo</item>
+        <item>Petorca</item>
+        <item>Zapallar</item>
+        <item>Quillota</item>
+        <item>Calera</item>
+        <item>Hijuelas</item>
+        <item>La Cruz</item>
+        <item>Limache</item>
+        <item>Nogales</item>
+        <item>Olmué</item>
+        <item>San Antonio</item>
+        <item>Algarrobo</item>
+        <item>Cartagena</item>
+        <item>El Quisco</item>
+        <item>El Tabo</item>
+        <item>Santo Domingo</item>
+        <item>San Felipe</item>
+        <item>Catemu</item>
+        <item>Llaillay</item>
+        <item>Panquehue</item>
+        <item>Putaendo</item>
+        <item>Santa María</item>
+        <item>Rancagua</item>
+        <item>Codegua</item>
+        <item>Coinco</item>
+        <item>Coltauco</item>
+        <item>Doñihue</item>
+        <item>Graneros</item>
+        <item>Las Cabras</item>
+        <item>Machalí</item>
+        <item>Malloa</item>
+        <item>Mostazal</item>
+        <item>Olivar</item>
+        <item>Peumo</item>
+        <item>Pichidegua</item>
+        <item>Quinta de Tilcoco</item>
+        <item>Rengo</item>
+        <item>Requínoa</item>
+        <item>San Vicente</item>
+        <item>Pichilemu</item>
+        <item>La Estrella</item>
+        <item>Litueche</item>
+        <item>Marchihue</item>
+        <item>Navidad</item>
+        <item>Paredones</item>
+        <item>San Fernando</item>
+        <item>Chépica</item>
+        <item>Chimbarongo</item>
+        <item>Lolol</item>
+        <item>Nancagua</item>
+        <item>Palmilla</item>
+        <item>Peralillo</item>
+        <item>Placilla</item>
+        <item>Pumanque</item>
+        <item>Santa Cruz</item>
+        <item>Talca</item>
+        <item>Constitución</item>
+        <item>Curepto</item>
+        <item>Empedrado</item>
+        <item>Maule</item>
+        <item>Pelarco</item>
+        <item>Pencahue</item>
+        <item>Río Claro</item>
+        <item>San Clemente</item>
+        <item>San Rafael</item>
+        <item>Cauquenes</item>
+        <item>Chanco</item>
+        <item>Pelluhue</item>
+        <item>Curicó</item>
+        <item>Hualañé</item>
+        <item>Licantén</item>
+        <item>Molina</item>
+        <item>Rauco</item>
+        <item>Romeral</item>
+        <item>Sagrada Familia</item>
+        <item>Teno</item>
+        <item>Vichuquén</item>
+        <item>Linares</item>
+        <item>Colbún</item>
+        <item>Longaví</item>
+        <item>Parral</item>
+        <item>Retiro</item>
+        <item>San Javier</item>
+        <item>Villa Alegre</item>
+        <item>Yerbas Buenas</item>
+        <item>Concepción</item>
+        <item>Coronel</item>
+        <item>Chiguayante</item>
+        <item>Florida</item>
+        <item>Hualqui</item>
+        <item>Lota</item>
+        <item>Penco</item>
+        <item>San Pedro de la Paz</item>
+        <item>Santa Juana</item>
+        <item>Talcahuano</item>
+        <item>Tomé</item>
+        <item>Hualpén</item>
+        <item>Lebu</item>
+        <item>Arauco</item>
+        <item>Cañete</item>
+        <item>Contulmo</item>
+        <item>Curanilahue</item>
+        <item>Los Álamos</item>
+        <item>Tirúa</item>
+        <item>Los Ángeles</item>
+        <item>Antuco</item>
+        <item>Cabrero</item>
+        <item>Laja</item>
+        <item>Mulchén</item>
+        <item>Nacimiento</item>
+        <item>Negrete</item>
+        <item>Quilaco</item>
+        <item>Quilleco</item>
+        <item>San Rosendo</item>
+        <item>Santa Bárbara</item>
+        <item>Tucapel</item>
+        <item>Yumbel</item>
+        <item>Alto Biobío</item>
+        <item>Chillán</item>
+        <item>Bulnes</item>
+        <item>Cobquecura</item>
+        <item>Coelemu</item>
+        <item>Coihueco</item>
+        <item>Chillán Viejo</item>
+        <item>El Carmen</item>
+        <item>Ninhue</item>
+        <item>Ñiquén</item>
+        <item>Pemuco</item>
+        <item>Pinto</item>
+        <item>Portezuelo</item>
+        <item>Quillón</item>
+        <item>Quirihue</item>
+        <item>Ránquil</item>
+        <item>San Carlos</item>
+        <item>San Fabián</item>
+        <item>San Ignacio</item>
+        <item>San Nicolás</item>
+        <item>Treguaco</item>
+        <item>Yungay</item>
+        <item>Temuco</item>
+        <item>Carahue</item>
+        <item>Cunco</item>
+        <item>Curarrehue</item>
+        <item>Freire</item>
+        <item>Galvarino</item>
+        <item>Gorbea</item>
+        <item>Lautaro</item>
+        <item>Loncoche</item>
+        <item>Melipeuco</item>
+        <item>Nueva Imperial</item>
+        <item>Padre Las Casas</item>
+        <item>Perquenco</item>
+        <item>Pitrufquén</item>
+        <item>Pucón</item>
+        <item>Saavedra</item>
+        <item>Teodoro Schmidt</item>
+        <item>Toltén</item>
+        <item>Vilcún</item>
+        <item>Villarrica</item>
+        <item>Cholchol</item>
+        <item>Angol</item>
+        <item>Collipulli</item>
+        <item>Curacautín</item>
+        <item>Ercilla</item>
+        <item>Lonquimay</item>
+        <item>Los Sauces</item>
+        <item>Lumaco</item>
+        <item>Purén</item>
+        <item>Renaico</item>
+        <item>Traiguén</item>
+        <item>Victoria</item>
+        <item>Valdivia</item>
+        <item>Corral</item>
+        <item>Futrono</item>
+        <item>La Unión</item>
+        <item>Lago Ranco</item>
+        <item>Lanco</item>
+        <item>Los Lagos</item>
+        <item>Máfil</item>
+        <item>Mariquina</item>
+        <item>Paillaco</item>
+        <item>Panguipulli</item>
+        <item>Río Bueno</item>
+        <item>Puerto Montt</item>
+        <item>Calbuco</item>
+        <item>Cochamó</item>
+        <item>Fresia</item>
+        <item>Frutillar</item>
+        <item>Los Muermos</item>
+        <item>Llanquihue</item>
+        <item>Maullín</item>
+        <item>Puerto Varas</item>
+        <item>Castro</item>
+        <item>Ancud</item>
+        <item>Chonchi</item>
+        <item>Curaco de Vélez</item>
+        <item>Dalcahue</item>
+        <item>Puqueldón</item>
+        <item>Queilén</item>
+        <item>Quellón</item>
+        <item>Quemchi</item>
+        <item>Quinchao</item>
+        <item>Osorno</item>
+        <item>Puerto Octay</item>
+        <item>Purranque</item>
+        <item>Puyehue</item>
+        <item>Río Negro</item>
+        <item>San Juan de la Costa</item>
+        <item>San Pablo</item>
+        <item>Chaitén</item>
+        <item>Futaleufú</item>
+        <item>Hualaihué</item>
+        <item>Palena</item>
+        <item>Coihaique</item>
+        <item>Lago Verde</item>
+        <item>Aisén</item>
+        <item>Cisnes</item>
+        <item>Guaitecas</item>
+        <item>Cochrane</item>
+        <item>O\'Higgins</item>
+        <item>Tortel</item>
+        <item>Chile Chico</item>
+        <item>Río Ibáñez</item>
+        <item>Punta Arenas</item>
+        <item>Laguna Blanca</item>
+        <item>Río Verde</item>
+        <item>San Gregorio</item>
+        <item>Cabo de Hornos</item>
+        <item>Antártica</item>
+        <item>Porvenir</item>
+        <item>Primavera</item>
+        <item>Timaukel</item>
+        <item>Natales</item>
+        <item>Torres del Paine</item>
+        <item>Santiago</item>
+        <item>Cerrillos</item>
+        <item>Cerro Navia</item>
+        <item>Conchalí</item>
+        <item>El Bosque</item>
+        <item>Estación Central</item>
+        <item>Huechuraba</item>
+        <item>Independencia</item>
+        <item>La Cisterna</item>
+        <item>La Florida</item>
+        <item>La Granja</item>
+        <item>La Pintana</item>
+        <item>La Reina</item>
+        <item>Las Condes</item>
+        <item>Lo Barnechea</item>
+        <item>Lo Espejo</item>
+        <item>Lo Prado</item>
+        <item>Macul</item>
+        <item>Maipú</item>
+        <item>Ñuñoa</item>
+        <item>Pedro Aguirre Cerda</item>
+        <item>Peñalolén</item>
+        <item>Providencia</item>
+        <item>Pudahuel</item>
+        <item>Quilicura</item>
+        <item>Quinta Normal</item>
+        <item>Recoleta</item>
+        <item>Renca</item>
+        <item>San Joaquín</item>
+        <item>San Miguel</item>
+        <item>San Ramón</item>
+        <item>Vitacura</item>
+        <item>Puente Alto</item>
+        <item>Pirque</item>
+        <item>San José de Maipo</item>
+        <item>Colina</item>
+        <item>Lampa</item>
+        <item>Tiltil</item>
+        <item>San Bernardo</item>
+        <item>Buin</item>
+        <item>Calera de Tango</item>
+        <item>Paine</item>
+        <item>Melipilla</item>
+        <item>Alhué</item>
+        <item>Curacaví</item>
+        <item>María Pinto</item>
+        <item>San Pedro</item>
+        <item>Talagante</item>
+        <item>El Monte</item>
+        <item>Isla de Maipo</item>
+        <item>Padre Hurtado</item>
+        <item>Peñaflor</item>
+    </string-array>
+    <string-array name="comuna_id">
+        <item>15101</item>
+        <item>15102</item>
+        <item>15201</item>
+        <item>15202</item>
+        <item>01101</item>
+        <item>01402</item>
+        <item>01403</item>
+        <item>01404</item>
+        <item>01405</item>
+        <item>01401</item>
+        <item>01107</item>
+        <item>02101</item>
+        <item>02102</item>
+        <item>02103</item>
+        <item>02104</item>
+        <item>02201</item>
+        <item>02202</item>
+        <item>02203</item>
+        <item>02301</item>
+        <item>02302</item>
+        <item>03101</item>
+        <item>03102</item>
+        <item>03103</item>
+        <item>03201</item>
+        <item>03202</item>
+        <item>03301</item>
+        <item>03302</item>
+        <item>03303</item>
+        <item>03304</item>
+        <item>04101</item>
+        <item>04102</item>
+        <item>04103</item>
+        <item>04104</item>
+        <item>04105</item>
+        <item>04106</item>
+        <item>04201</item>
+        <item>04202</item>
+        <item>04203</item>
+        <item>04204</item>
+        <item>04301</item>
+        <item>04302</item>
+        <item>04303</item>
+        <item>04304</item>
+        <item>04305</item>
+        <item>05101</item>
+        <item>05102</item>
+        <item>05103</item>
+        <item>05104</item>
+        <item>05105</item>
+        <item>05801</item>
+        <item>05107</item>
+        <item>05804</item>
+        <item>05109</item>
+        <item>05201</item>
+        <item>05301</item>
+        <item>05302</item>
+        <item>05303</item>
+        <item>05304</item>
+        <item>05401</item>
+        <item>05402</item>
+        <item>05403</item>
+        <item>05404</item>
+        <item>05405</item>
+        <item>05501</item>
+        <item>05502</item>
+        <item>05503</item>
+        <item>05504</item>
+        <item>05802</item>
+        <item>05506</item>
+        <item>05803</item>
+        <item>05601</item>
+        <item>05602</item>
+        <item>05603</item>
+        <item>05604</item>
+        <item>05605</item>
+        <item>05606</item>
+        <item>05701</item>
+        <item>05702</item>
+        <item>05703</item>
+        <item>05704</item>
+        <item>05705</item>
+        <item>05706</item>
+        <item>06101</item>
+        <item>06102</item>
+        <item>06103</item>
+        <item>06104</item>
+        <item>06105</item>
+        <item>06106</item>
+        <item>06107</item>
+        <item>06108</item>
+        <item>06109</item>
+        <item>06110</item>
+        <item>06111</item>
+        <item>06112</item>
+        <item>06113</item>
+        <item>06114</item>
+        <item>06115</item>
+        <item>06116</item>
+        <item>06117</item>
+        <item>06201</item>
+        <item>06202</item>
+        <item>06203</item>
+        <item>06204</item>
+        <item>06205</item>
+        <item>06206</item>
+        <item>06301</item>
+        <item>06302</item>
+        <item>06303</item>
+        <item>06304</item>
+        <item>06305</item>
+        <item>06306</item>
+        <item>06307</item>
+        <item>06308</item>
+        <item>06309</item>
+        <item>06310</item>
+        <item>07101</item>
+        <item>07102</item>
+        <item>07103</item>
+        <item>07104</item>
+        <item>07105</item>
+        <item>07106</item>
+        <item>07107</item>
+        <item>07108</item>
+        <item>07109</item>
+        <item>07110</item>
+        <item>07201</item>
+        <item>07202</item>
+        <item>07203</item>
+        <item>07301</item>
+        <item>07302</item>
+        <item>07303</item>
+        <item>07304</item>
+        <item>07305</item>
+        <item>07306</item>
+        <item>07307</item>
+        <item>07308</item>
+        <item>07309</item>
+        <item>07401</item>
+        <item>07402</item>
+        <item>07403</item>
+        <item>07404</item>
+        <item>07405</item>
+        <item>07406</item>
+        <item>07407</item>
+        <item>07408</item>
+        <item>08101</item>
+        <item>08102</item>
+        <item>08103</item>
+        <item>08104</item>
+        <item>08105</item>
+        <item>08106</item>
+        <item>08107</item>
+        <item>08108</item>
+        <item>08109</item>
+        <item>08110</item>
+        <item>08111</item>
+        <item>08112</item>
+        <item>08201</item>
+        <item>08202</item>
+        <item>08203</item>
+        <item>08204</item>
+        <item>08205</item>
+        <item>08206</item>
+        <item>08207</item>
+        <item>08301</item>
+        <item>08302</item>
+        <item>08303</item>
+        <item>08304</item>
+        <item>08305</item>
+        <item>08306</item>
+        <item>08307</item>
+        <item>08308</item>
+        <item>08309</item>
+        <item>08310</item>
+        <item>08311</item>
+        <item>08312</item>
+        <item>08313</item>
+        <item>08314</item>
+        <item>16101</item>
+        <item>16102</item>
+        <item>16202</item>
+        <item>16203</item>
+        <item>16302</item>
+        <item>16103</item>
+        <item>16104</item>
+        <item>16204</item>
+        <item>16303</item>
+        <item>16105</item>
+        <item>16106</item>
+        <item>16205</item>
+        <item>16107</item>
+        <item>16201</item>
+        <item>16206</item>
+        <item>16301</item>
+        <item>16304</item>
+        <item>16108</item>
+        <item>16305</item>
+        <item>16207</item>
+        <item>16109</item>
+        <item>09101</item>
+        <item>09102</item>
+        <item>09103</item>
+        <item>09104</item>
+        <item>09105</item>
+        <item>09106</item>
+        <item>09107</item>
+        <item>09108</item>
+        <item>09109</item>
+        <item>09110</item>
+        <item>09111</item>
+        <item>09112</item>
+        <item>09113</item>
+        <item>09114</item>
+        <item>09115</item>
+        <item>09116</item>
+        <item>09117</item>
+        <item>09118</item>
+        <item>09119</item>
+        <item>09120</item>
+        <item>09121</item>
+        <item>09201</item>
+        <item>09202</item>
+        <item>09203</item>
+        <item>09204</item>
+        <item>09205</item>
+        <item>09206</item>
+        <item>09207</item>
+        <item>09208</item>
+        <item>09209</item>
+        <item>09210</item>
+        <item>09211</item>
+        <item>14101</item>
+        <item>14102</item>
+        <item>14202</item>
+        <item>14201</item>
+        <item>14203</item>
+        <item>14103</item>
+        <item>14104</item>
+        <item>14105</item>
+        <item>14106</item>
+        <item>14107</item>
+        <item>14108</item>
+        <item>14204</item>
+        <item>10101</item>
+        <item>10102</item>
+        <item>10103</item>
+        <item>10104</item>
+        <item>10105</item>
+        <item>10106</item>
+        <item>10107</item>
+        <item>10108</item>
+        <item>10109</item>
+        <item>10201</item>
+        <item>10202</item>
+        <item>10203</item>
+        <item>10204</item>
+        <item>10205</item>
+        <item>10206</item>
+        <item>10207</item>
+        <item>10208</item>
+        <item>10209</item>
+        <item>10210</item>
+        <item>10301</item>
+        <item>10302</item>
+        <item>10303</item>
+        <item>10304</item>
+        <item>10305</item>
+        <item>10306</item>
+        <item>10307</item>
+        <item>10401</item>
+        <item>10402</item>
+        <item>10403</item>
+        <item>10404</item>
+        <item>11101</item>
+        <item>11102</item>
+        <item>11201</item>
+        <item>11202</item>
+        <item>11203</item>
+        <item>11301</item>
+        <item>11302</item>
+        <item>11303</item>
+        <item>11401</item>
+        <item>11402</item>
+        <item>12101</item>
+        <item>12102</item>
+        <item>12103</item>
+        <item>12104</item>
+        <item>12201</item>
+        <item>12202</item>
+        <item>12301</item>
+        <item>12302</item>
+        <item>12303</item>
+        <item>12401</item>
+        <item>12402</item>
+        <item>13101</item>
+        <item>13102</item>
+        <item>13103</item>
+        <item>13104</item>
+        <item>13105</item>
+        <item>13106</item>
+        <item>13107</item>
+        <item>13108</item>
+        <item>13109</item>
+        <item>13110</item>
+        <item>13111</item>
+        <item>13112</item>
+        <item>13113</item>
+        <item>13114</item>
+        <item>13115</item>
+        <item>13116</item>
+        <item>13117</item>
+        <item>13118</item>
+        <item>13119</item>
+        <item>13120</item>
+        <item>13121</item>
+        <item>13122</item>
+        <item>13123</item>
+        <item>13124</item>
+        <item>13125</item>
+        <item>13126</item>
+        <item>13127</item>
+        <item>13128</item>
+        <item>13129</item>
+        <item>13130</item>
+        <item>13131</item>
+        <item>13132</item>
+        <item>13201</item>
+        <item>13202</item>
+        <item>13203</item>
+        <item>13301</item>
+        <item>13302</item>
+        <item>13303</item>
+        <item>13401</item>
+        <item>13402</item>
+        <item>13403</item>
+        <item>13404</item>
+        <item>13501</item>
+        <item>13502</item>
+        <item>13503</item>
+        <item>13504</item>
+        <item>13505</item>
+        <item>13601</item>
+        <item>13602</item>
+        <item>13603</item>
+        <item>13604</item>
+        <item>13605</item>
+    </string-array>
+
+    <string-array name="provincia_nombre">
+        <item>Arica  </item>
+        <item>Arica  </item>
+        <item>Parinacota</item>
+        <item>Parinacota</item>
+        <item>Iquique  </item>
+        <item>Tamarugal</item>
+        <item>Tamarugal</item>
+        <item>Tamarugal</item>
+        <item>Tamarugal</item>
+        <item>Tamarugal</item>
+        <item>Iquique  </item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>El Loa</item>
+        <item>El Loa</item>
+        <item>El Loa</item>
+        <item>Tocopilla  </item>
+        <item>Tocopilla  </item>
+        <item>Copiapó  </item>
+        <item>Copiapó  </item>
+        <item>Copiapó  </item>
+        <item>Chañaral  </item>
+        <item>Chañaral  </item>
+        <item>Huasco</item>
+        <item>Huasco</item>
+        <item>Huasco</item>
+        <item>Huasco</item>
+        <item>Elqui</item>
+        <item>Elqui</item>
+        <item>Elqui</item>
+        <item>Elqui</item>
+        <item>Elqui</item>
+        <item>Elqui</item>
+        <item>Choapa</item>
+        <item>Choapa</item>
+        <item>Choapa</item>
+        <item>Choapa</item>
+        <item>Limari</item>
+        <item>Limari</item>
+        <item>Limari</item>
+        <item>Limari</item>
+        <item>Limari</item>
+        <item>Valparaíso  </item>
+        <item>Valparaíso  </item>
+        <item>Valparaíso  </item>
+        <item>Valparaíso  </item>
+        <item>Valparaíso  </item>
+        <item>Marga Marga</item>
+        <item>Valparaíso  </item>
+        <item>Marga Marga</item>
+        <item>Valparaíso  </item>
+        <item>Isla de Pascua  </item>
+        <item>Los Andes  </item>
+        <item>Los Andes  </item>
+        <item>Los Andes  </item>
+        <item>Los Andes  </item>
+        <item>Petorca</item>
+        <item>Petorca</item>
+        <item>Petorca</item>
+        <item>Petorca</item>
+        <item>Petorca</item>
+        <item>Quillota  </item>
+        <item>Quillota  </item>
+        <item>Quillota  </item>
+        <item>Quillota  </item>
+        <item>Marga Marga</item>
+        <item>Quillota  </item>
+        <item>Marga Marga</item>
+        <item>San Antonio  </item>
+        <item>San Antonio  </item>
+        <item>San Antonio  </item>
+        <item>San Antonio  </item>
+        <item>San Antonio  </item>
+        <item>San Antonio  </item>
+        <item>San Felipe  </item>
+        <item>San Felipe  </item>
+        <item>San Felipe  </item>
+        <item>San Felipe  </item>
+        <item>San Felipe  </item>
+        <item>San Felipe  </item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cachapoal</item>
+        <item>Cardenal Caro</item>
+        <item>Cardenal Caro</item>
+        <item>Cardenal Caro</item>
+        <item>Cardenal Caro</item>
+        <item>Cardenal Caro</item>
+        <item>Cardenal Caro</item>
+        <item>Colchagua</item>
+        <item>Colchagua</item>
+        <item>Colchagua</item>
+        <item>Colchagua</item>
+        <item>Colchagua</item>
+        <item>Colchagua</item>
+        <item>Colchagua</item>
+        <item>Colchagua</item>
+        <item>Colchagua</item>
+        <item>Colchagua</item>
+        <item>Talca</item>
+        <item>Talca</item>
+        <item>Talca</item>
+        <item>Talca</item>
+        <item>Talca</item>
+        <item>Talca</item>
+        <item>Talca</item>
+        <item>Talca</item>
+        <item>Talca</item>
+        <item>Talca</item>
+        <item>Cauquenes</item>
+        <item>Cauquenes</item>
+        <item>Cauquenes</item>
+        <item>Curico</item>
+        <item>Curico</item>
+        <item>Curico</item>
+        <item>Curico</item>
+        <item>Curico</item>
+        <item>Curico</item>
+        <item>Curico</item>
+        <item>Curico</item>
+        <item>Curico</item>
+        <item>Linares  </item>
+        <item>Linares  </item>
+        <item>Linares  </item>
+        <item>Linares  </item>
+        <item>Linares  </item>
+        <item>Linares  </item>
+        <item>Linares  </item>
+        <item>Linares  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Concepción  </item>
+        <item>Arauco</item>
+        <item>Arauco</item>
+        <item>Arauco</item>
+        <item>Arauco</item>
+        <item>Arauco</item>
+        <item>Arauco</item>
+        <item>Arauco</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Bío- Bío</item>
+        <item>Diguillín</item>
+        <item>Diguillín</item>
+        <item>Itata</item>
+        <item>Itata</item>
+        <item>Punilla</item>
+        <item>Diguillín</item>
+        <item>Diguillín</item>
+        <item>Itata</item>
+        <item>Punilla</item>
+        <item>Diguillín</item>
+        <item>Diguillín</item>
+        <item>Itata</item>
+        <item>Diguillín</item>
+        <item>Itata</item>
+        <item>Itata</item>
+        <item>Punilla</item>
+        <item>Punilla</item>
+        <item>Diguillín</item>
+        <item>Punilla</item>
+        <item>Itata</item>
+        <item>Diguillín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Cautín</item>
+        <item>Malleco</item>
+        <item>Malleco</item>
+        <item>Malleco</item>
+        <item>Malleco</item>
+        <item>Malleco</item>
+        <item>Malleco</item>
+        <item>Malleco</item>
+        <item>Malleco</item>
+        <item>Malleco</item>
+        <item>Malleco</item>
+        <item>Malleco</item>
+        <item>Valdivia  </item>
+        <item>Valdivia  </item>
+        <item>Ranco</item>
+        <item>Ranco</item>
+        <item>Ranco</item>
+        <item>Valdivia  </item>
+        <item>Valdivia  </item>
+        <item>Valdivia  </item>
+        <item>Valdivia  </item>
+        <item>Valdivia  </item>
+        <item>Valdivia  </item>
+        <item>Ranco</item>
+        <item>Llanquihue</item>
+        <item>Llanquihue</item>
+        <item>Llanquihue</item>
+        <item>Llanquihue</item>
+        <item>Llanquihue</item>
+        <item>Llanquihue</item>
+        <item>Llanquihue</item>
+        <item>Llanquihue</item>
+        <item>Llanquihue</item>
+        <item>Chiloe</item>
+        <item>Chiloe</item>
+        <item>Chiloe</item>
+        <item>Chiloe</item>
+        <item>Chiloe</item>
+        <item>Chiloe</item>
+        <item>Chiloe</item>
+        <item>Chiloe</item>
+        <item>Chiloe</item>
+        <item>Chiloe</item>
+        <item>Osorno  </item>
+        <item>Osorno  </item>
+        <item>Osorno  </item>
+        <item>Osorno  </item>
+        <item>Osorno  </item>
+        <item>Osorno  </item>
+        <item>Osorno  </item>
+        <item>Palena</item>
+        <item>Palena</item>
+        <item>Palena</item>
+        <item>Palena</item>
+        <item>Coihaique  </item>
+        <item>Coihaique  </item>
+        <item>Aisén  </item>
+        <item>Aisén  </item>
+        <item>Aisén  </item>
+        <item>Capitan Prat</item>
+        <item>Capitan Prat</item>
+        <item>Capitan Prat</item>
+        <item>General Carrera</item>
+        <item>General Carrera</item>
+        <item>Magallanes</item>
+        <item>Magallanes</item>
+        <item>Magallanes</item>
+        <item>Magallanes</item>
+        <item>Antártica Chilena</item>
+        <item>Antártica Chilena</item>
+        <item>Tierra del Fuego</item>
+        <item>Tierra del Fuego</item>
+        <item>Tierra del Fuego</item>
+        <item>Ultima Esperanza</item>
+        <item>Ultima Esperanza</item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Santiago  </item>
+        <item>Cordillera</item>
+        <item>Cordillera</item>
+        <item>Cordillera</item>
+        <item>Chacabuco</item>
+        <item>Chacabuco</item>
+        <item>Chacabuco</item>
+        <item>Maipo</item>
+        <item>Maipo</item>
+        <item>Maipo</item>
+        <item>Maipo</item>
+        <item>Melipilla</item>
+        <item>Melipilla</item>
+        <item>Melipilla</item>
+        <item>Melipilla</item>
+        <item>Melipilla</item>
+        <item>Talagante  </item>
+        <item>Talagante  </item>
+        <item>Talagante  </item>
+        <item>Talagante  </item>
+        <item>Talagante  </item>
+    </string-array>
+    <string-array name="provincia_id">
+        <item>151</item>
+        <item>151</item>
+        <item>152</item>
+        <item>152</item>
+        <item>011</item>
+        <item>014</item>
+        <item>014</item>
+        <item>014</item>
+        <item>014</item>
+        <item>014</item>
+        <item>011</item>
+        <item>021</item>
+        <item>021</item>
+        <item>021</item>
+        <item>021</item>
+        <item>022</item>
+        <item>022</item>
+        <item>022</item>
+        <item>023</item>
+        <item>023</item>
+        <item>031</item>
+        <item>031</item>
+        <item>031</item>
+        <item>032</item>
+        <item>032</item>
+        <item>033</item>
+        <item>033</item>
+        <item>033</item>
+        <item>033</item>
+        <item>041</item>
+        <item>041</item>
+        <item>041</item>
+        <item>041</item>
+        <item>041</item>
+        <item>041</item>
+        <item>042</item>
+        <item>042</item>
+        <item>042</item>
+        <item>042</item>
+        <item>043</item>
+        <item>043</item>
+        <item>043</item>
+        <item>043</item>
+        <item>043</item>
+        <item>051</item>
+        <item>051</item>
+        <item>051</item>
+        <item>051</item>
+        <item>051</item>
+        <item>058</item>
+        <item>051</item>
+        <item>058</item>
+        <item>051</item>
+        <item>052</item>
+        <item>053</item>
+        <item>053</item>
+        <item>053</item>
+        <item>053</item>
+        <item>054</item>
+        <item>054</item>
+        <item>054</item>
+        <item>054</item>
+        <item>054</item>
+        <item>055</item>
+        <item>055</item>
+        <item>055</item>
+        <item>055</item>
+        <item>058</item>
+        <item>055</item>
+        <item>058</item>
+        <item>056</item>
+        <item>056</item>
+        <item>056</item>
+        <item>056</item>
+        <item>056</item>
+        <item>056</item>
+        <item>057</item>
+        <item>057</item>
+        <item>057</item>
+        <item>057</item>
+        <item>057</item>
+        <item>057</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>061</item>
+        <item>062</item>
+        <item>062</item>
+        <item>062</item>
+        <item>062</item>
+        <item>062</item>
+        <item>062</item>
+        <item>063</item>
+        <item>063</item>
+        <item>063</item>
+        <item>063</item>
+        <item>063</item>
+        <item>063</item>
+        <item>063</item>
+        <item>063</item>
+        <item>063</item>
+        <item>063</item>
+        <item>071</item>
+        <item>071</item>
+        <item>071</item>
+        <item>071</item>
+        <item>071</item>
+        <item>071</item>
+        <item>071</item>
+        <item>071</item>
+        <item>071</item>
+        <item>071</item>
+        <item>072</item>
+        <item>072</item>
+        <item>072</item>
+        <item>073</item>
+        <item>073</item>
+        <item>073</item>
+        <item>073</item>
+        <item>073</item>
+        <item>073</item>
+        <item>073</item>
+        <item>073</item>
+        <item>073</item>
+        <item>074</item>
+        <item>074</item>
+        <item>074</item>
+        <item>074</item>
+        <item>074</item>
+        <item>074</item>
+        <item>074</item>
+        <item>074</item>
+        <item>081</item>
+        <item>081</item>
+        <item>081</item>
+        <item>081</item>
+        <item>081</item>
+        <item>081</item>
+        <item>081</item>
+        <item>081</item>
+        <item>081</item>
+        <item>081</item>
+        <item>081</item>
+        <item>081</item>
+        <item>082</item>
+        <item>082</item>
+        <item>082</item>
+        <item>082</item>
+        <item>082</item>
+        <item>082</item>
+        <item>082</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>083</item>
+        <item>161</item>
+        <item>161</item>
+        <item>162</item>
+        <item>162</item>
+        <item>163</item>
+        <item>161</item>
+        <item>161</item>
+        <item>162</item>
+        <item>163</item>
+        <item>161</item>
+        <item>161</item>
+        <item>162</item>
+        <item>161</item>
+        <item>162</item>
+        <item>162</item>
+        <item>163</item>
+        <item>163</item>
+        <item>161</item>
+        <item>163</item>
+        <item>162</item>
+        <item>161</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>091</item>
+        <item>092</item>
+        <item>092</item>
+        <item>092</item>
+        <item>092</item>
+        <item>092</item>
+        <item>092</item>
+        <item>092</item>
+        <item>092</item>
+        <item>092</item>
+        <item>092</item>
+        <item>092</item>
+        <item>141</item>
+        <item>141</item>
+        <item>142</item>
+        <item>142</item>
+        <item>142</item>
+        <item>141</item>
+        <item>141</item>
+        <item>141</item>
+        <item>141</item>
+        <item>141</item>
+        <item>141</item>
+        <item>142</item>
+        <item>101</item>
+        <item>101</item>
+        <item>101</item>
+        <item>101</item>
+        <item>101</item>
+        <item>101</item>
+        <item>101</item>
+        <item>101</item>
+        <item>101</item>
+        <item>102</item>
+        <item>102</item>
+        <item>102</item>
+        <item>102</item>
+        <item>102</item>
+        <item>102</item>
+        <item>102</item>
+        <item>102</item>
+        <item>102</item>
+        <item>102</item>
+        <item>103</item>
+        <item>103</item>
+        <item>103</item>
+        <item>103</item>
+        <item>103</item>
+        <item>103</item>
+        <item>103</item>
+        <item>104</item>
+        <item>104</item>
+        <item>104</item>
+        <item>104</item>
+        <item>111</item>
+        <item>111</item>
+        <item>112</item>
+        <item>112</item>
+        <item>112</item>
+        <item>113</item>
+        <item>113</item>
+        <item>113</item>
+        <item>114</item>
+        <item>114</item>
+        <item>121</item>
+        <item>121</item>
+        <item>121</item>
+        <item>121</item>
+        <item>122</item>
+        <item>122</item>
+        <item>123</item>
+        <item>123</item>
+        <item>123</item>
+        <item>124</item>
+        <item>124</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>131</item>
+        <item>132</item>
+        <item>132</item>
+        <item>132</item>
+        <item>133</item>
+        <item>133</item>
+        <item>133</item>
+        <item>134</item>
+        <item>134</item>
+        <item>134</item>
+        <item>134</item>
+        <item>135</item>
+        <item>135</item>
+        <item>135</item>
+        <item>135</item>
+        <item>135</item>
+        <item>136</item>
+        <item>136</item>
+        <item>136</item>
+        <item>136</item>
+        <item>136</item>
+
+    </string-array>
+
+    <string-array name="region_nombre">
+        <item>Arica y Parinacota</item>
+        <item>Arica y Parinacota</item>
+        <item>Arica y Parinacota</item>
+        <item>Arica y Parinacota</item>
+        <item>Tarapacá</item>
+        <item>Tarapacá</item>
+        <item>Tarapacá</item>
+        <item>Tarapacá</item>
+        <item>Tarapacá</item>
+        <item>Tarapacá</item>
+        <item>Tarapacá</item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>Antofagasta</item>
+        <item>Atacama</item>
+        <item>Atacama</item>
+        <item>Atacama</item>
+        <item>Atacama</item>
+        <item>Atacama</item>
+        <item>Atacama</item>
+        <item>Atacama</item>
+        <item>Atacama</item>
+        <item>Atacama</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Coquimbo</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>Valparaíso</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>L.B. O\'Higgins</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Maule</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Bíobío</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>Ñuble</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>La Araucanía</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Ríos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Los Lagos</item>
+        <item>Aisén GraL.C. Ibáñez Campo</item>
+        <item>Aisén GraL.C. Ibáñez Campo</item>
+        <item>Aisén GraL.C. Ibáñez Campo</item>
+        <item>Aisén GraL.C. Ibáñez Campo</item>
+        <item>Aisén GraL.C. Ibáñez Campo</item>
+        <item>Aisén GraL.C. Ibáñez Campo</item>
+        <item>Aisén GraL.C. Ibáñez Campo</item>
+        <item>Aisén GraL.C. Ibáñez Campo</item>
+        <item>Aisén GraL.C. Ibáñez Campo</item>
+        <item>Aisén GraL.C. Ibáñez Campo</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Magallanes y La Antártica Chilena</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+        <item>Metropolitana Santiago</item>
+
+    </string-array>
+    <string-array name="region_id">
+        <item>15</item>
+        <item>15</item>
+        <item>15</item>
+        <item>15</item>
+        <item>01</item>
+        <item>01</item>
+        <item>01</item>
+        <item>01</item>
+        <item>01</item>
+        <item>01</item>
+        <item>01</item>
+        <item>02</item>
+        <item>02</item>
+        <item>02</item>
+        <item>02</item>
+        <item>02</item>
+        <item>02</item>
+        <item>02</item>
+        <item>02</item>
+        <item>02</item>
+        <item>03</item>
+        <item>03</item>
+        <item>03</item>
+        <item>03</item>
+        <item>03</item>
+        <item>03</item>
+        <item>03</item>
+        <item>03</item>
+        <item>03</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>04</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>05</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>06</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>07</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>08</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>09</item>
+        <item>14</item>
+        <item>14</item>
+        <item>14</item>
+        <item>14</item>
+        <item>14</item>
+        <item>14</item>
+        <item>14</item>
+        <item>14</item>
+        <item>14</item>
+        <item>14</item>
+        <item>14</item>
+        <item>14</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>11</item>
+        <item>11</item>
+        <item>11</item>
+        <item>11</item>
+        <item>11</item>
+        <item>11</item>
+        <item>11</item>
+        <item>11</item>
+        <item>11</item>
+        <item>11</item>
+        <item>12</item>
+        <item>12</item>
+        <item>12</item>
+        <item>12</item>
+        <item>12</item>
+        <item>12</item>
+        <item>12</item>
+        <item>12</item>
+        <item>12</item>
+        <item>12</item>
+        <item>12</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+        <item>13</item>
+    </string-array>
+
+</resources>

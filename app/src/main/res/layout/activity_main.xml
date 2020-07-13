@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/Appbar_main"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/app_draw_background"
+        android:theme="@style/AppTheme">
+        <!-- FUENTE: https://www.youtube.com/watch?v=-pTW3EOPxtQ -->
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            app:collapsedTitleGravity="center_horizontal"
+            app:collapsedTitleTextAppearance="@style/styleTextWhite"
+            app:contentScrim="@drawable/app_draw_background"
+            app:expandedTitleGravity="left|bottom"
+            app:expandedTitleMargin="10dp"
+            app:expandedTitleTextAppearance="@style/styleTextWhite"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"
+            app:title="@string/app_name">
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/topToolbar_main"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="top"
+                app:buttonGravity="top|bottom"
+                android:minHeight="50dp"
+                android:theme="?attr/actionBarTheme"
+                app:menu="@menu/menu_toolbar_mainactivity">
+
+                <include
+                    layout="@layout/section_toolbar_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout_main"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:scrollbarSize="5dp"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/white"
+            app:tabIndicatorGravity="top"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextAppearance="@style/styleTextWhite"
+            app:tabTextColor="@color/whiteAlpha50">
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
