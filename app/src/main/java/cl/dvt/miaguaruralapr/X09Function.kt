@@ -56,8 +56,8 @@ class ConsumptionOperation(
                 Toast.makeText(context, "Error en guardar cliente ${consumption.medidorNumber} ", Toast.LENGTH_SHORT).show()
             }
 
-        /* colección del administrador APR */
-        refMainCollection.set(consumption)
+        /* colección del administrador APR --actualizado a CLOUD FUNCTION-- */
+/*        refMainCollection.set(consumption)
             .addOnSuccessListener {
                 Log.d("Consumption", "guardado en collección principal")
                 //arrancar actividad de login
@@ -67,7 +67,7 @@ class ConsumptionOperation(
             .addOnFailureListener {
                 Log.d("Consumption", "Fallo Guardado en Firestore")
                 Toast.makeText(context, "Error en guardar cliente ${consumption.medidorNumber} ", Toast.LENGTH_SHORT).show()
-            }
+            }*/
 
         /* coleción para carga y adición de deuda --actualizado a CLOUD FUNCTION--*/
 /*        val refCostumerDebt = FirebaseFirestore.getInstance()
@@ -103,13 +103,13 @@ class ConsumptionOperation(
 
         /* borrar consumo en la colección principal */
         refSubCollection.delete().addOnSuccessListener {
-            /* borrar consumo en la colección secundaria*/
-            refMainCollection.delete()
+            /* borrar consumo en la colección secundaria --actualizado a CLOUD FUNCTION-- */
+            //refMainCollection.delete()
             /* reducir monto deuda de cliente: --actualizado a CLOUD FUNCTION-- */
-//            if (!consumption.paymentStatus){
-//                /* descuenta sólo si el estado de pago es falso  = no pago */
-//                refCostumer.update("userCostumerDebt", FieldValue.increment((-1)*consumption.consumptionBill))
-//            }
+/*             if (!consumption.paymentStatus){
+               *//* descuenta sólo si el estado de pago es falso  = no pago *//*
+                refCostumer.update("userCostumerDebt", FieldValue.increment((-1)*consumption.consumptionBill))
+            }*/
             /* borrar imagen del consumo */
             val refPic = FirebaseStorage.getInstance().reference.child(consumption.consumptionPicUrl)
             refPic.delete()
@@ -146,10 +146,11 @@ class ConsumptionOperation(
                 "paymentDate" to Calendar.getInstance().time
             )
 
-            /* actualizando status de pago VERDADERO*/
+            /* actualizando status de pago TRUE*/
             refSubCollection.set(newPaymentStatus, SetOptions.merge() )
                 .addOnSuccessListener {
-                    refMainCollection.set(newPaymentStatus, SetOptions.merge() )
+                    /* --actualizado a CLOUD FUNCTION-- */
+                    //refMainCollection.set(newPaymentStatus, SetOptions.merge() )
                     /* actualizando fecha de pago */
                     payCheckBoxStatus.text = "pagado"
                     /* reduciendo monto de deuda cliente --actualizado a CLOUD FUNCTION-- */
@@ -162,11 +163,15 @@ class ConsumptionOperation(
                     MainActivity.block_key = true
                 }
         } else{
-            val newPaymentStatus = hashMapOf("paymentStatus" to false)
+            val newPaymentStatus = hashMapOf(
+                "paymentStatus" to false,
+                "paymentDate" to Calendar.getInstance().time
+            )
             /* actualizando status de pago FALSO */
             refSubCollection.set(newPaymentStatus, SetOptions.merge() )
                 .addOnSuccessListener {
-                    refMainCollection.set(newPaymentStatus, SetOptions.merge() )
+                    /* --actualizado a CLOUD FUNCTION-- */
+                    //refMainCollection.set(newPaymentStatus, SetOptions.merge() )
                     payCheckBoxStatus.text = "deuda"
                     /* aumentando deuda de cliente costumer --actualizado a CLOUD FUNCTION-- */
                     //refCostumer.update("userCostumerDebt", FieldValue.increment(consumption.consumptionBill.toDouble()))
@@ -243,6 +248,7 @@ class ConsumptionOperation(
         /** botón borrar (sólo si es el último registro de la serie) */
         mDialogView.del_imageButton_opConsumption.setOnClickListener {
 
+            /*último consumo del cliente */
             val refLastConsumption = FirebaseFirestore.getInstance()
                 .collection("userApr")
                 .document(consumption.uidApr)
@@ -251,6 +257,7 @@ class ConsumptionOperation(
                 .collection("costumerConsumptionPersonal")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(1)
+
             refLastConsumption.get()
                 .addOnSuccessListener { result ->
                     /* verificando el último registro de consumo */
