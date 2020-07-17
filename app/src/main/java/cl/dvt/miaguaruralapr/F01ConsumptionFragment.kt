@@ -295,7 +295,7 @@ class F01ConsumptionFragment : Fragment() {
                                 logLectureNew,
                                 logLectureOld,
                                 consumptionCurrent,
-                                listOf(mapOf("" to 0.0)),  /* cálculo en cloud function */
+                                listOf(mapOf("0" to 0.0)),  /* cálculo en cloud function */
                                 0.0,        /* cálculo en cloud function*/
                                 consumptionPicUrl,
                                 paymentStatus

@@ -66,7 +66,7 @@ data class ConsumptionObject(
     val logLectureNew:Double        = 0.0,/** lectura anterior */
     val logLectureOld:Double        = 0.0,/** lectura actual */
     val consumptionCurrent:Double   = 0.0,/** total consumo m3 */
-    val consumptionBillDetail: List<Map<String,Double>> = listOf(mapOf("" to 0.0)),/** detalle del cobro por tramo */
+    val consumptionBillDetail: List<Map<String,Double>> = listOf(mapOf("0" to 0.0)),/** detalle del cobro por tramo */
     val consumptionBill:Double         = 0.0,/** total a pagar */
     val consumptionPicUrl:String    = "",/** URL de la foto de respaldo medición en firebase */
     val paymentStatus:Boolean       = false,/** false sin pagar, true pagado */
