@@ -100,14 +100,6 @@
                     app:reverseLayout="false"
                     app:stackFromEnd="false" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/loadMoreConsumption_floatingButton_consumo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:clickable="true"
-                    android:src="@drawable/ic_ico_refresh"
-                    app:fabSize="mini" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

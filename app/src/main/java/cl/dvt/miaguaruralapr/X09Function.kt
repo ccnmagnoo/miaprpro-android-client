@@ -37,11 +37,12 @@ class ConsumptionOperation(
             .collection("costumerConsumptionPersonal")
             .document(consumption.uuidConsumption)
 
-        val refMainCollection = FirebaseFirestore.getInstance()
+        /* --actualizado a CLOUD FUNCTION-- */
+/*        val refMainCollection = FirebaseFirestore.getInstance()
             .collection("userApr")
             .document(consumption.uidApr)
             .collection("costumerConsumptionMain")
-            .document(consumption.uuidConsumption)
+            .document(consumption.uuidConsumption)*/
 
         /* colección del cliente consumidor */
         refSubCollection.set(consumption)
@@ -56,7 +57,7 @@ class ConsumptionOperation(
                 Toast.makeText(context, "Error en guardar cliente ${consumption.medidorNumber} ", Toast.LENGTH_SHORT).show()
             }
 
-        /* colección del administrador APR --actualizado a CLOUD FUNCTION-- */
+        /* copia consumo en el mainCollection --actualizado a CLOUD FUNCTION-- */
 /*        refMainCollection.set(consumption)
             .addOnSuccessListener {
                 Log.d("Consumption", "guardado en collección principal")
@@ -69,7 +70,7 @@ class ConsumptionOperation(
                 Toast.makeText(context, "Error en guardar cliente ${consumption.medidorNumber} ", Toast.LENGTH_SHORT).show()
             }*/
 
-        /* coleción para carga y adición de deuda --actualizado a CLOUD FUNCTION--*/
+        /*  adición de deuda del costumer --actualizado a CLOUD FUNCTION--*/
 /*        val refCostumerDebt = FirebaseFirestore.getInstance()
             .collection("userApr")
             .document(consumption.uidApr)
@@ -89,17 +90,10 @@ class ConsumptionOperation(
             .collection("costumerConsumptionPersonal")
             .document(consumption.uuidConsumption)
 
-        val refMainCollection = FirebaseFirestore.getInstance()
-            .collection("userApr")
-            .document(consumption.uidApr)
-            .collection("costumerConsumptionMain")
-            .document(consumption.uuidConsumption)
-
-        val refCostumer = FirebaseFirestore.getInstance()
-            .collection("userApr")
-            .document(consumption.uidApr)
-            .collection("userCostumer")
-            .document(consumption.medidorNumber.toString())
+        /* --actualizado a CLOUD FUNCTION-- */
+/*        val refMainCollection = FirebaseFirestore.getInstance().collection("userApr").document(consumption.uidApr).collection("costumerConsumptionMain").document(consumption.uuidConsumption)*/
+        /* --actualizado a CLOUD FUNCTION-- */
+/*        val refCostumer = FirebaseFirestore.getInstance().collection("userApr").document(consumption.uidApr).collection("userCostumer").document(consumption.medidorNumber.toString())*/
 
         /* borrar consumo en la colección principal */
         refSubCollection.delete().addOnSuccessListener {
@@ -132,11 +126,13 @@ class ConsumptionOperation(
             .document(consumption.medidorNumber.toString())
             .collection("costumerConsumptionPersonal")
             .document(consumption.uuidConsumption)
-        val refMainCollection = FirebaseFirestore.getInstance()
-            .collection("userApr")
-            .document(consumption.uidApr)
-            .collection("costumerConsumptionMain")
-            .document(consumption.uuidConsumption)
+
+/* actualizado a --cloud function-- */
+//        val refMainCollection = FirebaseFirestore.getInstance()
+//            .collection("userApr")
+//            .document(consumption.uidApr)
+//            .collection("costumerConsumptionMain")
+//            .document(consumption.uuidConsumption)
 
         /* botón actualización de estado de pago */
         if (payCheckBoxStatus.isChecked){
@@ -218,8 +214,7 @@ class ConsumptionOperation(
                 /*cuando la imagen no existe en firestores*/
                 mDialogView.loading_progressBar_opConsumption.visibility = View.GONE
                 mDialogView.noPic_imageView_opConsumption.visibility = View.VISIBLE
-                mDialogView.image_imageView_opConsumption.background =
-                    ContextCompat.getDrawable(context, R.drawable.app_draw_background)
+                mDialogView.image_imageView_opConsumption.background = ContextCompat.getDrawable(context, R.drawable.app_draw_background)
                 //mDialogView.image_imageView_opConsumption.alpha = 0.5f
             }
         })

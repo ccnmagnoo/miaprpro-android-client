@@ -261,9 +261,10 @@ class F01ConsumptionFragment : Fragment() {
 
                 /* Seteando el precio del m3 de agua desde list */
                 val wasterPricePlanListFix = tramoPriceList.sortedBy{ tramo -> tramo.consumptionBase}.reversed()
-                val currentBill = calculateCurrentBill(wasterPricePlanListFix,consumptionCurrent) /** total a pagar */
-                val currentBillDetail = calculateCurrentBillDetail(wasterPricePlanListFix,consumptionCurrent).toList() /** detalle del cobro por tramo  */
-                val currentBilltotal = currentBillDetail[currentBillDetail.lastIndex]["total"]
+                /* traspasados a cloud function */
+                //val currentBill = calculateCurrentBill(wasterPricePlanListFix,consumptionCurrent) /** total a pagar */
+                //val currentBillDetail = calculateCurrentBillDetail(wasterPricePlanListFix,consumptionCurrent).toList() /** detalle del cobro por tramo  */
+                //val currentBilltotal = currentBillDetail[currentBillDetail.lastIndex]["total"]
 
                 /** status de pago TRUE si consumo es 0.0 */
                 val paymentStatus = consumptionCurrent == 0.0
@@ -294,8 +295,8 @@ class F01ConsumptionFragment : Fragment() {
                                 logLectureNew,
                                 logLectureOld,
                                 consumptionCurrent,
-                                currentBillDetail,
-                                currentBill,
+                                listOf(mapOf("" to 0.0)),  /* cálculo en cloud function */
+                                0.0,        /* cálculo en cloud function*/
                                 consumptionPicUrl,
                                 paymentStatus
                             )
@@ -559,25 +560,25 @@ class F01ConsumptionFragment : Fragment() {
     }
 
 
-    /* Calcular cobros por tramo */
-    private fun calculateCurrentBill(tramoList:List<TramoObject>, consumption:Double):Double{
+    /* Calcular cobros por tramo --actualizado a CLOUD FUNCTION -- */
+/*    private fun calculateCurrentBill(tramoList:List<TramoObject>, consumption:Double):Double{
         var currentBill = 0.0
-        /* https://kotlinlang.org/docs/reference/control-flow.html */
+        *//* https://kotlinlang.org/docs/reference/control-flow.html *//*
         if (consumption >0.0){
             for ((index,tramo) in tramoList.withIndex()) {
                 if (consumption >= tramo.consumptionBase){
-                    /* si consumo actual es mayor que el presente tramo en loop sumar */
+                    *//* si consumo actual es mayor que el presente tramo en loop sumar *//*
                     currentBill += when (index){
                         0 ->{
-                            /* si el consumo actual es superior al PISO del tramo MAXIMO */
+                            *//* si el consumo actual es superior al PISO del tramo MAXIMO *//*
                             ((consumption - tramo.consumptionBase)*tramo.priceBase).roundToInt().toDouble()
                         }
                         else ->{
                             if (consumption >= tramoList[index-1].consumptionBase){
-                                /* si el consumo actual es superior al techo del presente tramo, sumar T0D0 el tramo*/
+                                *//* si el consumo actual es superior al techo del presente tramo, sumar T0D0 el tramo*//*
                                 ((tramoList[index-1].consumptionBase-tramo.consumptionBase)*tramo.priceBase).roundToInt().toDouble()
                             }else{
-                                /* si el consumo actual es inferior al techo del presente tramo, solo sumar la porción del tramo*/
+                                *//* si el consumo actual es inferior al techo del presente tramo, solo sumar la porción del tramo*//*
                                 ((consumption - tramo.consumptionBase) * tramo.priceBase).roundToInt().toDouble()
                             }
                         }
@@ -590,19 +591,18 @@ class F01ConsumptionFragment : Fragment() {
         return currentBill
     }
     private fun calculateCurrentBillDetail(tramoList:List<TramoObject>, consumption:Double):List<Map<String,Double>>{
-        val currentBillDetail = mutableListOf<Map<String,Double>>()
+        val currentBillDetail = mutableListOf<Map<String,Double>>() *//*tramo ordenado de MAYOR a menor *//*
         var currentBillTotal = 0.0
 
-
-        /* https://kotlinlang.org/docs/reference/control-flow.html */
-        /* https://stackoverflow.com/questions/47566187/is-it-possible-to-get-all-documents-in-a-firestore-cloud-function */
+        *//* https://kotlinlang.org/docs/reference/control-flow.html *//*
+        *//* https://stackoverflow.com/questions/47566187/is-it-possible-to-get-all-documents-in-a-firestore-cloud-function *//*
         if (consumption >0.0){
             for ((index,tramo) in tramoList.withIndex()) {
                 if (consumption >= tramo.consumptionBase){
-                    /* si consumo actual es mayor que el presente tramo en loop sumar */
+                    *//* si consumo actual es mayor que el presente tramo en loop sumar *//*
                     when (index){
                         0 ->{
-                            /* si el consumo actual es superior al PISO del tramo MAXIMO */
+                            *//* consumo supera en el Tramo superior *//*
                             val tramoMap = mapOf(
                                 "tramo"     to (tramoList.size-index).toDouble(),
                                 "consumo"   to ((consumption - tramo.consumptionBase)*100).roundToInt().toDouble()/100,
@@ -614,7 +614,7 @@ class F01ConsumptionFragment : Fragment() {
                         }
                         else ->{
                             if (consumption >= tramoList[index-1].consumptionBase){
-                                /* si el consumo actual es superior al techo del presente tramo, sumar T0D0 el tramo*/
+                                *//* consumo es superior Tramo actual -> se suma tod0 el valor del tramo*//*
                                 val tramoMap = mapOf(
                                     "tramo"     to (tramoList.size-index).toDouble(),
                                     "consumo"   to ((tramoList[index-1].consumptionBase-tramo.consumptionBase)*100).roundToInt().toDouble()/100,
@@ -624,7 +624,7 @@ class F01ConsumptionFragment : Fragment() {
                                 currentBillDetail.add(0,tramoMap)
                                 currentBillTotal +=(tramoList[index-1].consumptionBase-tramo.consumptionBase)*tramo.priceBase
                             }else{
-                                /* si el consumo actual es inferior al techo del presente tramo, solo sumar la porción del tramo*/
+                                *//* consumo es inferior al Tramo actual -> se sumar el propocional del tramo*//*
                                 val tramoMap = mapOf(
                                     "tramo"     to (tramoList.size-index).toDouble(),
                                     "consumo"   to ((consumption - tramo.consumptionBase)*100).roundToInt().toDouble()/100,
@@ -639,11 +639,16 @@ class F01ConsumptionFragment : Fragment() {
                 }
             }
         }
+        *//* cargando en Index:0 el total del cobro *//*
         currentBillTotal = (currentBillTotal*100).roundToInt().toDouble() / 100
         currentBillDetail.add(0,mapOf("total" to currentBillTotal))
         Log.d("Billing", "Detalle importe total : $currentBillDetail")
+
+
         return currentBillDetail.toList()
-    }
+    }*/
+
+
     /* Calcular consumo, incluyendo ciclo retorno de medido*/
     private fun calculateConsumptionCurrent(logLectureNew:Double,logLectureOld:Double):Double{
         return if (logLectureNew >=logLectureOld){
