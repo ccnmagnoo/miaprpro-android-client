@@ -111,7 +111,7 @@ class F01ConsumptionFragment : Fragment() {
             mAlertDialog.dismiss()
 
             if (requestCameraResult || camPermissionBoolean){
-                this.openCamera(mDialogView) //TODO: averiguar como lanzar cámara desde classe externa sin OVERRIDE
+                openCamera(mDialogView) //TODO: averiguar como lanzar cámara desde classe externa sin OVERRIDE
             }else{
                 Toast.makeText(requireContext(), "cámara denegada", Toast.LENGTH_SHORT).show()
             }
