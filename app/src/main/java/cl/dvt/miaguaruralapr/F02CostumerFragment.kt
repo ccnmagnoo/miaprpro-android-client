@@ -117,7 +117,7 @@ class F02CostumerFragment : Fragment(){
         costumerFusedLocation = LocationServices.getFusedLocationProviderClient(requireActivity())
         var geoSwitchState    = false
 
-        /*F01.04 show map*/
+        //F01.04 show map*/
         val mMapView = mDialogView.map_mapView_costumer
 
 

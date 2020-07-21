@@ -5,7 +5,6 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 @Parcelize
 data class AprObject(
     val uidApr: String="",
@@ -23,7 +22,6 @@ data class AprObject(
     val planId:Int             = 30,  /**tipo de plan suscrito 30:gratuito de prueba  o más; planes con precios*/
     val userStatus:Boolean       = false         /**1 activo 0 inactivo*/
 ): Parcelable
-
 
 @Parcelize
 data class CostumerObject(

@@ -4,12 +4,10 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Matrix
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -18,11 +16,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
 import cl.dvt.miaguaruralapr.F02CostumerFragment.Companion.costumerList
+import cl.dvt.miaguaruralapr.MainActivity.Companion.camPermissionBoolean
+import cl.dvt.miaguaruralapr.MainActivity.Companion.remainingDays
+import cl.dvt.miaguaruralapr.MainActivity.Companion.requestCameraResult
 import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
 import com.xwray.groupie.GroupAdapter
@@ -34,7 +33,6 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit.*
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -53,18 +51,19 @@ class F01ConsumptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // buscar los consumos
+        fetchConsumption()
 
-        fetchConsumption()      /* descargar consumos */
-        fetchTramoList()       /* cargar plan de costos del agua por m3 */
-        getRemainingDays(currentApr)
+        // mostrar en pantalla días remanentes
+        remainingDays_textView_consumption.text = remainingDays.toString() /* set textView de dias remanentes */
+        remainingDays_textView_consumption.bringToFront()
 
-        /* detectando final del scroll para cargar más consumos */
-
-
+        //agregar consumo
         addConsumption_floatingActionButton_consumo.setOnClickListener{
             conditionalDialog()
         }
 
+        //switch filtro mostrar all/sin_pagos
         debtFilter_switch_costumer.setOnClickListener {
             fetchConsumption()
             Log.d("Filter", "current switch: ${debtFilter_switch_costumer.isChecked}")
@@ -75,35 +74,23 @@ class F01ConsumptionFragment : Fragment() {
             }
         }
 
-/*        consumption_recyclerView_consumo.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            *//* https://stackoverflow.com/questions/36127734/detect-when-recyclerview-reaches-the-bottom-most-position-while-scrolling *//*
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if( !recyclerView.canScrollVertically(0) && dx==0) {
-                    Log.d("scroll", "end")
-                    Toast.makeText(requireActivity(),"cargando consumos",Toast.LENGTH_SHORT).show()
-                    fetchLimit += 10
-                }
-            }
-        })*/
-
-
-
     }/* onViewCreated */
 
     private fun conditionalDialog(){
         if(remainingDays>=0){
-            newConsumptionDialog() /** ingresar nuevo consumo */
+            //diálogo ingreso de consumo
+            newConsumptionDialog()
         }else{
-            expiredTimeDialog()/** denegar ingreso por dias expirados*/
+            //diálogo de tiempo expirado: compra más tokens
+            expiredTimeDialog()
         }
     }
 
     /* ingreso nuevo consumo */
     @SuppressLint("SimpleDateFormat")
-    private fun newConsumptionDialog(){
+    fun newConsumptionDialog(){
         /* Ingreso de nuevo consumo */
-        /*F01.01. Cargando cuadro de diálogo de carga*/
+        //Cargando cuadro de diálogo de carga
         val mDialogView         = LayoutInflater.from(requireActivity()).inflate(R.layout.section_add_consumption, null) /** Instando dialogView */
         val mBuilder = AlertDialog.Builder(requireActivity()) /** Inflado del cuadro de dialogo */
             .setView(mDialogView)
@@ -116,16 +103,15 @@ class F01ConsumptionFragment : Fragment() {
         val formatedDate= formaterDate.format(currentDate)
         mDialogView.currentDate_textView_consumption.text = formatedDate
 
-        /*F01.05. Carga de AutoCompleteTextView*/
+        //Carga de AutoCompleteTextView*/
         autocompleteMedidorList(mDialogView)
 
-        /*Acciones del Photo button*/
+        //Acciones del Photo button
         mDialogView.photo_button_consumption?.setOnClickListener{
             mAlertDialog.dismiss()
 
-            val requestCameraResult = requestCameraPermission()
             if (requestCameraResult || camPermissionBoolean){
-                openCamera(mDialogView)
+                this.openCamera(mDialogView) //TODO: averiguar como lanzar cámara desde classe externa sin OVERRIDE
             }else{
                 Toast.makeText(requireContext(), "cámara denegada", Toast.LENGTH_SHORT).show()
             }
@@ -139,7 +125,7 @@ class F01ConsumptionFragment : Fragment() {
             mDialogView.photo_imageView_consumption.setImageBitmap(bitmapRotated)
         }
 
-        /**Acciones del SAVE button*/
+        //Acciones del SAVE button*/
         mDialogView.save_button_consumption.setOnClickListener {
             val medidorNumber   = mDialogView.number_autoTextView_consumption.text.toString()
             val timeStamp        = System.currentTimeMillis()/1000
@@ -260,8 +246,8 @@ class F01ConsumptionFragment : Fragment() {
                 val consumptionCurrent= calculateConsumptionCurrent(logLectureNew,logLectureOld)
 
                 /* Seteando el precio del m3 de agua desde list */
-                val wasterPricePlanListFix = tramoPriceList.sortedBy{ tramo -> tramo.consumptionBase}.reversed()
-                /* traspasados a cloud function */
+                //val wasterPricePlanListFix = tramoPriceList.sortedBy{ tramo -> tramo.consumptionBase}.reversed()
+                /* traspasados a --cloud function-- */
                 //val currentBill = calculateCurrentBill(wasterPricePlanListFix,consumptionCurrent) /** total a pagar */
                 //val currentBillDetail = calculateCurrentBillDetail(wasterPricePlanListFix,consumptionCurrent).toList() /** detalle del cobro por tramo  */
                 //val currentBilltotal = currentBillDetail[currentBillDetail.lastIndex]["total"]
@@ -314,7 +300,8 @@ class F01ConsumptionFragment : Fragment() {
         /* RES: https://cursokotlin.com/capitulo-10-listas-en-kotlin/ */
         /* RES : https://stackoverflow.com/questions/46868903/sort-data-from-a-mutablelist-in-kotlin */
 
-/*        val consumptionLastData = consumptionList
+/*
+        val consumptionLastData = consumptionList
             .filter { it.medidorNumber == medidorNumber.toInt()}
             .sortedBy { consumption -> consumption.timestamp }
             .last()
@@ -328,21 +315,22 @@ class F01ConsumptionFragment : Fragment() {
             currentDate
         } else{
             consumptionLastData.dateLectureNew
-            }*/
+            }
 
-/*        loop@ for (document in wasterPricePlanListFix){
+        loop@ for (document in wasterPricePlanListFix){
             if(consumptionCurrent >= document.consumptionBase){
                 currentPriceBase = document.priceBase
                 Log.d("Consumption", "Precio unitario del m3 de agua: $currentPriceBase")
                 break@loop
             }
-        }*/
+        }
+        */
 
 
-    }/** fin assembly*/
+    }// fin assembly
 
     //F03 Cargar items al AutocompleteTextView
-    lateinit var costumerNumberList:ArrayList<Int>
+    private lateinit var costumerNumberList:ArrayList<Int>
     private fun autocompleteMedidorList(mDialogView:View){
         costumerNumberList = arrayListOf()
         for (element in costumerList){ costumerNumberList.add(element.medidorNumber) } /** Cargando Array List */
@@ -358,46 +346,10 @@ class F01ConsumptionFragment : Fragment() {
         /* https://stackoverflow.com/questions/46003242/multiautocompletetextview-not-showing-dropdown-in-alertdialog */
     }
 
-    //F04 Caputa de URI desde CAMARA
-    private val PERMISSION_CODE = 1000
-    var camPermissionBoolean = false
-
-    private fun requestCameraPermission():Boolean{
-        /*if system os is Marshmallow or Above, we need to request runtime permission*/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if (ActivityCompat.checkSelfPermission(this.requireContext(),android.Manifest.permission.CAMERA)== PackageManager.PERMISSION_DENIED ||
-                checkSelfPermission(this.requireContext(),android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
-                /* permission was not enabled */
-                val permission = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                /* show popup to request permission */
-                requestPermissions(permission, PERMISSION_CODE)
-            }else{
-                //permission already granted
-                /*openCamera()*/
-                return true}
-        }else{
-            //system os is < marshmallow
-            /*openCamera()*/
-            return true}
-        return false
-    }
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        /* called when user presses ALLOW or DENY from Permission Request Popup */
-        when(requestCode){
-            PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    //openCamera()
-                    camPermissionBoolean = true
-                }
-                else{Toast.makeText(requireContext(), "cámara denegada", Toast.LENGTH_SHORT).show()}
-            }
-        }
-    }
     private var imageUri: Uri? = null /* el archivo a suber requiere un image URI */
-    private val CAPTURE_CODE = 1001
+    private val captureCODE = 1001
+
     private fun openCamera(mDialogView:View) {
-        /*values.put(MediaStore.Images.Media.TITLE, "Nueva captura")*/
-        /*values.put(MediaStore.Images.Media.DESCRIPTION, "Cámara")*/
         /*http://androidtrainningcenter.blogspot.com/2012/05/bitmap-operations-like-re-sizing.html*/
 
         imageUri = mDialogView.context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues())
@@ -405,9 +357,9 @@ class F01ConsumptionFragment : Fragment() {
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)    /* instando imagen */
         Log.d("Picture", "P01 imagen guardada como : ${MediaStore.EXTRA_OUTPUT}")
 
-        startActivityForResult(cameraIntent, CAPTURE_CODE)
-
+        startActivityForResult(cameraIntent, captureCODE)
     }
+
     private var bitmap:Bitmap? = null /* los imageView requiere bitmap */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         /* called when image was captured from camera intent */
@@ -430,6 +382,7 @@ class F01ConsumptionFragment : Fragment() {
             newConsumptionDialog()
         }
     }
+
 
     //F05 descargar consumos de todos los clientes últimos 2 meses : IMPORTANTE
     var numberOfLectures:Int = 0
@@ -498,11 +451,9 @@ class F01ConsumptionFragment : Fragment() {
 
     }/* fin del fetchConsumption() */
 
-
-
-
     //F07: Descargado listado de precios del agua
-    private var tramoPriceList = mutableListOf<TramoObject>()
+    //private var tramoPriceList = mutableListOf<TramoObject>()
+    /*
     private fun fetchTramoList(){
         /* fetching precios del metro cúbico de agua */
         val refPricesWater = FirebaseFirestore.getInstance()
@@ -541,44 +492,27 @@ class F01ConsumptionFragment : Fragment() {
             .addOnFailureListener { exception -> Log.d("Consumption", "error obteniendo documentos: ", exception)}
     }
 
-    /* tiempo disponible para cargas de consumos */
-    private var remainingDays:Short = 0 /* RES : https://www.mkyong.com/java/java-how-to-add-days-to-current-date/ */
-    private fun getRemainingDays(apr:AprObject?){
-        when (apr?.planId){
-            30      -> {remainingDays = 1}
-            null    ->{ remainingDays=  0}
-            else    -> {
-                val currentTime     = Calendar.getInstance()
-                val dateLastPayment = Calendar.getInstance()
-                dateLastPayment.time          = currentApr!!.dateLimitBuy /* fecha límite de operación */
-                remainingDays = MILLISECONDS.toDays((dateLastPayment.timeInMillis - currentTime.timeInMillis)).toShort()
-            }
-        }
-        remainingDays_textView_consumption.text = remainingDays.toString() /* set textView de dias remanentes */
-        remainingDays_textView_consumption.bringToFront()
-        Log.d("Consumption", "Tiempo remanente para carga de consumos $remainingDays dias")
-    }
-
+     */
 
     /* Calcular cobros por tramo --actualizado a CLOUD FUNCTION -- */
 /*    private fun calculateCurrentBill(tramoList:List<TramoObject>, consumption:Double):Double{
         var currentBill = 0.0
-        *//* https://kotlinlang.org/docs/reference/control-flow.html *//*
+        // https://kotlinlang.org/docs/reference/control-flow.html
         if (consumption >0.0){
             for ((index,tramo) in tramoList.withIndex()) {
                 if (consumption >= tramo.consumptionBase){
-                    *//* si consumo actual es mayor que el presente tramo en loop sumar *//*
+                    si consumo actual es mayor que el presente tramo en loop sumar
                     currentBill += when (index){
                         0 ->{
-                            *//* si el consumo actual es superior al PISO del tramo MAXIMO *//*
+                            //si el consumo actual es superior al PISO del tramo MAXIMO
                             ((consumption - tramo.consumptionBase)*tramo.priceBase).roundToInt().toDouble()
                         }
                         else ->{
                             if (consumption >= tramoList[index-1].consumptionBase){
-                                *//* si el consumo actual es superior al techo del presente tramo, sumar T0D0 el tramo*//*
+                                // si el consumo actual es superior al techo del presente tramo, sumar T0D0 el tramo
                                 ((tramoList[index-1].consumptionBase-tramo.consumptionBase)*tramo.priceBase).roundToInt().toDouble()
                             }else{
-                                *//* si el consumo actual es inferior al techo del presente tramo, solo sumar la porción del tramo*//*
+                                //si el consumo actual es inferior al techo del presente tramo, solo sumar la porción del tramo
                                 ((consumption - tramo.consumptionBase) * tramo.priceBase).roundToInt().toDouble()
                             }
                         }
@@ -589,20 +523,22 @@ class F01ConsumptionFragment : Fragment() {
         }
         Log.d("Billing", "importe total : $currentBill")
         return currentBill
-    }
+    } */
+/*
     private fun calculateCurrentBillDetail(tramoList:List<TramoObject>, consumption:Double):List<Map<String,Double>>{
-        val currentBillDetail = mutableListOf<Map<String,Double>>() *//*tramo ordenado de MAYOR a menor *//*
+        val currentBillDetail = mutableListOf<Map<String,Double>>()
+        //tramo ordenado de MAYOR a menor
         var currentBillTotal = 0.0
 
-        *//* https://kotlinlang.org/docs/reference/control-flow.html *//*
-        *//* https://stackoverflow.com/questions/47566187/is-it-possible-to-get-all-documents-in-a-firestore-cloud-function *//*
+        //https://kotlinlang.org/docs/reference/control-flow.html
+        //https://stackoverflow.com/questions/47566187/is-it-possible-to-get-all-documents-in-a-firestore-cloud-function
         if (consumption >0.0){
             for ((index,tramo) in tramoList.withIndex()) {
                 if (consumption >= tramo.consumptionBase){
-                    *//* si consumo actual es mayor que el presente tramo en loop sumar *//*
+                    // si consumo actual es mayor que el presente tramo en loop sumar
                     when (index){
                         0 ->{
-                            *//* consumo supera en el Tramo superior *//*
+                            //consumo supera en el Tramo superior
                             val tramoMap = mapOf(
                                 "tramo"     to (tramoList.size-index).toDouble(),
                                 "consumo"   to ((consumption - tramo.consumptionBase)*100).roundToInt().toDouble()/100,
@@ -614,7 +550,7 @@ class F01ConsumptionFragment : Fragment() {
                         }
                         else ->{
                             if (consumption >= tramoList[index-1].consumptionBase){
-                                *//* consumo es superior Tramo actual -> se suma tod0 el valor del tramo*//*
+                                //consumo es superior Tramo actual -> se suma tod0 el valor del tramo
                                 val tramoMap = mapOf(
                                     "tramo"     to (tramoList.size-index).toDouble(),
                                     "consumo"   to ((tramoList[index-1].consumptionBase-tramo.consumptionBase)*100).roundToInt().toDouble()/100,
@@ -624,7 +560,7 @@ class F01ConsumptionFragment : Fragment() {
                                 currentBillDetail.add(0,tramoMap)
                                 currentBillTotal +=(tramoList[index-1].consumptionBase-tramo.consumptionBase)*tramo.priceBase
                             }else{
-                                *//* consumo es inferior al Tramo actual -> se sumar el propocional del tramo*//*
+                                //consumo es inferior al Tramo actual -> se sumar el propocional del tramo
                                 val tramoMap = mapOf(
                                     "tramo"     to (tramoList.size-index).toDouble(),
                                     "consumo"   to ((consumption - tramo.consumptionBase)*100).roundToInt().toDouble()/100,
@@ -639,7 +575,7 @@ class F01ConsumptionFragment : Fragment() {
                 }
             }
         }
-        *//* cargando en Index:0 el total del cobro *//*
+        //cargando en Index:0 el total del cobro
         currentBillTotal = (currentBillTotal*100).roundToInt().toDouble() / 100
         currentBillDetail.add(0,mapOf("total" to currentBillTotal))
         Log.d("Billing", "Detalle importe total : $currentBillDetail")

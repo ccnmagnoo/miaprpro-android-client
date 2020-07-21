@@ -1,18 +1,37 @@
 package cl.dvt.miaguaruralapr
 
+import android.Manifest
+import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.SearchView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isEmpty
 import androidx.core.view.isNotEmpty
+import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_f01_consumo.*
 import kotlinx.android.synthetic.main.section_toolbar_main.*
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 
@@ -20,15 +39,29 @@ class MainActivity : AppCompatActivity() {
     companion object{
         var QUERY_KEY:String? = "QUERY_WORD"
         var block_key:Boolean = false
+        //permisos de uso de cámara
+        const val permissionCode = 1000
+        var camPermissionBoolean = false
+        var requestCameraResult = false
+
+        //permisos del uso del GPS
+
+        //días de operación remanentes
+        var remainingDays:Short = 0 /* RES : https://www.mkyong.com/java/java-how-to-add-days-to-current-date/ */
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
         verifyUserIsLoggedIn() /* verificando usuario si no ir a login */
 
         configureTabLayout()   /* instando pestañas */
+
+        requestCameraResult = requestCameraPermission() /* permisos de cámara */
+        remainingDays = getRemainingDays(currentApr)
 
         search_searchView_toolbar.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -99,6 +132,66 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    //F04 Permisos de cámara
+    private fun requestCameraPermission():Boolean{
+        /*if system os is Marshmallow or Above, we need to request runtime permission*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA)== PackageManager.PERMISSION_DENIED ||
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_DENIED){
+                /* permission was not enabled */
+                val permission = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                /* show popup to request permission */
+                requestPermissions(permission, permissionCode)
+            }else{
+                //permission already granted
+                /*openCamera()*/
+                return true}
+        }else{
+            //system os is < marshmallow
+            /*openCamera()*/
+            return true}
+        return false
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        /* called when user presses ALLOW or DENY from Permission Request Popup */
+        when(requestCode){
+            permissionCode -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    //openCamera()
+                    camPermissionBoolean = true
+                }
+                else{
+                    Toast.makeText(this, "cámara denegada", Toast.LENGTH_SHORT).show()}
+            }
+        }
+    }
+
+
+
+
+    //Calculate Remaining Days for operation
+    private fun getRemainingDays(apr:AprObject?):Short{
+        return when (apr?.planId){
+            30      ->  {
+                30 /* id 30: plan gratuito inicial */
+            }
+            null    ->  {
+                0 /* id null: error no hay plan */
+            }
+            else    ->  {
+                val currentTime     = Calendar.getInstance()
+                val dateLastPayment = Calendar.getInstance()
+                dateLastPayment.time          = apr.dateLimitBuy /* fecha límite de operación */
+                val days = TimeUnit.MILLISECONDS.toDays((dateLastPayment.timeInMillis - currentTime.timeInMillis)).toShort()
+                Log.d("Consumption", "Tiempo remanente para carga de consumos $days dias")
+
+                days
+            }
+        }
+    }
 
 }
 
