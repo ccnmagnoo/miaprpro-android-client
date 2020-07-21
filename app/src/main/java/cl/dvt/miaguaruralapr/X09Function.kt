@@ -202,7 +202,7 @@ class ConsumptionOperation(
     }
 
     /* cuadro de dialogo de consumo individual*/
-    fun editConsumptionDialog(context:Context){
+    fun updateConsumptionDialog(context:Context){
 
         /*Abiendo dialogo*/
         val mDialogView = LayoutInflater.from(context).inflate(R.layout.section_op_consumption, null) /** Instando dialogView */

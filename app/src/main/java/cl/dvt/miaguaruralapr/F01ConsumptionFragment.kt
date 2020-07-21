@@ -3,6 +3,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -80,28 +81,32 @@ class F01ConsumptionFragment : Fragment() {
     private fun conditionalDialog(){
         if(remainingDays>=0){
             //diálogo ingreso de consumo
-            newConsumptionDialog()
+           newConsumptionDialog(requireActivity())
         }else{
             //diálogo de tiempo expirado: compra más tokens
-            expiredTimeDialog()
+            expiredTimeDialog(requireActivity())
         }
     }
 
     /* ingreso nuevo consumo */
     @SuppressLint("SimpleDateFormat")
-    fun newConsumptionDialog(){
+    fun newConsumptionDialog(context: Context){
+
+        /** para fragments context= requireActivity()
+         * para activities context= this */
+
         /* Ingreso de nuevo consumo */
         //Cargando cuadro de diálogo de carga
-        val mDialogView         = LayoutInflater.from(requireActivity()).inflate(R.layout.section_add_consumption, null) /** Instando dialogView */
-        val mBuilder = AlertDialog.Builder(requireActivity()) /** Inflado del cuadro de dialogo */
+        val mDialogView         = LayoutInflater.from(context).inflate(R.layout.section_add_consumption, null) /** Instando dialogView */
+        val mBuilder = AlertDialog.Builder(context) /** Inflado del cuadro de dialogo */
             .setView(mDialogView)
             .setTitle("nueva lectura")
         val  mAlertDialog = mBuilder.show()/** show dialog */
 
         //Setting data de fecha y timestamp
-        val currentDate  = Calendar.getInstance().time
-        val formaterDate       = SimpleDateFormat("EEE dd 'de' MMM 'de' yyyy 'a las' h:mm aaa")
-        val formatedDate= formaterDate.format(currentDate)
+        val today  = Calendar.getInstance().time
+        val formatDate       = SimpleDateFormat("EEE dd 'de' MMM 'de' yyyy 'a las' h:mm aaa")
+        val formatedDate= formatDate.format(today)
         mDialogView.currentDate_textView_consumption.text = formatedDate
 
         //CAMERA button
@@ -109,6 +114,7 @@ class F01ConsumptionFragment : Fragment() {
             mAlertDialog.dismiss()
 
             if (requestCameraResult || camPermissionBoolean){
+                //Capurar imagen camera
                 openCamera(mDialogView) //TODO: averiguar como lanzar cámara desde classe externa sin OVERRIDE
             }else{
                 Toast.makeText(requireContext(), "cámara denegada", Toast.LENGTH_SHORT).show()
@@ -142,7 +148,7 @@ class F01ConsumptionFragment : Fragment() {
             val checkInputDataVal = checkInput(mDialogView,lecturaEntero,lecturaDecimal,medidorNumber,costumerNumberList)
             if (checkInputDataVal){
                 /*Comenzar proceso de carga a firebase*/
-                assemblyConsumptionObject(lecturaEntero,lecturaDecimal,medidorNumber,currentDate,timeStamp)
+                assemblyConsumptionObject(lecturaEntero,lecturaDecimal,medidorNumber,today,timeStamp,context)
                 mAlertDialog.dismiss()
             }else{
                 return@setOnClickListener
@@ -158,10 +164,11 @@ class F01ConsumptionFragment : Fragment() {
 
     // tiempo expirado
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
-    private fun expiredTimeDialog(){
+    private fun expiredTimeDialog(context: Context){
+
         /* dialogo por tiempo expirado */
-        val mDialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.section_add_consumption_alert, null) /** Instando dialogView */
-        val mBuilder = AlertDialog.Builder(requireActivity()) /** Inflado del cuadro de dialogo */
+        val mDialogView = LayoutInflater.from(context).inflate(R.layout.section_add_consumption_alert, null) /** Instando dialogView */
+        val mBuilder = AlertDialog.Builder(context) /** Inflado del cuadro de diálogo */
                 .setView(mDialogView)
                 .setTitle("fecha límite")
                 .setNegativeButton("no gracias\t|", null)
@@ -210,19 +217,20 @@ class F01ConsumptionFragment : Fragment() {
 
     // ensamblando getters para crear un objeto consumption
     @SuppressLint("SimpleDateFormat", "InflateParams")
-    private fun assemblyConsumptionObject(lecturaEntero:String, lecturaDecimal:String, medidorNumber:String, currentDate:Date, timeStamp:Long){
-        /*F01.02. Cargando cuadro de diálogo de carga*/
-        val mDialogLoadingView = LayoutInflater.from(requireActivity()).inflate(R.layout.section_add_consumption_loading, null) /* Instando dialogo "cargando" */
-        val mBuilderLoading = AlertDialog.Builder(requireActivity()).setView(mDialogLoadingView)   /* Inflado del cuadro de dialogo "cargando" */
+    private fun assemblyConsumptionObject(lecturaEntero:String, lecturaDecimal:String, medidorNumber:String, currentDate:Date, timeStamp:Long,context:Context){
+
+        //Cargando cuadro de diálogo "cargando..." */
+        val mDialogLoadingView = LayoutInflater.from(context).inflate(R.layout.section_add_consumption_loading, null) /* Instando dialogo "cargando" */
+        val mBuilderLoading = AlertDialog.Builder(context).setView(mDialogLoadingView)   /* Inflado del cuadro de dialogo "cargando" */
         val mAlertDialogLoading = mBuilderLoading.show() /* show dialog "cargando" */
 
-        /*F02.B.0 Instando firebase*/
+        //Instando firebase
         val uidApr          = currentApr!!.uidApr
         val uuidConsumption = UUID.randomUUID().toString()/** identificador único de consumo*/
-        /*F02.B.1 Ensamblando variables actuales y fetch de última lectura*/
+        //Ensamblando variables actuales y fetch de última lectura*/
         val logLectureNew = ("$lecturaEntero.$lecturaDecimal").toDouble()
 
-        /* fetching última lectura pasada del cliente */
+        //fetching última lectura pasada del cliente */
         var logLectureOld = logLectureNew
         var dateLectureOld = currentDate
 
@@ -354,11 +362,10 @@ class F01ConsumptionFragment : Fragment() {
     private val captureCODE = 1001
     private fun openCamera(mDialogView:View) {
         /*http://androidtrainningcenter.blogspot.com/2012/05/bitmap-operations-like-re-sizing.html*/
-
-        imageUri = mDialogView.context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues())
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)  /* captura de foto */
+        imageUri            = mDialogView.context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues())
+        val cameraIntent    = Intent(MediaStore.ACTION_IMAGE_CAPTURE)  /* captura de foto */
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)    /* instando imagen */
-            Log.d("Picture", "P01 imagen guardada como : ${MediaStore.EXTRA_OUTPUT}")
+        Log.d("Picture", "P01 imagen guardada como : ${MediaStore.EXTRA_OUTPUT}")
 
         startActivityForResult(cameraIntent, captureCODE)
     }
@@ -377,7 +384,7 @@ class F01ConsumptionFragment : Fragment() {
                 outputStream?.close()
             }catch( e1: FileNotFoundException){ e1.printStackTrace()}
             catch( e2: IOException){ e2.printStackTrace()}
-            newConsumptionDialog()
+            newConsumptionDialog(requireActivity())
         }
     }
 
@@ -443,7 +450,7 @@ class F01ConsumptionFragment : Fragment() {
         /** click en el item del recyclerView */
         adapter.setOnItemClickListener {item, view ->
             val consumption = item as ConsumptionItemAdapter
-            ConsumptionOperation(consumption.consumption).editConsumptionDialog(requireActivity())
+            ConsumptionOperation(consumption.consumption).updateConsumptionDialog(requireActivity())
         }
 
 

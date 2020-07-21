@@ -224,7 +224,7 @@ class A05Costumer : AppCompatActivity() {
         /** click en el item del recyclerView */
         adapter.setOnItemClickListener { item, _ ->
             val consumption = item as ConsumptionItemAdapter
-            ConsumptionOperation(consumption.consumption).editConsumptionDialog(this)
+            ConsumptionOperation(consumption.consumption).updateConsumptionDialog(this)
         }
 
     }/* fin del fetchConsumption() */
