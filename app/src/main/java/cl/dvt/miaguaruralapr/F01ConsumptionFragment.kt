@@ -33,6 +33,7 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -97,16 +98,13 @@ class F01ConsumptionFragment : Fragment() {
             .setTitle("nueva lectura")
         val  mAlertDialog = mBuilder.show()/** show dialog */
 
-        /*F01.04 Setting data de fecha y timestamp*/
+        //Setting data de fecha y timestamp
         val currentDate  = Calendar.getInstance().time
         val formaterDate       = SimpleDateFormat("EEE dd 'de' MMM 'de' yyyy 'a las' h:mm aaa")
         val formatedDate= formaterDate.format(currentDate)
         mDialogView.currentDate_textView_consumption.text = formatedDate
 
-        //Carga de AutoCompleteTextView*/
-        autocompleteMedidorList(mDialogView)
-
-        //Acciones del Photo button
+        //CAMERA button
         mDialogView.photo_button_consumption?.setOnClickListener{
             mAlertDialog.dismiss()
 
@@ -116,6 +114,8 @@ class F01ConsumptionFragment : Fragment() {
                 Toast.makeText(requireContext(), "cámara denegada", Toast.LENGTH_SHORT).show()
             }
         }
+
+        //si el bitmap es no es nulo: set imageView
         if(bitmap != null){
             val matrix = Matrix()
             matrix.postRotate(270f)  /* Rotate the Bitmap thanks to a rotated matrix. This seems to work */
@@ -125,7 +125,10 @@ class F01ConsumptionFragment : Fragment() {
             mDialogView.photo_imageView_consumption.setImageBitmap(bitmapRotated)
         }
 
-        //Acciones del SAVE button*/
+        //Carga de AutoCompleteTextView y generando listado de números de clientes
+        val costumerNumberList= autocompleteMedidorList(mDialogView)
+
+        //SAVE button
         mDialogView.save_button_consumption.setOnClickListener {
             val medidorNumber   = mDialogView.number_autoTextView_consumption.text.toString()
             val timeStamp        = System.currentTimeMillis()/1000
@@ -136,7 +139,7 @@ class F01ConsumptionFragment : Fragment() {
 
 
             /*Chequear datos ingresados*/
-            val checkInputDataVal = checkInput(mDialogView,lecturaEntero,lecturaDecimal,medidorNumber)
+            val checkInputDataVal = checkInput(mDialogView,lecturaEntero,lecturaDecimal,medidorNumber,costumerNumberList)
             if (checkInputDataVal){
                 /*Comenzar proceso de carga a firebase*/
                 assemblyConsumptionObject(lecturaEntero,lecturaDecimal,medidorNumber,currentDate,timeStamp)
@@ -146,22 +149,22 @@ class F01ConsumptionFragment : Fragment() {
             }
             bitmap = null /** borrar el bitmap */
         }
-        /**Acciones del CANCEL button*/
+        //CANCEL button
         mDialogView.cancel_button_consumption.setOnClickListener {
             mAlertDialog.dismiss()
             bitmap = null
         }
     }
 
-    /* tiempo expirado */
-    @SuppressLint("SimpleDateFormat")
+    // tiempo expirado
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
     private fun expiredTimeDialog(){
         /* dialogo por tiempo expirado */
         val mDialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.section_add_consumption_alert, null) /** Instando dialogView */
         val mBuilder = AlertDialog.Builder(requireActivity()) /** Inflado del cuadro de dialogo */
                 .setView(mDialogView)
                 .setTitle("fecha límite")
-                .setNegativeButton("no", null)
+                .setNegativeButton("no gracias\t|", null)
                 .setPositiveButton("comprar", null)
         mBuilder.show()/* show dialog */
 
@@ -172,8 +175,8 @@ class F01ConsumptionFragment : Fragment() {
         mDialogView.daysDeuda_textView_consumptionAlert.text = "${remainingDays*-1} días"
     }
 
-    /*revisión de campos ingresados */
-    private fun checkInput(mDialogView: View, lecturaEntero:String, lecturaDecimal:String, medidorNumber:String):Boolean{
+    //revisión de campos ingresados
+    private fun checkInput(mDialogView: View, lecturaEntero:String, lecturaDecimal:String, medidorNumber:String,costumerNumberList:List<Short> ):Boolean{
         while (lecturaEntero.isEmpty()){
             Toast.makeText(this.requireContext(),"ERROR: lectura vacía", Toast.LENGTH_SHORT).show()
             mDialogView.logEntero_editText_consumption.error = "vacio"
@@ -197,7 +200,7 @@ class F01ConsumptionFragment : Fragment() {
             Toast.makeText(this.requireContext(),"sin imagen respaldo", Toast.LENGTH_SHORT).show()
             mDialogView.photo_imageView_consumption.setColorFilter(Color.RED)
             return false}
-      while (!costumerNumberList.contains(medidorNumber.toInt())){
+      while (!costumerNumberList.contains(medidorNumber.toShort())){
           Toast.makeText(this.requireContext(),"ERROR: no existe medidor", Toast.LENGTH_SHORT).show()
           mDialogView.number_autoTextView_consumption.error = "vacio"
           return false
@@ -205,7 +208,7 @@ class F01ConsumptionFragment : Fragment() {
         return true
     }
 
-    /* ensamblando getters para crear un objeto consumption */
+    // ensamblando getters para crear un objeto consumption
     @SuppressLint("SimpleDateFormat", "InflateParams")
     private fun assemblyConsumptionObject(lecturaEntero:String, lecturaDecimal:String, medidorNumber:String, currentDate:Date, timeStamp:Long){
         /*F01.02. Cargando cuadro de diálogo de carga*/
@@ -252,10 +255,10 @@ class F01ConsumptionFragment : Fragment() {
                 //val currentBillDetail = calculateCurrentBillDetail(wasterPricePlanListFix,consumptionCurrent).toList() /** detalle del cobro por tramo  */
                 //val currentBilltotal = currentBillDetail[currentBillDetail.lastIndex]["total"]
 
-                /** status de pago TRUE si consumo es 0.0 */
+                // status de pago TRUE si consumo es 0.0
                 val paymentStatus = consumptionCurrent == 0.0
 
-                /**F02.B.1 Cargando IMAGEN CONSUMO a base de datos*/
+                //F02.B.1 Cargando IMAGEN CONSUMO a base de datos
                 /* nombrar archivo de imagen*/
                 val formaterDateYM          = SimpleDateFormat("yyyy.MM")
                 val formatedDateYM   = formaterDateYM.format(currentDate)
@@ -264,12 +267,11 @@ class F01ConsumptionFragment : Fragment() {
                 val uidAprLt = uidApr.substring(startIndex = 0, endIndex = 5) /* id corto */
                 val filename = "$uidAprLt.$formatedDateYMD.$medidorNumber " /* genera un nombre largo*/
                 val refPic = FirebaseStorage.getInstance().reference.child("/lectureBackupPic/$formatedDateYM/$uidAprLt/$filename")
-                /* subiendo imagen y obteniendo url */
+                //subiendo imagen y obteniendo url
                 refPic.putFile(imageUri!!)
                     .addOnSuccessListener{ it ->
                         Log.d("Consumption","Se subió la foto: ${it.metadata?.path}")
                         refPic.downloadUrl.addOnSuccessListener {
-                            val consumptionPicUrl= it.toString()
                             Log.d("Consumption","Ubicación foto: $it")
                             val consumption = ConsumptionObject(
                                 timeStamp,
@@ -281,9 +283,9 @@ class F01ConsumptionFragment : Fragment() {
                                 logLectureNew,
                                 logLectureOld,
                                 consumptionCurrent,
-                                listOf(mapOf("0" to 0.0)),  /* cálculo en cloud function */
-                                0.0,        /* cálculo en cloud function*/
-                                consumptionPicUrl,
+                                listOf(mapOf("0" to 0.0)),  /* cálculo en --cloud function-- */
+                                0.0,         /* cálculo en --cloud function--*/
+                                it.toString(),              /*pic Url firestore*/
                                 paymentStatus
                             )
 
@@ -330,10 +332,9 @@ class F01ConsumptionFragment : Fragment() {
     }// fin assembly
 
     //F03 Cargar items al AutocompleteTextView
-    private lateinit var costumerNumberList:ArrayList<Int>
-    private fun autocompleteMedidorList(mDialogView:View){
-        costumerNumberList = arrayListOf()
-        for (element in costumerList){ costumerNumberList.add(element.medidorNumber) } /** Cargando Array List */
+    private fun autocompleteMedidorList(mDialogView:View):List<Short>{
+        val costumerNumberList:ArrayList<Short> = arrayListOf()
+        for (element in costumerList){ costumerNumberList.add(element.medidorNumber.toShort()) } /** Cargando Array List */
         Log.d("Consumption", "Array Medidores: $costumerNumberList")
         val adapter = ArrayAdapter(requireActivity(), android.R.layout.simple_dropdown_item_1line,costumerNumberList)
         mDialogView.number_autoTextView_consumption.setAdapter(adapter)
@@ -344,23 +345,23 @@ class F01ConsumptionFragment : Fragment() {
         //mDialogView.number_multiAutoCompleteTextView_consumption.showDropDown()
         mDialogView.number_autoTextView_consumption.requestFocus()
         /* https://stackoverflow.com/questions/46003242/multiautocompletetextview-not-showing-dropdown-in-alertdialog */
+        return costumerNumberList.toList()
     }
 
-    private var imageUri: Uri? = null /* el archivo a suber requiere un image URI */
+    //F04 Módulo de CÁMARA
+    private var imageUri: Uri? = null /* el para subir a firestore requiere un URI */
+    private var bitmap:Bitmap? = null /* los imageView requiere bitmap */
     private val captureCODE = 1001
-
     private fun openCamera(mDialogView:View) {
         /*http://androidtrainningcenter.blogspot.com/2012/05/bitmap-operations-like-re-sizing.html*/
 
         imageUri = mDialogView.context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues())
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)  /* captura de foto */
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)    /* instando imagen */
-        Log.d("Picture", "P01 imagen guardada como : ${MediaStore.EXTRA_OUTPUT}")
+            Log.d("Picture", "P01 imagen guardada como : ${MediaStore.EXTRA_OUTPUT}")
 
         startActivityForResult(cameraIntent, captureCODE)
     }
-
-    private var bitmap:Bitmap? = null /* los imageView requiere bitmap */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         /* called when image was captured from camera intent */
         if (resultCode == Activity.RESULT_OK){
@@ -371,12 +372,9 @@ class F01ConsumptionFragment : Fragment() {
                 val bitmapOnFix        = Bitmap.createBitmap(bitmap!!,0, 0, bitmap!!.width, bitmap!!.height, matrix, true)
                 val outputStream = this.requireContext().contentResolver.openOutputStream(imageUri!!)
                 bitmapOnFix.compress(Bitmap.CompressFormat.JPEG, 5, outputStream)
-
                 Log.d("Picture", "P02 imageUri dirección : ${imageUri.toString()}")
-
                 outputStream?.flush()
                 outputStream?.close()
-
             }catch( e1: FileNotFoundException){ e1.printStackTrace()}
             catch( e2: IOException){ e2.printStackTrace()}
             newConsumptionDialog()
@@ -386,7 +384,7 @@ class F01ConsumptionFragment : Fragment() {
 
     //F05 descargar consumos de todos los clientes últimos 2 meses : IMPORTANTE
     var numberOfLectures:Int = 0
-    var fetchLimit:Long = 50 /** límite de documentos a cargar en recyclerView*/
+    var fetchLimit:Long = 50 /* límite de documentos a cargar en recyclerView*/
     private fun fetchConsumption(){
         val uidApr          = currentApr!!.uidApr
 
@@ -495,7 +493,8 @@ class F01ConsumptionFragment : Fragment() {
      */
 
     /* Calcular cobros por tramo --actualizado a CLOUD FUNCTION -- */
-/*    private fun calculateCurrentBill(tramoList:List<TramoObject>, consumption:Double):Double{
+    /*
+    private fun calculateCurrentBill(tramoList:List<TramoObject>, consumption:Double):Double{
         var currentBill = 0.0
         // https://kotlinlang.org/docs/reference/control-flow.html
         if (consumption >0.0){
@@ -524,7 +523,7 @@ class F01ConsumptionFragment : Fragment() {
         Log.d("Billing", "importe total : $currentBill")
         return currentBill
     } */
-/*
+    /*
     private fun calculateCurrentBillDetail(tramoList:List<TramoObject>, consumption:Double):List<Map<String,Double>>{
         val currentBillDetail = mutableListOf<Map<String,Double>>()
         //tramo ordenado de MAYOR a menor

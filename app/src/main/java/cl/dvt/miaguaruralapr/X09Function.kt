@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Matrix
+import android.net.Uri
 import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
@@ -315,8 +316,9 @@ class ConsumptionOperation(
 
 
     var bitmap:Bitmap?= null
+    var imageUri:Uri?= null
 
-    /*cuadro de dialogo para ingresar un nuevo consumo*/
+    /*cuadro de diálogo para ingresar un nuevo consumo*/
     fun newConsumptionDialog(context:Context){
 
         /* Ingreso de nuevo consumo */
@@ -342,7 +344,8 @@ class ConsumptionOperation(
             mAlertDialog.dismiss()
 
             if (MainActivity.requestCameraResult || MainActivity.camPermissionBoolean){
-                //F01ConsumptionFragment().openCamera(mDialogView)
+                imageUri = openCamera(mDialogView)
+
             }else{
                 Toast.makeText(context, "cámara denegada", Toast.LENGTH_SHORT).show()
             }
@@ -382,8 +385,6 @@ class ConsumptionOperation(
             mAlertDialog.dismiss()
             bitmap = null
         }
-
-
     }
     private var costumerNumberList:ArrayList<Short> = arrayListOf()
     private fun autocompleteMedidorList(mDialogView:View,context:Context){
@@ -400,7 +401,7 @@ class ConsumptionOperation(
         mDialogView.number_autoTextView_consumption.requestFocus()
         /* https://stackoverflow.com/questions/46003242/multiautocompletetextview-not-showing-dropdown-in-alertdialog */
     }
-
+    //chequeo de los valores de entrada diálogo
     private fun checkInput(context:Context,mDialogView: View, lecturaEntero:String, lecturaDecimal:String, medidorNumber:String):Boolean{
         while (lecturaEntero.isEmpty()){
             Toast.makeText(context,"ERROR: lectura vacía", Toast.LENGTH_SHORT).show()
@@ -433,20 +434,20 @@ class ConsumptionOperation(
 
         return true
     }
-
+    //
     private fun assemblyConsumptionObject(context:Context,lecturaEntero:String, lecturaDecimal:String, medidorNumber:String, currentDate:Date, timeStamp:Long){
-        /*F01.02. Cargando cuadro de diálogo de carga*/
+        //F01.02. Cargando cuadro de diálogo de carga*/
         val mDialogLoadingView = LayoutInflater.from(context).inflate(R.layout.section_add_consumption_loading, null) /* Instando dialogo "cargando" */
         val mBuilderLoading = AlertDialog.Builder(context).setView(mDialogLoadingView)   /* Inflado del cuadro de dialogo "cargando" */
         val mAlertDialogLoading = mBuilderLoading.show() /* show dialog "cargando" */
 
-        /*F02.B.0 Instando firebase*/
+        //F02.B.0 Instando firebase*/
         val uidApr          = A01SplashActivity.currentApr!!.uidApr
         val uuidConsumption = UUID.randomUUID().toString()/** identificador único de consumo*/
         /*F02.B.1 Ensamblando variables actuales y fetch de última lectura*/
         val logLectureNew = ("$lecturaEntero.$lecturaDecimal").toDouble()
 
-        /* fetching última lectura pasada del cliente */
+        // fetching última lectura pasada del cliente */
         var logLectureOld = logLectureNew
         var dateLectureOld = currentDate
 
@@ -493,7 +494,7 @@ class ConsumptionOperation(
                 val filename = "$uidAprLt.$formatedDateYMD.$medidorNumber " /* genera un nombre largo*/
                 val refPic = FirebaseStorage.getInstance().reference.child("/lectureBackupPic/$formatedDateYM/$uidAprLt/$filename")
                 /* subiendo imagen y obteniendo url */
-                /*
+
                 refPic.putFile(imageUri!!)
                     .addOnSuccessListener{ it ->
                         Log.d("Consumption","Se subió la foto: ${it.metadata?.path}")
@@ -520,7 +521,7 @@ class ConsumptionOperation(
 
                         }
                     }
-                */
+
             }
             .addOnFailureListener{e ->
                 Log.d("lastConsumption", "Error getting documents: ", e)
@@ -571,5 +572,18 @@ class ConsumptionOperation(
             it
         }
     }
+
+    private fun openCamera(mDialogView:View): Uri? {
+        /*http://androidtrainningcenter.blogspot.com/2012/05/bitmap-operations-like-re-sizing.html*/
+
+        val imageUri = mDialogView.context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues())
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)  /* captura de foto */
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)    /* instando imagen */
+        Log.d("Picture", "P01 imagen guardada como : ${MediaStore.EXTRA_OUTPUT}")
+
+        MainActivity().startActivityForResult(cameraIntent, 1001)
+        return imageUri
+    }
+
 
 }

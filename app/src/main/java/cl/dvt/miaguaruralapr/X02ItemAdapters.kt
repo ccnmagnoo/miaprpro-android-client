@@ -18,8 +18,9 @@ class CostumerItemAdapter(val costumer: CostumerObject): Item<GroupieViewHolder>
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int){
         //cargado textView del adaptador
-        val Latitude:Double =  costumer.medidorLocation!!.getValue(key = "Latitude")
-        val Longitude:Double =  costumer.medidorLocation!!.getValue(key = "Longitude")
+
+        //val Latitude:Double =  costumer.medidorLocation!!.getValue(key = "Latitude")
+        //val Longitude:Double =  costumer.medidorLocation!!.getValue(key = "Longitude")
         val formatDateLong = SimpleDateFormat("EEEE dd MMMM yyyy")
         val formatedDate = formatDateLong.format(costumer.userCostumerLastPayDate)
 

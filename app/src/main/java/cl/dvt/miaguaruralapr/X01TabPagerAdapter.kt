@@ -10,10 +10,10 @@ import androidx.fragment.app.FragmentPagerAdapter
 class X01MainTabPagerAdapter (fm: FragmentManager, private var tabCount:Int) : FragmentPagerAdapter(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
     override fun getItem(position: Int): Fragment {
         return when(position) {
-            0   ->return F01ConsumptionFragment()
-            1   ->return F02CostumerFragment()
-            2   ->return F03TramoFragment()
-            else->return F04ProduccionFragment()
+            0   -> F01ConsumptionFragment()
+            1   -> F02CostumerFragment()
+            2   -> F03TramoFragment()
+            else-> F04ProduccionFragment()
         }
     }
     override fun getCount(): Int {

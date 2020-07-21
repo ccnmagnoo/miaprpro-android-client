@@ -25,7 +25,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="64dp"
         android:clickable="true"
-        android:src="@drawable/ic_ico_add_24dp"
+        android:src="@drawable/ic_ico_coin_20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

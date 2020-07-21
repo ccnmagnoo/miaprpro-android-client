@@ -1,38 +1,26 @@
 package cl.dvt.miaguaruralapr
 
 import android.Manifest
-import android.app.Activity
-import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Matrix
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isEmpty
-import androidx.core.view.isNotEmpty
 import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_f01_consumo.*
 import kotlinx.android.synthetic.main.section_toolbar_main.*
-import java.io.FileNotFoundException
-import java.io.IOException
+
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.math.roundToInt
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         var QUERY_KEY:String? = "QUERY_WORD"
         var block_key:Boolean = false
         //permisos de uso de cámara
-        const val permissionCode = 1000
+        const val camPermissionCode = 1000
         var camPermissionBoolean = false
         var requestCameraResult = false
 
@@ -144,21 +132,22 @@ class MainActivity : AppCompatActivity() {
                 /* permission was not enabled */
                 val permission = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 /* show popup to request permission */
-                requestPermissions(permission, permissionCode)
+                requestPermissions(permission, camPermissionCode)
             }else{
                 //permission already granted
-                /*openCamera()*/
+                /**openCamera()*/
                 return true}
         }else{
             //system os is < marshmallow
-            /*openCamera()*/
+            /**openCamera()*/
             return true}
         return false
     }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         /* called when user presses ALLOW or DENY from Permission Request Popup */
         when(requestCode){
-            permissionCode -> {
+            camPermissionCode -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     //openCamera()
                     camPermissionBoolean = true
@@ -192,6 +181,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    //getBitmap
 
 }
 
