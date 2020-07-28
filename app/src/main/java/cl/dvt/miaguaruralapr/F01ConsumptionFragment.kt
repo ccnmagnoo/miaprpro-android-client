@@ -136,8 +136,8 @@ class F01ConsumptionFragment : Fragment() {
 
         //SAVE button
         mDialogView.save_button_consumption.setOnClickListener {
-            val medidorNumber   = mDialogView.number_autoTextView_consumption.text.toString()
             val timeStamp        = System.currentTimeMillis()/1000
+            val medidorNumber   = mDialogView.number_autoTextView_consumption.text.toString()
             val lecturaEntero   = mDialogView.logEntero_editText_consumption.text.toString()
             val lecturaDecimal  = if (mDialogView.logDecimal_editText_consumption.text.isNotEmpty()){
                 mDialogView.logDecimal_editText_consumption.text.toString()
@@ -145,13 +145,13 @@ class F01ConsumptionFragment : Fragment() {
 
 
             /*Chequear datos ingresados*/
-            val checkInputDataVal = checkInput(mDialogView,lecturaEntero,lecturaDecimal,medidorNumber,costumerNumberList)
-            if (checkInputDataVal){
+            val checkInputValues = checkInput(mDialogView,lecturaEntero,lecturaDecimal,medidorNumber,costumerNumberList)
+            if (checkInputValues){
                 /*Comenzar proceso de carga a firebase*/
                 assemblyConsumptionObject(lecturaEntero,lecturaDecimal,medidorNumber,today,timeStamp,context)
                 mAlertDialog.dismiss()
             }else{
-                return@setOnClickListener
+                return@setOnClickListener //retorna al listener sin cerrar el diálogo
             }
             bitmap = null /** borrar el bitmap */
         }
@@ -390,11 +390,10 @@ class F01ConsumptionFragment : Fragment() {
 
 
     //F05 descargar consumos de todos los clientes últimos 2 meses : IMPORTANTE
-    var numberOfLectures:Int = 0
-    var fetchLimit:Long = 50 /* límite de documentos a cargar en recyclerView*/
+
     private fun fetchConsumption(){
         val uidApr          = currentApr!!.uidApr
-
+        val fetchLimit:Long = 50 /* límite de documentos a cargar en recyclerView*/
         /*Groupie RecyclerView : https://github.com/lisawray/groupie */
         val adapter = GroupAdapter<GroupieViewHolder>()    /* adaptador para el recyclerView */
         consumption_recyclerView_consumo.adapter = adapter /* Cargando el ReclyclerView de esta Actividad*/
@@ -438,9 +437,7 @@ class F01ConsumptionFragment : Fragment() {
                     }
                 }
 
-
-                numberOfLectures    = adapter.itemCount
-                numberOfConsumption_textView_consumo.text = "últimas $numberOfLectures lecturas"
+                //numberOfConsumption_textView_consumo.text = "últimas $fetchLimit lecturas"
             }
 
 
@@ -449,8 +446,8 @@ class F01ConsumptionFragment : Fragment() {
 
         /** click en el item del recyclerView */
         adapter.setOnItemClickListener {item, view ->
-            val consumption = item as ConsumptionItemAdapter
-            ConsumptionOperation(consumption.consumption).updateConsumptionDialog(requireActivity())
+            val consumptionItem = item as ConsumptionItemAdapter
+            ConsumptionOperation(consumptionItem.consumption).updateConsumptionDialog(requireActivity())
         }
 
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -94,24 +95,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="horizontal"
         android:paddingTop="16dp">
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/cancel_button_costumer"
-            style="@style/app_button_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@android:string/cancel" />
+            android:backgroundTint="@color/purpleMedium"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
-        <Button
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/save_button_costumer"
-            style="@style/app_button_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Guardar" />
+            android:backgroundTint="@color/design_default_color_primary"
+            android:src="@drawable/ic_ico_add_24dp"
+            app:fabSize="normal" />
 
     </LinearLayout>
 

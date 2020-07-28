@@ -79,13 +79,14 @@ class A02LoginActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private  fun loginAttempt(email:String, password:String){
+
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if(!it.isSuccessful) return@addOnCompleteListener
                 val user = FirebaseAuth.getInstance().currentUser
 
                 if(user!!.isEmailVerified){
-                     getCurrentApr(it.result?.user!!.uid) /* cargar objeto userApr*/
+                     getUser(it.result?.user!!.uid) /* cargar objeto userApr*/
                      Log.d(TAG,"login correctamente: ${it.result?.user?.uid}")
 
                  } else{
@@ -100,7 +101,8 @@ class A02LoginActivity : AppCompatActivity() {
             }
     }
 
-    private fun getCurrentApr(uidApr:String){
+    private fun getUser(uidApr:String){
+        //obteniendo documento USER
         val ref = FirebaseFirestore.getInstance()
             .collection("userApr")
             .document(uidApr)
@@ -108,6 +110,7 @@ class A02LoginActivity : AppCompatActivity() {
             .addOnSuccessListener {documentSnapshot  ->
                 currentApr = documentSnapshot.toObject(AprObject::class.java)
                 Log.d("CurrentUser", "User Data: $currentApr")
+                //Iniciar Main screen
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }

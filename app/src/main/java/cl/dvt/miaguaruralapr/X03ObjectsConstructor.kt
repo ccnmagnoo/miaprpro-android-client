@@ -73,10 +73,11 @@ data class ConsumptionObject(
 
 @Parcelize
 data class TramoObject(
-    val name:String             = "",   /** nombre del plan de precios */
-    val consumptionBase:Double  = 0.0,  /** piso en metros cúbicos para los precios del consumo*/
-    val priceBase:Int           = 0,    /** precio del metro cúbico*/
-    val description:String      = "",   /** descripción del plan de precios del APR*/
+    val name:String             = "",/** nombre del plan de precios */
+    val consumptionBase:Double  = 0.0,/** piso en metros cúbicos para los precios del consumo*/
+    val priceBase:Int           = 0,/** precio del metro cúbico*/
+    val description:String      = "",/** descripción del plan de precios del APR*/
     val edible:Boolean          = false,/** editable del valor piso m3, por defecto el piso es 0 y sólo se puede editar el piso*/
-    val uidApr:String           = ""    /** string identificador del APR*/
+    val uidApr:String           = "",    /** string identificador del APR*/
+    val uidTramo:String         = "" //uid del tramo
 ): Parcelable

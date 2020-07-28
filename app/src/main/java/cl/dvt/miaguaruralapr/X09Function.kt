@@ -206,8 +206,7 @@ class ConsumptionOperation(
 
         /*Abiendo dialogo*/
         val mDialogView = LayoutInflater.from(context).inflate(R.layout.section_op_consumption, null) /** Instando dialogView */
-        val mBuilder = AlertDialog.Builder(context) /** Inflado del cuadro de dialogo */
-                .setView(mDialogView)
+        val mBuilder = AlertDialog.Builder(context).setView(mDialogView)
         val  mAlertDialog = mBuilder.show()/* show dialog */
 
         /*Populando datos del cuadro de dialogo */
@@ -287,7 +286,7 @@ class ConsumptionOperation(
                             val mBuilderAlertYes  = AlertDialog.Builder(context)
                                 .setView(mDialogAlertYesView)
                                 .setTitle("advertencia")
-                                .setNegativeButton("no      |    ",null)
+                                .setNegativeButton("cancel\t|\t",null)
                                 .setPositiveButton("quiero borrarlo") { dialog, id ->
                                     ConsumptionOperation(consumption).deleteConsumption()
                                 }
@@ -315,7 +314,7 @@ class ConsumptionOperation(
     }
 
 
-    var bitmap:Bitmap?= null
+    private var bitmap:Bitmap?= null
     var imageUri:Uri?= null
 
     /*cuadro de diálogo para ingresar un nuevo consumo*/
@@ -336,8 +335,8 @@ class ConsumptionOperation(
         val formatedDate= formaterDate.format(currentDate)
         mDialogView.currentDate_textView_consumption.text = formatedDate
 
-        //Carga de AutoCompleteTextView*/
-        autocompleteMedidorList(mDialogView,context)
+        //Carga de AutoCompleteTextView y listado de número de clientes*/
+        val costumerNumberList= autocompleteMedidorList(mDialogView,context)
 
         //Acciones del Photo button*/
         mDialogView.photo_button_consumption?.setOnClickListener{
@@ -370,7 +369,7 @@ class ConsumptionOperation(
 
 
             /*Chequear datos ingresados*/
-            val checkInputDataVal = checkInput(context,mDialogView,lecturaEntero,lecturaDecimal,medidorNumber)
+            val checkInputDataVal = checkInput(context,mDialogView,lecturaEntero,lecturaDecimal,medidorNumber,costumerNumberList)
             if (checkInputDataVal){
                 /*Comenzar proceso de carga a firebase*/
                 assemblyConsumptionObject(context, lecturaEntero,lecturaDecimal,medidorNumber,currentDate,timeStamp)
@@ -386,23 +385,23 @@ class ConsumptionOperation(
             bitmap = null
         }
     }
-    private var costumerNumberList:ArrayList<Short> = arrayListOf()
-    private fun autocompleteMedidorList(mDialogView:View,context:Context){
-        //val costumerNumberList:ArrayList<Short> = arrayListOf()
+
+    //generador de listado de medidores y autoCompleteView
+    private fun autocompleteMedidorList(mDialogView:View,context: Context):List<Short>{
+        /* https://tutorialwing.com/android-multiautocompletetextview-using-kotlin-with-example/ */
+        /* https://stackoverflow.com/questions/46003242/multiautocompletetextview-not-showing-dropdown-in-alertdialog */
+
+        val costumerNumberList:ArrayList<Short> = arrayListOf()
         for (element in costumerList){ costumerNumberList.add(element.medidorNumber.toShort()) } /** Cargando Array List */
         Log.d("Consumption", "Array Medidores: $costumerNumberList")
         val adapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line,costumerNumberList)
         mDialogView.number_autoTextView_consumption.setAdapter(adapter)
         mDialogView.number_autoTextView_consumption.threshold=1 /* minimo de caracteres para comenzar con el autocomplete */
-        //DialogView.number_multiAutoCompleteTextView_consumption.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer()) //
-        /* https://tutorialwing.com/android-multiautocompletetextview-using-kotlin-with-example/ */
-
-        //mDialogView.number_multiAutoCompleteTextView_consumption.showDropDown()
         mDialogView.number_autoTextView_consumption.requestFocus()
-        /* https://stackoverflow.com/questions/46003242/multiautocompletetextview-not-showing-dropdown-in-alertdialog */
+        return costumerNumberList.toList()
     }
     //chequeo de los valores de entrada diálogo
-    private fun checkInput(context:Context,mDialogView: View, lecturaEntero:String, lecturaDecimal:String, medidorNumber:String):Boolean{
+    private fun checkInput(context:Context,mDialogView: View, lecturaEntero:String, lecturaDecimal:String, medidorNumber:String,costumerNumberList:List<Short>):Boolean{
         while (lecturaEntero.isEmpty()){
             Toast.makeText(context,"ERROR: lectura vacía", Toast.LENGTH_SHORT).show()
             mDialogView.logEntero_editText_consumption.error = "vacio"
@@ -434,7 +433,7 @@ class ConsumptionOperation(
 
         return true
     }
-    //
+    //Ensamblado de objeto consumo
     private fun assemblyConsumptionObject(context:Context,lecturaEntero:String, lecturaDecimal:String, medidorNumber:String, currentDate:Date, timeStamp:Long){
         //F01.02. Cargando cuadro de diálogo de carga*/
         val mDialogLoadingView = LayoutInflater.from(context).inflate(R.layout.section_add_consumption_loading, null) /* Instando dialogo "cargando" */
@@ -581,7 +580,7 @@ class ConsumptionOperation(
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)    /* instando imagen */
         Log.d("Picture", "P01 imagen guardada como : ${MediaStore.EXTRA_OUTPUT}")
 
-        MainActivity().startActivityForResult(cameraIntent, 1001)
+        F01ConsumptionFragment().startActivityForResult(cameraIntent, 1001)
         return imageUri
     }
 

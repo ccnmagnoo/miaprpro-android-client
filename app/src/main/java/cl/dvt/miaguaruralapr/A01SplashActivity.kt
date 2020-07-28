@@ -25,21 +25,23 @@ class A01SplashActivity : AppCompatActivity() {
     }
 
     private fun verifyUserIsLoggedIn(){
-        val uid = FirebaseAuth.getInstance().uid /**buscar la uid actual*/
+        //verificando uid existente
+        val uid = FirebaseAuth.getInstance().uid
         Log.d("CurrentUser", "UID : $uid")
         if (uid==null){
+            //si no existe uid
             val intent = Intent(this, A02LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             finish()
         }
-        else{/**si existe user Logeador; cargar el objeto Usuario Actual*/
-            getCurrentUserAprObject(uid)
-
+        else{
+            //si existe uid
+            getUser(uid)
         }
-    }/**fin verifyUserIsLoggedIn*/
+    }
 
-    private fun getCurrentUserAprObject(uidApr:String){
+    private fun getUser(uidApr:String){
         val ref = FirebaseFirestore.getInstance()
             .collection("userApr")
             .document(uidApr)

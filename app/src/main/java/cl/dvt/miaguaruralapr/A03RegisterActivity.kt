@@ -68,25 +68,28 @@ class A03RegisterActivity : AppCompatActivity() {
         val password    = password_editText_register.text.toString()
         val passwordR   = passwordR_editText_register.text.toString()
 
-        val razonSocial = razonSocial_editText_register.text.toString()
-        val rolSociedad = rol_editText_register.text.toString()
-        val phoneContact = phone_editText_register.text.toString()
-
-        val localidad   = localidad_editText_register.text.toString()
-        val comuna      = comuna_autoCompleteTextView_register.text.toString()
-        val direccion   = dir_editText_register.text.toString()
-
         //Filtrando errores de digitado en registro
-        while(email.isEmpty() || emailR.isEmpty()) {
-            email_editText_register?.error = "vacio"
-            email_editText_register.requestFocus()
-            return
+        val listOfInputs = arrayOf(
+            email_editText_register,
+            emailR_editText_register,
+            password_editText_register,
+            passwordR_editText_register,
+            razonSocial_editText_register,
+            rol_editText_register,
+            phone_editText_register,
+            localidad_editText_register,
+            comuna_autoCompleteTextView_register,
+            dir_editText_register
+        )
+
+        for (input in listOfInputs){
+            while (input.text.toString().isEmpty()){
+                input.error = "vacio"
+                input.requestFocus()
+                return
+            }
         }
-        while(emailR.isEmpty()){
-            emailR_editText_register?.error = "vacio"
-            emailR_editText_register.requestFocus()
-            return
-        }
+
         if (!email.isEmailValid()){
             email_editText_register?.error = "inválido"
             email_editText_register.requestFocus()
@@ -95,41 +98,14 @@ class A03RegisterActivity : AppCompatActivity() {
             emailR_editText_register?.error = "distinto!"
             emailR_editText_register.requestFocus()
             return }
-        while(password.isEmpty()){
-            password_editText_register?.error = "vacio"
-            password_editText_register.requestFocus()
-            return}
-        while(passwordR.isEmpty()){
-            passwordR_editText_register?.error = "vacio"
-            passwordR_editText_register.requestFocus()
-            return
-        }
+
         while(password.length < 6 ){
             password_editText_register?.error = "al menos 6 letras"
             password_editText_register.requestFocus()
             return}
         while(password != passwordR){
-            passwordR_editText_register?.error = "no es igual"
+            passwordR_editText_register?.error = "repetir pass correctamente"
             passwordR_editText_register.requestFocus()
-            return}
-        while(razonSocial.isEmpty()){
-            razonSocial_editText_register?.error = "vacio"
-            razonSocial_editText_register.requestFocus()
-            return}
-        while(rolSociedad.isEmpty()){
-            rol_editText_register?.error = "vacio"
-            return}
-        while(phoneContact.isEmpty()){
-            phone_editText_register?.error = "vacio"
-            return}
-        while(localidad.isEmpty()){
-            localidad_editText_register?.error = "vacio"
-            return}
-        while(comuna.isEmpty()){
-            comuna_autoCompleteTextView_register?.error = "vacio"
-            return}
-        while(direccion.isEmpty()){
-            dir_editText_register?.error = "vacio"
             return}
 
         register_button_register.text = "registrando..."
@@ -170,14 +146,15 @@ class A03RegisterActivity : AppCompatActivity() {
         val direccion   = dir_editText_register.text.toString()
 
         val cityIndex          = resources.getStringArray(R.array.comuna_nombre).indexOf(comuna)                               /* https://stackoverflow.com/questions/7256514/search-value-for-key-in-string-array-android*/
-        val comunaId        = resources.getStringArray(R.array.comuna_id)[cityIndex]
-        val provinciaNom    = resources.getStringArray(R.array.provincia_nombre)[cityIndex]
-        val provinciaId     = resources.getStringArray(R.array.provincia_id)[cityIndex]
-        val regionNom       = resources.getStringArray(R.array.region_nombre)[cityIndex]
-        val regionId        = resources.getStringArray(R.array.region_id)[cityIndex]
-        val comunaArray = listOf(comunaId,comuna,provinciaId,provinciaNom,regionId,regionNom)
+        val comunaArray = listOf(
+            resources.getStringArray(R.array.comuna_id)[cityIndex],         //comuna id
+            comuna_autoCompleteTextView_register.text.toString(),           //comuna
+            resources.getStringArray(R.array.provincia_id)[cityIndex],      //provincia id
+            resources.getStringArray(R.array.provincia_nombre)[cityIndex],  //provincia
+            resources.getStringArray(R.array.region_id)[cityIndex],         //región id
+            resources.getStringArray(R.array.region_nombre)[cityIndex])     //región
         val userLocation =  mapOf("Latitude" to mLastLocation.latitude, "Longitude" to mLastLocation.longitude) /**getLocation en F.06*/
-        val dateStampRegister = Calendar.getInstance().time
+        val dateStampRegister = Calendar.getInstance().time //formato DATE
 
         /** obteniendo  días de regalo*/ /* RES: https://www.mkyong.com/java/java-how-to-add-days-to-current-date/ */
         val calendarLastPurchase = Calendar.getInstance()
@@ -200,10 +177,8 @@ class A03RegisterActivity : AppCompatActivity() {
                 direccion,
                 comunaArray,
                 userLocation,
-
                 dateStampRegister,
                 dateLimitBuy,
-
                 typeUser,
                 planId,
                 userStatus
@@ -232,19 +207,44 @@ class A03RegisterActivity : AppCompatActivity() {
     /* http://www.doh.gov.cl/APR/documentos/EscuelaDirigentesAPR/Tarifas.pdf */
     private fun createTramo(){
         val uid = FirebaseAuth.getInstance().uid?:""
-        val userPricesPlanT1 =  TramoObject("Tramo 1", 0.0,500,"Precio consumo doméstrico tramo 1 hasta los 15m3",false,uid)
-        val userPricesPlanT2 =  TramoObject("Tramo 2", 16.0,800,"Precio consumo doméstrico tramo 2 sobre los 16m3",true,uid)
-        val userPricesPlanT3 =  TramoObject("Tramo 3", 31.0,1000,"Precio sobre consumo por sobre los 31 m3",true,uid)
-        val userPricesPlanReg = listOf<TramoObject>(userPricesPlanT1,userPricesPlanT2,userPricesPlanT3)
+        val tramo1 =  TramoObject(
+            "Tramo 1",
+            0.0,
+            500,
+            "Precio consumo doméstrico tramo 1 hasta los 15m3",
+            false,
+            uid,
+            UUID.randomUUID().toString()
+        )
+        val tramo2 =  TramoObject(
+            "Tramo 2",
+            16.0,
+            800,
+            "Precio consumo doméstrico tramo 2 sobre los 16m3",
+            true,
+            uid,
+            UUID.randomUUID().toString()
+        )
+        val tramo3 =  TramoObject(
+            "Tramo 3",
+            31.0,
+            1000,
+            "Precio sobre consumo por sobre los 31 m3",
+            true,
+            uid,
+            UUID.randomUUID().toString()
+        )
+
+        val tramoList = listOf<TramoObject>(tramo1,tramo2,tramo3)
 
         val ref = FirebaseFirestore.getInstance()
             .collection("userApr")
             .document(uid)
             .collection("userPrices")
-            .document()
 
-        for (item in userPricesPlanReg){
-            ref.set(item)
+
+        for (item in tramoList){
+            ref.document(item.uidTramo).set(item)
                 .addOnSuccessListener {
                     Log.d("RegisterActivity","cargado plan ${item.name} para consumos sobre ${item.consumptionBase} m3")
                 }
