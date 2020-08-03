@@ -7,6 +7,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.SearchView
 import android.widget.Toast
@@ -104,20 +106,38 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    //F03. Inflate menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflate = menuInflater
+        inflate.inflate(R.menu.menu_toolbar_mainactivity,menu)
+
+
+        return true
+    }
+
     //F03. Acciones en selección de items de ToolBar
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val x = item.itemId
         Log.d("Menu", "item menu id selected : $x")
-        when (item.itemId){
-            /*ir a pantalla de login*/
+        return when (item.itemId){
+
             R.id.logOut_menuItem_main ->{
+                /*ir a pantalla de login*/
+                Toast.makeText(this, "login out",Toast.LENGTH_SHORT).show()
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(this, A02LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
+                this.startActivity(intent)
+                true
+            }
+            R.id.cancel_menuItem_main ->{
+                Toast.makeText(this,"cancelado",Toast.LENGTH_LONG).show()
+                true
+            }
+            else-> {
+                super.onOptionsItemSelected(item)
             }
         }
-        return super.onOptionsItemSelected(item)
     }
 
     //F04 Permisos de cámara

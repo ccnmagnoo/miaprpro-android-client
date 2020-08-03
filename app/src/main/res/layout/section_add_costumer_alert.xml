@@ -18,7 +18,7 @@
         android:id="@+id/textView7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ya ha alcanzalo el llímite del plan" />
+        android:text="Ya ha alcanzado el llímite de arranques que puede inscribir en el  plan actual. Cambiese de plan o bien borre arranques que no utilice" />
 
     <LinearLayout
         android:layout_width="match_parent"

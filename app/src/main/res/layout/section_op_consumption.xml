@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/image_imageView_opConsumption"
-                android:layout_width="190dp"
-                android:layout_height="250dp"
+                android:layout_width="160dp"
+                android:layout_height="200dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -44,7 +44,7 @@
                 android:layout_marginStart="8dp"
                 android:text="01/02/2020"
                 android:textColor="@color/purpleMedium"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView19"
                 app:layout_constraintStart_toEndOf="@+id/textView19" />
 
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:text="31/01/2020"
                 android:textColor="@color/purpleMedium"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView20"
                 app:layout_constraintStart_toStartOf="@+id/dateLectureNew_textView_opConsumption" />
 
@@ -164,12 +164,11 @@
                 android:id="@+id/importe_textView_opConsumption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="$ 24,000"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/payStatus_checkbox_opConsumption"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/payStatus_checkbox_opConsumption" />
 
             <TextView
                 android:id="@+id/textView13"
@@ -188,7 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:elevation="4dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/image_imageView_opConsumption"
                 app:layout_constraintEnd_toEndOf="@+id/image_imageView_opConsumption"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_imageView_opConsumption" />
@@ -209,9 +208,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/purpleLight"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/image_imageView_opConsumption"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/ic_delete_black_24dp" />
 
@@ -220,15 +218,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="deuda"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/consumptionDetail_recyclerView_opConsumption" />
 
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="actualizado el "
+                android:text="fecha"
                 android:textColor="@color/purpleLight"
                 android:textSize="8sp"
                 app:layout_constraintStart_toEndOf="@+id/image_imageView_opConsumption"

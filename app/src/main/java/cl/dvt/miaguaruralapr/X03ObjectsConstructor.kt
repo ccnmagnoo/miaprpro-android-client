@@ -79,5 +79,6 @@ data class TramoObject(
     val description:String      = "",/** descripción del plan de precios del APR*/
     val edible:Boolean          = false,/** editable del valor piso m3, por defecto el piso es 0 y sólo se puede editar el piso*/
     val uidApr:String           = "",    /** string identificador del APR*/
-    val uidTramo:String         = "" //uid del tramo
+    val uidTramo:String         = "", //uid del tramo
+    var timestamp:Date          = Date()
 ): Parcelable

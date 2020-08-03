@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_ico_key_24dp"
                     android:ems="10"
-                    android:hint="password"
+                    android:hint="password 6 letras o más"
                     android:inputType="textPassword" />
 
                 <EditText
@@ -214,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_ico_location_24dp"
                     android:ems="10"
-                    android:hint="localidad del apr"
+                    android:hint="nombre sector Rural"
                     android:inputType="textPersonName" />
 
                 <AutoCompleteTextView

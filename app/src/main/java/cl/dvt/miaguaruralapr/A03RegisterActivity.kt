@@ -206,6 +206,7 @@ class A03RegisterActivity : AppCompatActivity() {
     //F.05 : Creando plan de precios base del usuarios
     /* http://www.doh.gov.cl/APR/documentos/EscuelaDirigentesAPR/Tarifas.pdf */
     private fun createTramo(){
+        val timestamp = Calendar.getInstance().time
         val uid = FirebaseAuth.getInstance().uid?:""
         val tramo1 =  TramoObject(
             "Tramo 1",
@@ -214,7 +215,8 @@ class A03RegisterActivity : AppCompatActivity() {
             "Precio consumo doméstrico tramo 1 hasta los 15m3",
             false,
             uid,
-            UUID.randomUUID().toString()
+            UUID.randomUUID().toString(),
+            timestamp
         )
         val tramo2 =  TramoObject(
             "Tramo 2",
@@ -223,7 +225,8 @@ class A03RegisterActivity : AppCompatActivity() {
             "Precio consumo doméstrico tramo 2 sobre los 16m3",
             true,
             uid,
-            UUID.randomUUID().toString()
+            UUID.randomUUID().toString(),
+            timestamp
         )
         val tramo3 =  TramoObject(
             "Tramo 3",
@@ -232,7 +235,8 @@ class A03RegisterActivity : AppCompatActivity() {
             "Precio sobre consumo por sobre los 31 m3",
             true,
             uid,
-            UUID.randomUUID().toString()
+            UUID.randomUUID().toString(),
+            timestamp
         )
 
         val tramoList = listOf<TramoObject>(tramo1,tramo2,tramo3)

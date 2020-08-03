@@ -17,10 +17,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.MetadataChanges
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_f03_cobros.*
@@ -137,7 +134,19 @@ class F03TramoFragment : Fragment() {
         val name  = if(mDialogview.name_editText_tramoOp.text.toString().isEmpty())   { tramo.name}   else{mDialogview.name_editText_tramoOp.text.toString()}
         val base= if(mDialogview.base_editText_tramoOp.text.toString().isEmpty())   { tramo.consumptionBase}   else{mDialogview.base_editText_tramoOp.text.toString().toDouble()}
         val price   = if(mDialogview.price_editText_tramoOp.text.toString().isEmpty())  { tramo.priceBase}   else{mDialogview.price_editText_tramoOp.text.toString().toInt()}
-        val des   = if(mDialogview.description_editText_tramoOp.text.toString().isEmpty())   { tramo.description}   else{mDialogview.description_editText_tramoOp.text.toString()}
+        val description   = if(mDialogview.description_editText_tramoOp.text.toString().isEmpty())   { tramo.description}   else{mDialogview.description_editText_tramoOp.text.toString()}
+
+        //buil newTramo
+        val editedTramo:TramoObject = TramoObject(
+            name,
+            base,
+            price,
+            description,
+            tramo.edible,
+            tramo.uidApr,
+            tramo.uidTramo,
+            tramo.timestamp
+                )
 
         //create list of Tramos
         val tramoList = arrayListOf<TramoObject>()
@@ -147,7 +156,6 @@ class F03TramoFragment : Fragment() {
                 tramoList.add (item.tramo)
             }
         }
-
         //Gen sorted tramo list
         val tramoListSorted = tramoList.sortedBy { item -> item.consumptionBase }
 
@@ -160,7 +168,7 @@ class F03TramoFragment : Fragment() {
 
             //base limits range
         val baseRange = Pair(tramoDown?.consumptionBase?:0.0, tramoUp?.consumptionBase?:100.0)
-        if(base in baseRange.first..baseRange.second){
+        if(editedTramo.consumptionBase in baseRange.first..baseRange.second){
             //TODO:continuar
         }else{
             mDialogview.base_editText_tramoOp.error = "sólo rango de ${baseRange.first} a ${baseRange.second} m³"
@@ -170,7 +178,7 @@ class F03TramoFragment : Fragment() {
 
             //pricing limits Range values
         val priceRange = Pair(tramoDown?.priceBase?:0, tramoUp?.priceBase?:5000)
-        if(price in priceRange.first..priceRange.second){
+        if(editedTramo.priceBase in priceRange.first..priceRange.second){
             //TODO:continuar
         }else{
             mDialogview.price_editText_tramoOp.error = "sólo rango de $${priceRange.first} a $${priceRange.second} clp"
@@ -197,8 +205,13 @@ class F03TramoFragment : Fragment() {
                 //verificar cuenta
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pass.text.toString())
                     .addOnSuccessListener {
-                        Toast.makeText(context,"tramo actualizado",Toast.LENGTH_LONG).show()
                         mDialogBuilder.dismiss()
+                        if (editedTramo!=tramo){
+                            Toast.makeText(context,"tramo actualizado",Toast.LENGTH_LONG).show()
+                            uploadEditedTramo(editedTramo)
+                        }else{
+                            Toast.makeText(context,"sin cambios",Toast.LENGTH_LONG).show()
+                        }
 
                     }
                     .addOnFailureListener {
@@ -210,6 +223,34 @@ class F03TramoFragment : Fragment() {
             }
         }
 
+
+    }
+
+    private fun uploadEditedTramo(tramo: TramoObject) {
+
+        //update timestamp
+        val tramoHashMap = hashMapOf<String,Any>(
+            "consumptionBase" to tramo.consumptionBase,
+            "description" to tramo.description,
+            "edible" to tramo.edible,
+            "name" to tramo.name,
+            "priceBase" to tramo.priceBase,
+            "timestamp" to Calendar.getInstance().time,
+            "uidApr" to tramo.uidApr,
+            "uidTramo" to tramo.uidTramo
+        )
+
+
+        val refTramo   = FirebaseFirestore.getInstance()
+            .collection("userApr")
+            .document(tramo.uidApr)
+            .collection("userPrices")
+            .document(tramo.uidTramo)
+
+        refTramo.set(tramoHashMap, SetOptions.merge() )
+            .addOnCompleteListener{
+                Toast.makeText(requireContext(),"tramo actualizado",Toast.LENGTH_LONG).show()
+            }
 
     }
 

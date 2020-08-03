@@ -18,7 +18,7 @@
         android:id="@+id/dateLimitAUX_textView_consumptionAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ya ha estás sobre la fecha límite de uso" />
+        android:text="Su tiempo de uso ya ha expirado." />
 
     <TextView
         android:id="@+id/dateLimit_textView_consumptionAlert"
@@ -31,7 +31,7 @@
         android:id="@+id/daysDeudaAUX_textView_consumptionAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="con días de deuda" />
+        android:text="No espere y no acumule deuda, ya tiene duda de " />
 
     <TextView
         android:id="@+id/daysDeuda_textView_consumptionAlert"

@@ -4,17 +4,25 @@
 
     <item
         android:icon="@drawable/ic_ico_group_24dp"
-        android:title="cuenta"
+        android:title="mi plan"
         app:showAsAction="collapseActionView">
         <menu>
-            <item android:title="planes" />
-            <item android:title="pago de plan" />
-            <item android:title="cancelar plan" />
+            <item
+                android:id="@+id/plans_menuItem_main"
+                android:title="cambiar plan" />
+            <item
+                android:id="@+id/payment_menuItem_main"
+                android:title="pago de plan" />
+            <item
+                android:id="@+id/cancel_menuItem_main"
+                android:title="cancelar plan" />
         </menu>
     </item>
-    <item android:title="configuración" />
+    <item
+        android:id="@+id/config_menuItem_main"
+        android:title="configuración" />
     <item
         android:id="@+id/logOut_menuItem_main"
-        android:icon="@drawable/ic_ico_coin_20dp"
+        android:enabled="true"
         android:title="cerrar sesión" />
 </menu>

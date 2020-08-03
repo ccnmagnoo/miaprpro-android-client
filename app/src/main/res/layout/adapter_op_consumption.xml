@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="4dp"
-    android:paddingEnd="2dp">
+    android:padding="2dp">
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="tramo"
-        android:textSize="12sp"
+        android:text="t"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,8 +20,8 @@
         android:id="@+id/tramoId_textView_opConsumptionAdapter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:text="0"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView12"
         app:layout_constraintStart_toEndOf="@+id/textView12" />
 
@@ -32,17 +32,20 @@
         android:layout_marginStart="4dp"
         android:text="30.99"
         android:textColor="@color/purpleMedium"
+        android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/tramoId_textView_opConsumptionAdapter"
-        app:layout_constraintStart_toEndOf="@+id/textView16" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView16"
+        app:layout_constraintStart_toEndOf="@+id/textView16"
+        app:layout_constraintTop_toTopOf="@+id/textView16" />
 
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:text="m³"
-        app:layout_constraintBottom_toBottomOf="@+id/consumption_textView_opConsumptionAdapter"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tramoId_textView_opConsumptionAdapter"
         app:layout_constraintStart_toEndOf="@+id/tramoId_textView_opConsumptionAdapter" />
 
     <TextView
@@ -50,6 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="$12,000"
-        app:layout_constraintBottom_toBottomOf="@+id/textView12"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/consumption_textView_opConsumptionAdapter"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
