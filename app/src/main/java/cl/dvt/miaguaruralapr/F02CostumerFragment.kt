@@ -20,7 +20,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
 import cl.dvt.miaguaruralapr.A03RegisterActivity.Companion.PERMISSION_ID
-import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Class
 import com.google.android.gms.location.*
 import com.google.firebase.firestore.*
 import com.xwray.groupie.GroupAdapter
@@ -34,7 +33,7 @@ import java.util.*
 
 class F02CostumerFragment : Fragment(){
     companion object{
-        var costumerList                = mutableListOf<CostumerObject>()
+        var costumerList                = mutableListOf<Costumer>()
         private var currentCostumerLimit:Short    = 0
         var COSTUMER_KEY:String         = "COSTUMER_DETAIL"
         private var costumersCount:Int  = 0
@@ -61,25 +60,24 @@ class F02CostumerFragment : Fragment(){
         val x:Short? = checkRemainingCostumersUp()
         Log.d("test", "test: $x")
 
-
         fetchCostumers()                            /**Cargando usuarios suscritos actualmente y cantidad*/
 
         //Add Costumer to database
         addcostumer_floatingActionButton_costumer.setOnClickListener{
-            addCostumerCheck()
+            addCostumerCheck(currentCostumerLimit.toInt())
         }/* add costumer*/
 
     }/* onViewCreated */
 
     //F01. Función abrir box dialogo
-    private fun addCostumerCheck(){
+    private fun addCostumerCheck(currentLimit:Int){
         /*Verify number of user*/
-        Log.d("CurrentPlan", "Límite plan: $currentCostumerLimit, usados: $costumersCount")
+        Log.d("CurrentPlan", "Límite plan: $currentLimit, usados: $costumersCount")
 
         val costumerLimit:Short? = null
 
 
-        if(currentCostumerLimit>costumersCount){
+        if(currentLimit>costumersCount){
             addCostumerDialog()/*start add Costumer function*/
         }else{
             addCostumerLimitDialog() /* number or costumer sucription reach limit*/
@@ -203,7 +201,7 @@ class F02CostumerFragment : Fragment(){
         val userCostumerLastPayDate = dateMedidorRegister
 
         /*F.03.03 Cargando object UserCostumer*/
-        val costumer = CostumerObject(
+        val costumer = Costumer(
                 uidCostumer,
                 uidApr,
                 userCostumerName,
@@ -314,7 +312,7 @@ class F02CostumerFragment : Fragment(){
         ref.document(currentApr!!.planId.toString()).get()
             .addOnSuccessListener { it ->
                 if(it!=null){
-                    val plan = it.toObject(SuscriptionObject::class.java)
+                    val plan = it.toObject(SuscriptionPlan::class.java)
                     plan?.let {plan ->
                         currentCostumerLimit = plan.limit.toShort()
                     }?:run{
@@ -332,14 +330,14 @@ class F02CostumerFragment : Fragment(){
 
     private fun checkRemainingCostumersUp():Short?{
         val ref = FirebaseFirestore.getInstance().collection("suscriptionPlan")
-        val listOfPlan = arrayListOf<SuscriptionObject>()
+        val listOfPlan = arrayListOf<SuscriptionPlan>()
         val listOfPlanIndex = arrayListOf<Short>()
 
         ref.get()
             .addOnSuccessListener { result ->
                 for(document in result){
                     /*Descargar Datos de Plan actual*/
-                    val planDocument = document.toObject(SuscriptionObject::class.java)
+                    val planDocument = document.toObject(SuscriptionPlan::class.java)
                     Log.d("test", "Plan stored on Database: $planDocument")
                     listOfPlan.add(planDocument)
                     listOfPlanIndex.add(planDocument.id.toShort())
@@ -356,8 +354,7 @@ class F02CostumerFragment : Fragment(){
                 Log.d("test", "Error getting documents: ", e)
             }
 
-
-return null
+        return null
     }
 
 
@@ -386,7 +383,7 @@ return null
                     when (document.type){
                         //Para firestore COSTUMERS AGREGADOS
                         DocumentChange.Type.ADDED ->{
-                            val costumer = document.document.toObject(CostumerObject::class.java)
+                            val costumer = document.document.toObject(Costumer::class.java)
                             Log.d("Costumers", "Descargando: $costumer")
                             adapter.add(CostumerItemAdapter(costumer))  /*cargando datos a los items del adaptador personalizado*/
                             costumerList.add(costumer)                  /*cargando listado de números de medidor*/
@@ -397,7 +394,7 @@ return null
                             val costumerChangedUid = document.document.id /* numero del medidor en el firestore */
                             Log.d("Costumers", "Modificado el costumer: $costumerChangedUid")
 
-                            val costumerObject = document.document.toObject(CostumerObject::class.java)
+                            val costumerObject = document.document.toObject(Costumer::class.java)
                             adapter.removeGroupAtAdapterPosition(document.oldIndex)
                             adapter.add(document.oldIndex,CostumerItemAdapter(costumerObject))
                             adapter.notifyDataSetChanged()                   /*actualizando datos a los items del adaptador personalizado*/

@@ -79,12 +79,12 @@ class A04SearchActivity : AppCompatActivity() {
                     when (document.type){
                         DocumentChange.Type.ADDED ->{
                             /* costumer agregado */
-                            val costumerObject = document.document.toObject(CostumerObject::class.java)
+                            val costumerObject = document.document.toObject(Costumer::class.java)
                             Log.d("Search", "Descargando: $costumerObject")
                             adapter.add(CostumerItemAdapter(costumerObject))    /* cargando datos a los items del adaptador personalizado */
                         }
                         DocumentChange.Type.MODIFIED ->{
-                            val costumerObject = document.document.toObject(CostumerObject::class.java)
+                            val costumerObject = document.document.toObject(Costumer::class.java)
                             Log.d("Search", "Update: $costumerObject on ${document.oldIndex}")
                             adapter.removeGroupAtAdapterPosition(document.oldIndex)
                             adapter.add(document.oldIndex,CostumerItemAdapter(costumerObject))
@@ -126,12 +126,12 @@ class A04SearchActivity : AppCompatActivity() {
                 for (document in result!!.documentChanges) {
                     when (document.type){
                         DocumentChange.Type.ADDED ->{
-                            val consumptionObject = document.document.toObject(ConsumptionObject::class.java)
+                            val consumptionObject = document.document.toObject(Consumption::class.java)
                             adapter.add(ConsumptionItemAdapter(consumptionObject,true))  /* IMPORTANTE : cargando datos a los items del adaptador personalizado */
                         }
                         DocumentChange.Type.MODIFIED    ->{
                             Log.d("Consumption", "Indice del modificado : ${document.oldIndex}")
-                            val consumptionObject = document.document.toObject(ConsumptionObject::class.java)
+                            val consumptionObject = document.document.toObject(Consumption::class.java)
                             adapter.removeGroupAtAdapterPosition(document.oldIndex)
                             adapter.add(document.oldIndex,ConsumptionItemAdapter(consumptionObject,true))
                             adapter.notifyItemChanged(document.oldIndex)/*actualizando datos a los items del adaptador personalizado*/
@@ -240,7 +240,7 @@ class A04SearchActivity : AppCompatActivity() {
         }/* fin boton borrar */
     }
     //F12 Update consumo
-    private fun updateConsumption(consumption: ConsumptionObject, payCheckBoxStatus:Boolean, mDialogView: View){
+    private fun updateConsumption(consumption: Consumption, payCheckBoxStatus:Boolean, mDialogView: View){
         val refSubCollection   = FirebaseFirestore.getInstance()
             .collection("userApr")
             .document(consumption.uidApr)
@@ -299,7 +299,7 @@ class A04SearchActivity : AppCompatActivity() {
     }
 
     //F13 Borrar consumo
-    private fun deleteConsumption(consumption: ConsumptionObject){
+    private fun deleteConsumption(consumption: Consumption){
 
         val refSubCollection   = FirebaseFirestore.getInstance()
             .collection("userApr")

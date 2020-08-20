@@ -34,10 +34,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="top"
-                app:buttonGravity="top|bottom"
                 android:minHeight="50dp"
                 android:theme="?attr/actionBarTheme"
-                app:menu="@menu/menu_toolbar_mainactivity">
+                app:buttonGravity="top|bottom"
+                app:titleMarginEnd="4dp">
 
                 <include
                     layout="@layout/section_toolbar_main"

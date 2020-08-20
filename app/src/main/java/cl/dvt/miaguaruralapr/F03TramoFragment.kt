@@ -63,13 +63,13 @@ class F03TramoFragment : Fragment() {
                     when (document.type){
                         DocumentChange.Type.ADDED ->{
                             Log.d("Tramo", "Indice del tramo : ${document.newIndex}")
-                            val tramo = document.document.toObject(TramoObject::class.java)
+                            val tramo = document.document.toObject(Tramo::class.java)
                             adapter.add(document.newIndex,TramoItemAdapter(tramo)) /* IMPORTANTE : cargando datos a los items del adaptador personalizado */
                             adapter.notifyDataSetChanged()
                         }
                         DocumentChange.Type.MODIFIED    ->{
                             /* https://stackoverflow.com/questions/50754912/firebase-firestore-document-changes */
-                            val tramo = document.document.toObject(TramoObject::class.java)
+                            val tramo = document.document.toObject(Tramo::class.java)
                             adapter.removeGroupAtAdapterPosition(document.oldIndex)
                             adapter.add(document.oldIndex,TramoItemAdapter(tramo))
                             adapter.notifyItemChanged(document.oldIndex)     /*actualizando datos a los items del adaptador personalizado*/
@@ -97,7 +97,7 @@ class F03TramoFragment : Fragment() {
 
     }
 
-    private fun updateTramoDialog(tramo: TramoObject, context: Context,adapter: GroupAdapter<GroupieViewHolder>?) {
+    private fun updateTramoDialog(tramo: Tramo, context: Context, adapter: GroupAdapter<GroupieViewHolder>?) {
         //abriendo diálogo
         val mDialogview = LayoutInflater.from(context).inflate(R.layout.section_op_tramo,null)
         val mBuilder = AlertDialog.Builder(context).setView(mDialogview)
@@ -129,27 +129,27 @@ class F03TramoFragment : Fragment() {
         }
     }
 
-    private fun updateTramo(mDialogview: View,mDialogBuilder:AlertDialog,tramo: TramoObject, context: Context, adapter: GroupAdapter<GroupieViewHolder>?):Boolean {
+    private fun updateTramo(mDialogview: View, mDialogBuilder:AlertDialog, oldTramo: Tramo, context: Context, adapter: GroupAdapter<GroupieViewHolder>?):Boolean {
         //fechting editText values
-        val name  = if(mDialogview.name_editText_tramoOp.text.toString().isEmpty())   { tramo.name}   else{mDialogview.name_editText_tramoOp.text.toString()}
-        val base= if(mDialogview.base_editText_tramoOp.text.toString().isEmpty())   { tramo.consumptionBase}   else{mDialogview.base_editText_tramoOp.text.toString().toDouble()}
-        val price   = if(mDialogview.price_editText_tramoOp.text.toString().isEmpty())  { tramo.priceBase}   else{mDialogview.price_editText_tramoOp.text.toString().toInt()}
-        val description   = if(mDialogview.description_editText_tramoOp.text.toString().isEmpty())   { tramo.description}   else{mDialogview.description_editText_tramoOp.text.toString()}
+        val name  = if(mDialogview.name_editText_tramoOp.text.toString().isEmpty())   { oldTramo.name}   else{mDialogview.name_editText_tramoOp.text.toString()}
+        val base= if(mDialogview.base_editText_tramoOp.text.toString().isEmpty())   { oldTramo.consumptionBase}   else{mDialogview.base_editText_tramoOp.text.toString().toDouble()}
+        val price   = if(mDialogview.price_editText_tramoOp.text.toString().isEmpty())  { oldTramo.priceBase}   else{mDialogview.price_editText_tramoOp.text.toString().toInt()}
+        val description   = if(mDialogview.description_editText_tramoOp.text.toString().isEmpty())   { oldTramo.description}   else{mDialogview.description_editText_tramoOp.text.toString()}
 
         //buil newTramo
-        val editedTramo:TramoObject = TramoObject(
+        val newTramo:Tramo = Tramo(
             name,
             base,
             price,
             description,
-            tramo.edible,
-            tramo.uidApr,
-            tramo.uidTramo,
-            tramo.timestamp
+            oldTramo.edible,
+            oldTramo.uidApr,
+            oldTramo.uidTramo,
+            oldTramo.timestamp
                 )
 
         //create list of Tramos
-        val tramoList = arrayListOf<TramoObject>()
+        val tramoList = arrayListOf<Tramo>()
         if (adapter!=null){
             for (index in 0 until adapter.itemCount){
                 val item = adapter.getItem(index) as TramoItemAdapter
@@ -160,15 +160,15 @@ class F03TramoFragment : Fragment() {
         val tramoListSorted = tramoList.sortedBy { item -> item.consumptionBase }
 
         //index del tramo actualmente en edición
-        val index = tramoListSorted.indexOf(tramo)
-        val tramoDown:TramoObject? = tramoListSorted.elementAtOrNull(index-1)
-        val tramoUp:TramoObject? = tramoListSorted.elementAtOrNull(index+1)
+        val index = tramoListSorted.indexOf(oldTramo)
+        val tramoDown:Tramo? = tramoListSorted.elementAtOrNull(index-1)
+        val tramoUp:Tramo? = tramoListSorted.elementAtOrNull(index+1)
 
         //checking limits Range values
 
             //base limits range
         val baseRange = Pair(tramoDown?.consumptionBase?:0.0, tramoUp?.consumptionBase?:100.0)
-        if(editedTramo.consumptionBase in baseRange.first..baseRange.second){
+        if(newTramo.consumptionBase in baseRange.first..baseRange.second){
             //TODO:continuar
         }else{
             mDialogview.base_editText_tramoOp.error = "sólo rango de ${baseRange.first} a ${baseRange.second} m³"
@@ -178,7 +178,7 @@ class F03TramoFragment : Fragment() {
 
             //pricing limits Range values
         val priceRange = Pair(tramoDown?.priceBase?:0, tramoUp?.priceBase?:5000)
-        if(editedTramo.priceBase in priceRange.first..priceRange.second){
+        if(newTramo.priceBase in priceRange.first..priceRange.second){
             //TODO:continuar
         }else{
             mDialogview.price_editText_tramoOp.error = "sólo rango de $${priceRange.first} a $${priceRange.second} clp"
@@ -206,9 +206,9 @@ class F03TramoFragment : Fragment() {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pass.text.toString())
                     .addOnSuccessListener {
                         mDialogBuilder.dismiss()
-                        if (editedTramo!=tramo){
+                        if (newTramo!=oldTramo){
                             Toast.makeText(context,"tramo actualizado",Toast.LENGTH_LONG).show()
-                            uploadEditedTramo(editedTramo)
+                            uploadEditedTramo(newTramo)
                         }else{
                             Toast.makeText(context,"sin cambios",Toast.LENGTH_LONG).show()
                         }
@@ -226,7 +226,7 @@ class F03TramoFragment : Fragment() {
 
     }
 
-    private fun uploadEditedTramo(tramo: TramoObject) {
+    private fun uploadEditedTramo(tramo: Tramo) {
 
         //update timestamp
         val tramoHashMap = hashMapOf<String,Any>(

@@ -46,7 +46,7 @@
         android:id="@+id/medidorNumber_textView_costumerActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="6dp"
+        android:elevation="8dp"
         android:text="1001"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -103,7 +103,8 @@
                             android:ems="10"
                             android:hint="nombre cliente"
                             android:inputType="textPersonName"
-                            android:textSize="12sp" />
+                            android:textColorHint="@color/purpleMedium"
+                            android:textSize="14sp" />
                     </TableRow>
 
                     <TableRow
@@ -119,7 +120,8 @@
                             android:ems="10"
                             android:hint="e-mail"
                             android:inputType="textEmailAddress"
-                            android:textSize="12sp" />
+                            android:textColorHint="@color/purpleMedium"
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/phone_editText_costumerActivity"
@@ -131,7 +133,8 @@
                             android:ems="10"
                             android:hint="teléfono"
                             android:inputType="phone"
-                            android:textSize="12sp" />
+                            android:textColorHint="@color/purpleMedium"
+                            android:textSize="14sp" />
 
                     </TableRow>
 
@@ -149,7 +152,8 @@
                             android:ems="10"
                             android:hint="dirección"
                             android:inputType="textPersonName"
-                            android:textSize="12sp" />
+                            android:textColorHint="@color/purpleMedium"
+                            android:textSize="14sp" />
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
                             android:id="@+id/update_floatingButton_costumerActivity"
@@ -232,7 +236,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardConsumptionChart"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
+                android:layout_height="170dp"
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="@color/grayUltraLight"
                 app:cardCornerRadius="16dp"
@@ -269,6 +273,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardConsumptionChart"
                 app:reverseLayout="true"
                 app:stackFromEnd="true" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/addConsumption_button_costumerActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@android:color/holo_orange_dark"
+                android:clickable="true"
+                app:fabSize="mini"
+                app:layout_constraintBottom_toBottomOf="@+id/cardConsumptionChart"
+                app:layout_constraintEnd_toEndOf="@+id/cardConsumptionChart"
+                app:srcCompat="@drawable/ic_ico_clock_24dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import cl.dvt.miaguaruralapr.MainActivity.Companion.block_key
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder
@@ -29,17 +30,20 @@ import kotlin.math.roundToInt
 class A05Costumer : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
-        val costumer = intent.getParcelableExtra<CostumerObject>(F02CostumerFragment.COSTUMER_KEY)
-        fetchCostumer(costumer)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_a05_costumer)
-        /* Recibir intent */
-        val costumer = intent.getParcelableExtra<CostumerObject>(F02CostumerFragment.COSTUMER_KEY)
 
+        // Recibir intent con costumer
+        val costumer = intent.getParcelableExtra<Costumer>(F02CostumerFragment.COSTUMER_KEY)
+
+        // Fecht ALL consumption on costumer subCollection
         fetchConsumption(costumer)
+        // Fetch costumer on EVERYCHANGE
+        fetchCostumer(costumer)
 
         update_floatingButton_costumerActivity.setOnClickListener {
             updateCostumer(costumer)
@@ -51,9 +55,7 @@ class A05Costumer : AppCompatActivity() {
         }
     }
 
-
-    var debtOnCloud = 0.0
-    private fun fetchCostumer(costumer: CostumerObject){
+    private fun fetchCostumer(costumer: Costumer){
 
         val ref = FirebaseFirestore.getInstance()
             .collection("userApr")
@@ -69,58 +71,69 @@ class A05Costumer : AppCompatActivity() {
                 val source = if (document != null && document.metadata.hasPendingWrites()){"Local"}else{"Server"}
 
                 if (document != null && document.exists()) {
-                    val costumer = document.toObject(CostumerObject::class.java)
+                    val costumer = document.toObject(Costumer::class.java)
                     Log.d("costumerActivity", "$source data: $costumer")
-                    /* formatos */
-                    val formatCurrency      = DecimalFormat("$ #,###")
-                    /* cargando datos no editables */
-                    medidorNumber_textView_costumerActivity.text = costumer?.medidorNumber.toString()
-                    debt_textView_costumerActivity.text = formatCurrency.format(costumer?.userCostumerDebt)
-                    debtOnCloud = costumer?.userCostumerDebt?.toDouble() ?: 0.0
-
-                    /* cargando datos  editables */
-                    name_editText_consumptionActivity.setText(costumer?.userCostumerName)
-                    email_editText_costumerActivity.setText(costumer?.userCostumerEmail)
-                    phone_editText_costumerActivity.setText(costumer?.userCostumerPhone)
-                    dir_editText_costumerActivity.setText(costumer?.userCostumerDir)
-
+                    loadingData(costumer)
 
                 } else {
                     Log.d("costumerActivity", "$source data: null")
                 }
-
             }
+    }
+
+    private fun loadingData(costumer:Costumer?){
+        // formatos
+        val format      = DecimalFormat("$ #,###")
+        // cargando datos inmutables */
+        medidorNumber_textView_costumerActivity.text = costumer?.medidorNumber.toString()
+        debt_textView_costumerActivity.text = format.format(costumer?.userCostumerDebt)
+
+        // cargando datos  editables */
+        this.name_editText_consumptionActivity.hint = costumer?.userCostumerName
+        email_editText_costumerActivity.hint = costumer?.userCostumerEmail
+        phone_editText_costumerActivity.hint = costumer?.userCostumerPhone
+        dir_editText_costumerActivity.hint = costumer?.userCostumerDir
 
     }
 
-    private fun updateCostumer(costumer: CostumerObject){
+    private fun updateCostumer(costumer: Costumer){
+        //costumer reference
         val ref = FirebaseFirestore.getInstance()
             .collection("userApr")
             .document(costumer.uidApr)
             .collection("userCostumer")
             .document(costumer.medidorNumber.toString())
 
-        /* get values to update */
-        val userCostumerName    = name_editText_consumptionActivity.text.toString()
-        val userCostumerEmail   = email_editText_costumerActivity.text.toString()
-        val userCostumerPhone   = phone_editText_costumerActivity.text.toString()
-        val userCostumerDir     = dir_editText_costumerActivity.text.toString()
-
-        /*making hashMap of*/
-        val updateValues = hashMapOf(
-            "userCostumerName" to userCostumerName,
-            "userCostumerEmail" to userCostumerEmail,
-            "userCostumerPhone" to userCostumerPhone,
-            "userCostumerDir" to userCostumerDir
+        //making hashMap of inputs editText/
+        val mapInputs = mapOf<String,EditText>(
+            "userCostumerName" to name_editText_consumptionActivity,
+            "userCostumerEmail" to email_editText_costumerActivity,
+            "userCostumerPhone" to phone_editText_costumerActivity,
+            "userCostumerDir" to dir_editText_costumerActivity
         )
 
+        //Fetch result of input analysis
+        val result = inputResult(mapInputs)
+
         /* checking input data */
-        if(checkInput(updateValues)){
-            /*update information on cloud*/
-           ref.set(updateValues, SetOptions.merge())
+        if(result.first){
+            //update information on cloud*/
+           ref.set(result.second, SetOptions.merge())
                .addOnSuccessListener {
-                   Log.d("updateCostumer", "DocumentSnapshot successfully written!")
+                   Log.d("updateCostumer", "costumer: ${costumer.medidorNumber} update info: ${result.second}")
                    updateStatus_textView_costumerActivity.visibility = View.VISIBLE
+
+                   //changing update button
+                   update_floatingButton_costumerActivity
+                       .setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_done_24))
+                   update_floatingButton_costumerActivity
+                       .setBackgroundColor(resources.getColor(R.color.greenSpring))
+
+                   //changing focus
+                   for(item in mapInputs){
+                       item.value.clearFocus()
+                   }
+
                }
                .addOnFailureListener {
                        e -> Log.w("updateCostumer", "Error writing document", e)
@@ -128,48 +141,74 @@ class A05Costumer : AppCompatActivity() {
         }else{
             return
         }
-
     }
 
-    private fun checkInput(updateValues:HashMap<String,String>):Boolean{
-        if (updateValues["userCostumerName"]?.length!! < 5){
-            name_editText_consumptionActivity.error = "corto"
-            name_editText_consumptionActivity.requestFocus()
-            return false
-        }
-        if(updateValues["userCostumerEmail"]!!.isNotEmpty()){
-            if(!updateValues["userCostumerEmail"]!!.isEmailValid()){
-                email_editText_costumerActivity.error = "inválido"
-                email_editText_costumerActivity.requestFocus()
-                return false
+    private fun inputResult(map:Map<String,EditText>):Pair<Boolean,Map<String,String>>{
+
+        //Pair in case of SUCCESS
+            /*map without empty editTexts*/
+        val mapEditText = mutableMapOf<String,EditText>()
+            /*map with just string*/
+        val mapString = mutableMapOf<String,String>()
+
+        for(item in map){
+            if(item.value.text.toString().isNotBlank()){
+                mapEditText[item.key] = item.value
+                mapString[item.key] = item.value.text.toString()
             }
         }
-        if (updateValues["userCostumerPhone"]!!.isNotEmpty()){
-            when (updateValues["userCostumerPhone"]?.length!!){
+        val success = Pair(true, mapString.toMap())
+
+        //Pair in case of FAILURE
+        val failure = Pair(false, mapOf("" to ""))
+
+        if(mapEditText.isEmpty()){
+            return failure
+        }
+
+        if(mapEditText.containsKey("userCostumerName")){
+            val it = mapEditText["userCostumerName"]
+            if (it?.text.toString().length < 5){
+                it?.error = "nombre muy corto"
+                it?.requestFocus()
+                return failure
+            }
+        }
+        if(mapEditText.containsKey("userCostumerEmail")){
+            val it = mapEditText["userCostumerEmail"]
+            if(!it?.text.toString().isEmailValid()){
+                it?.error = "inválido"
+                it?.requestFocus()
+                return failure
+            }
+        }
+        if (mapEditText.containsKey("userCostumerPhone")){
+            val it = mapEditText["userCostumerPhone"]
+            when (it?.text.toString().length){
                 12-> {
-                    return true
+                    return success
                 }
                 9 -> {
-                    phone_editText_costumerActivity.error = "incluya el +56"
-                    phone_editText_costumerActivity.requestFocus()
-                    return false
+                    it?.error = "incluya el +56"
+                    it?.requestFocus()
+                    return failure
                 }
                 8-> {
-                    phone_editText_costumerActivity.error = "incluya el +569"
-                    phone_editText_costumerActivity.requestFocus()
-                    return false
+                    it?.error = "incluya el +569"
+                    it?.requestFocus()
+                    return failure
                 }
                 else -> {
-                    phone_editText_costumerActivity.error = "inválido"
-                    phone_editText_costumerActivity.requestFocus()
-                    return false
+                    it?.error = "inválido"
+                    it?.requestFocus()
+                    return failure
                 }
             }
         }
-        return true
+        return success
     }
 
-    private fun fetchConsumption(costumer: CostumerObject){
+    private fun fetchConsumption(costumer: Costumer){
         val adapter = GroupAdapter<GroupieViewHolder>()
         consumption_recyclerView_costumerActivity.adapter = adapter /**Cargando el ReclyclerView de esta Actividad*/
 
@@ -191,12 +230,12 @@ class A05Costumer : AppCompatActivity() {
                 for (document in result!!.documentChanges) {
                     when (document.type){
                         DocumentChange.Type.ADDED ->{
-                            val consumption = document.document.toObject(ConsumptionObject::class.java)
+                            val consumption = document.document.toObject(Consumption::class.java)
                             adapter.add(ConsumptionItemAdapter(consumption,true))  /* IMPORTANTE : cargando datos a los items del adaptador personalizado */
                         }
                         DocumentChange.Type.MODIFIED    ->{
                             Log.d("Consumption", "Indice del modificado : ${document.oldIndex}")
-                            val consumption = document.document.toObject(ConsumptionObject::class.java)
+                            val consumption = document.document.toObject(Consumption::class.java)
                             adapter.removeGroupAtAdapterPosition(document.oldIndex)
                             adapter.add(document.oldIndex,ConsumptionItemAdapter(consumption,true))
                             adapter.notifyItemChanged(document.oldIndex)/*actualizando datos a los items del adaptador personalizado*/
@@ -209,13 +248,8 @@ class A05Costumer : AppCompatActivity() {
                 }
 
                 /** Cargando estadisticas */
-                val consumptionStatictics = calculateConsumptionStatistics(adapter)
+                val consumptionStatictics = statistics(adapter)
                 consumptionOnDebt_textView_costumerActivity.text = consumptionStatictics["consumptionOnDebt"].toString()
-
-                /** actualizar deuda en caso de error de contabilidad */
-                if(debtOnCloud != consumptionStatictics["totalDebt"]?.toDouble()){
-                    //updateCostumerDebt(consumptionStatictics["totalDebt"],costumer)
-                }
 
                 /** cargar chart */
                 buildConsumptionChart(adapter)
@@ -224,31 +258,16 @@ class A05Costumer : AppCompatActivity() {
         /** click en el item del recyclerView */
         adapter.setOnItemClickListener { item, _ ->
             val consumption = item as ConsumptionItemAdapter
-            ConsumptionOperation(consumption.consumption).updateConsumptionDialog(this)
+            //ConsumptionOperation(consumption.consumption).updateConsumptionDialog(this)
+            consumption.consumption.editDialog(this)
+
         }
 
     }/* fin del fetchConsumption() */
 
-    private fun updateCostumerDebt(debt:Double?, costumer:CostumerObject){
-        val ref = FirebaseFirestore.getInstance()
-            .collection("userApr")
-            .document(costumer.uidApr)
-            .collection("userCostumer")
-            .document(costumer.medidorNumber.toString())
-        val updateValues = hashMapOf("userCostumerDebt" to debt)
-        ref.set(updateValues, SetOptions.merge())
-            .addOnSuccessListener {
-                Log.d("updateCostumer", "actualizada la deuda a :$debt!")
-                updateStatus_textView_costumerActivity.visibility = View.VISIBLE
-            }
-            .addOnFailureListener {
-                    e -> Log.w("updateCostumer", "no pude actualizar la deuda", e)
-            }
-    }
-
-    /** calcular estadisticas de consumo del consumidor*/
+    //calcular estadisticas de consumo del consumidor*/
     var consumptionAvg = 0.0
-    private fun calculateConsumptionStatistics(adapter:GroupAdapter<GroupieViewHolder>):HashMap<String,Double>{
+    private fun statistics(adapter:GroupAdapter<GroupieViewHolder>):HashMap<String,Double>{
         var consumptionAverage = 0.0
         var consumptionOnDebt = 0.0
         var totalDebt = 0.0

@@ -108,7 +108,7 @@ class A02LoginActivity : AppCompatActivity() {
             .document(uidApr)
         ref.get()
             .addOnSuccessListener {documentSnapshot  ->
-                currentApr = documentSnapshot.toObject(AprObject::class.java)
+                currentApr = documentSnapshot.toObject(AprUser::class.java)
                 Log.d("CurrentUser", "User Data: $currentApr")
                 //Iniciar Main screen
                 val intent = Intent(this, MainActivity::class.java)

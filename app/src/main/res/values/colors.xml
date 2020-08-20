@@ -13,4 +13,5 @@
     <color name="whiteAlpha10">#1AFFFFFF</color>
     <color name="blackAlpha50">#4D000000</color>
     <color name="blackAlpha80">#80000000</color>
+    <color name="greenSpring">#8BC34A</color>
 </resources>

@@ -10,17 +10,17 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class A01SplashActivity : AppCompatActivity() {
     companion object{
-        var currentApr: AprObject? = null
+        var currentApr: AprUser? = null
     }
 
-    private val SPLASH_TIME_OUT:Long=3000 /** en milisegundos*/
+    private val splashTimeOut:Long=3000 /** en milisegundos*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_a01_splash)
 
         Handler().postDelayed({
             verifyUserIsLoggedIn()
-        }, SPLASH_TIME_OUT)
+        }, splashTimeOut)
 
     }
 
@@ -37,17 +37,17 @@ class A01SplashActivity : AppCompatActivity() {
         }
         else{
             //si existe uid
-            getUser(uid)
+            fetchUser(uid)
         }
     }
 
-    private fun getUser(uidApr:String){
+    private fun fetchUser(uidApr:String){
         val ref = FirebaseFirestore.getInstance()
             .collection("userApr")
             .document(uidApr)
         ref.get()
             .addOnSuccessListener {document  ->
-                currentApr = document.toObject(AprObject::class.java)
+                currentApr = document.toObject(AprUser::class.java)
                 Log.d("CurrentUser", "User Data: $currentApr")
                 startActivity(Intent(this,MainActivity::class.java)) /* cargar MainActivity */
                 finish()                                                            /* close this activity*/

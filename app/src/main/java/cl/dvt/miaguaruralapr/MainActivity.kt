@@ -7,9 +7,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.PopupMenu
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -43,15 +42,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //fech camera permissions
+        requestCameraResult = requestCameraPermission() /* permisos de cámara */
+        //fech remaining days
+        remainingDays = getRemainingDays(currentApr)
 
-
-
+        //verify current user: apr Type
         verifyUserIsLoggedIn() /* verificando usuario si no ir a login */
 
-        configureTabLayout()   /* instando pestañas */
+        //setting tab buttons
+        setTabMenu()   /* instando pestañas */
 
-        requestCameraResult = requestCameraPermission() /* permisos de cámara */
-        remainingDays = getRemainingDays(currentApr)
+        //setting menu toolbar
+        menu_Button_toolbar.setOnClickListener {
+            // res popup menu coding: https://www.youtube.com/watch?v=ncHjCsoj0Ws
+            val popupMenu = PopupMenu(this, it)
+            popupMenu.setOnMenuItemClickListener { item: MenuItem? ->
+                onMenuItemSelected(item)
+            }
+            popupMenu.inflate(R.menu.menu_toolbar_mainactivity)
+            popupMenu.show()
+
+        }
+
+
 
         search_searchView_toolbar.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -84,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     }/**fin verifyUserIsLoggedIn*/
 
     //F02. FUNCIÓN TabLayout
-    private fun configureTabLayout(){
+    private fun setTabMenu(){
         tabLayout_main.addTab(tabLayout_main.newTab().setText("Consumo").setIcon(R.drawable.ic_ico_clock_24dp))
         tabLayout_main.addTab(tabLayout_main.newTab().setText("Usuarios").setIcon(R.drawable.ic_ico_person_20dp))
         tabLayout_main.addTab(tabLayout_main.newTab().setText("Tramos").setIcon(R.drawable.ic_ico_coin_20dp))
@@ -106,23 +120,12 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    //F03. Inflate menu
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflate = menuInflater
-        inflate.inflate(R.menu.menu_toolbar_mainactivity,menu)
 
 
-        return true
-    }
-
-    //F03. Acciones en selección de items de ToolBar
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val x = item.itemId
-        Log.d("Menu", "item menu id selected : $x")
-        return when (item.itemId){
-
-            R.id.logOut_menuItem_main ->{
-                /*ir a pantalla de login*/
+    //on menu popup actions
+    private fun onMenuItemSelected(item:MenuItem?):Boolean{
+        return when (item?.itemId){
+            R.id.logOut_menuItem_main -> {
                 Toast.makeText(this, "login out",Toast.LENGTH_SHORT).show()
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(this, A02LoginActivity::class.java)
@@ -130,14 +133,11 @@ class MainActivity : AppCompatActivity() {
                 this.startActivity(intent)
                 true
             }
-            R.id.cancel_menuItem_main ->{
-                Toast.makeText(this,"cancelado",Toast.LENGTH_LONG).show()
-                true
-            }
-            else-> {
-                super.onOptionsItemSelected(item)
+            else -> {
+                false
             }
         }
+
     }
 
     //F04 Permisos de cámara
@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity() {
 
 
     //Calculate Remaining Days for operation
-    private fun getRemainingDays(apr:AprObject?):Short{
+    private fun getRemainingDays(apr:AprUser?):Short{
         return when (apr?.planId){
             30      ->  {
                 30 /* id 30: plan gratuito inicial */

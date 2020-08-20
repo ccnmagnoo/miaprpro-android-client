@@ -167,7 +167,7 @@ class A03RegisterActivity : AppCompatActivity() {
         val userStatus      = true     /* true: activo */
 
         //F.05.03 Cargando object UserApr
-        val userAprData = AprObject(
+        val userAprData = AprUser(
                 uid,
                 email,
                 razonSocial,
@@ -191,8 +191,6 @@ class A03RegisterActivity : AppCompatActivity() {
                 currentApr = userAprData /* creando parceleable de usuario actual*/
                 createTramo()      /* crear plan de precios del APR automático*/
 
-                //TODO: enviar a login si no ha verificado EMAIL
-
                 //arrancar actividad de login
                 val intent = Intent(this, A02LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -208,7 +206,7 @@ class A03RegisterActivity : AppCompatActivity() {
     private fun createTramo(){
         val timestamp = Calendar.getInstance().time
         val uid = FirebaseAuth.getInstance().uid?:""
-        val tramo1 =  TramoObject(
+        val tramo1 =  Tramo(
             "Tramo 1",
             0.0,
             500,
@@ -218,7 +216,7 @@ class A03RegisterActivity : AppCompatActivity() {
             UUID.randomUUID().toString(),
             timestamp
         )
-        val tramo2 =  TramoObject(
+        val tramo2 =  Tramo(
             "Tramo 2",
             16.0,
             800,
@@ -228,7 +226,7 @@ class A03RegisterActivity : AppCompatActivity() {
             UUID.randomUUID().toString(),
             timestamp
         )
-        val tramo3 =  TramoObject(
+        val tramo3 =  Tramo(
             "Tramo 3",
             31.0,
             1000,
@@ -239,7 +237,7 @@ class A03RegisterActivity : AppCompatActivity() {
             timestamp
         )
 
-        val tramoList = listOf<TramoObject>(tramo1,tramo2,tramo3)
+        val tramoList = listOf<Tramo>(tramo1,tramo2,tramo3)
 
         val ref = FirebaseFirestore.getInstance()
             .collection("userApr")

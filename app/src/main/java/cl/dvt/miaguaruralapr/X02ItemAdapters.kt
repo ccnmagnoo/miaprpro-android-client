@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.adapter_tramo.view.*
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
-class CostumerItemAdapter(val costumer: CostumerObject): Item<GroupieViewHolder>(){
+class CostumerItemAdapter(val costumer: Costumer): Item<GroupieViewHolder>(){
     @SuppressLint("SimpleDateFormat")
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int){
@@ -48,7 +48,7 @@ class CostumerItemAdapter(val costumer: CostumerObject): Item<GroupieViewHolder>
     }
 }
 
-class ConsumptionItemAdapter(val consumption: ConsumptionObject, private val consumptionFilter: Boolean): Item<GroupieViewHolder>(){
+class ConsumptionItemAdapter(val consumption: Consumption, private val consumptionFilter: Boolean): Item<GroupieViewHolder>(){
     @SuppressLint("SimpleDateFormat")
     override fun bind(viewHolder: GroupieViewHolder, position: Int){
         //cargado textView del adaptador
@@ -74,7 +74,7 @@ class ConsumptionItemAdapter(val consumption: ConsumptionObject, private val con
             /* Modificación del estado de pago de consumo */
 
             view.payStatus_checkbox_ConsumptionAdapter.setOnClickListener {
-                ConsumptionOperation(consumption).updateConsumptionPayment(it.payStatus_checkbox_ConsumptionAdapter)
+                consumption.paymentUpdate(it.payStatus_checkbox_ConsumptionAdapter)
             }//fin del onClick
         }
 
@@ -117,7 +117,7 @@ class ConsumptionDetailAdapter(private val consumptionDetail:Map<String,Double>)
     }
 }
 
-class TramoItemAdapter(val tramo:TramoObject): Item<GroupieViewHolder>(){
+class TramoItemAdapter(val tramo:Tramo): Item<GroupieViewHolder>(){
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.consumptionBase_textView_tramoAdapter.text = tramo.consumptionBase.toString()
         viewHolder.itemView.price_textView_tramoAdapter.text = tramo.priceBase.toString()
