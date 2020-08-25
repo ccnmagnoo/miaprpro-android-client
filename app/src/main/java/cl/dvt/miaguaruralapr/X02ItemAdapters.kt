@@ -74,7 +74,7 @@ class ConsumptionItemAdapter(val consumption: Consumption, private val consumpti
             /* Modificación del estado de pago de consumo */
 
             view.payStatus_checkbox_ConsumptionAdapter.setOnClickListener {
-                consumption.paymentUpdate(it.payStatus_checkbox_ConsumptionAdapter)
+                consumption.update(it.payStatus_checkbox_ConsumptionAdapter)
             }//fin del onClick
         }
 

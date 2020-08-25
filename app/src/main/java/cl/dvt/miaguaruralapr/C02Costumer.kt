@@ -13,12 +13,20 @@ data class Costumer(
     val userCostumerPhone:String    = "",
     val userCostumerDir:String      = "",
     val userCostumerRut:String?     = "",
-    val medidorLocation: Map<String,Double>? = mapOf("" to 0.0 ,"" to 0.0),
+    val medidorLocation: Map<String,Double>? = mapOf(),
     val medidorNumber:Int           = 0,
     val medidorSerial:String?       = "",
     val dateMedidorRegister: Date = Date(),
-    val typeUser:Int                = -1,/**tipo de usuario  administrador=1, apr=2, costumer=3*/
-    val userStatus:Int              = -1,/**1 activo 0 inactivo*/
-    val userCostumerDebt:Double     = 0.0,/** deuda actual del consumidor */
+    val typeUser:Int                = -1,   /**tipo de usuario  administrador=1, apr=2, costumer=3*/
+    val userStatus:Int              = -1,   /**1 activo 0 inactivo*/
+    val userCostumerDebt:Double     = 0.0,  /** deuda actual del consumidor */
     val userCostumerLastPayDate: Date = Date() /** fecha del último pago */
-): Parcelable
+): Parcelable{
+    /** Main functions */
+
+    /** Dialogs */
+
+    /** Secondary functions */
+
+
+}

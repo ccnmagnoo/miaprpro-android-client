@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
+import cl.dvt.miaguaruralapr.MainActivity.Companion.remainingDays
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
@@ -24,6 +26,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.section_add_consumption.view.*
+import kotlinx.android.synthetic.main.section_add_consumption_alert.view.*
 import kotlinx.android.synthetic.main.section_op_consumption.view.*
 import kotlinx.android.synthetic.main.section_op_consumption_alert01yes.view.*
 import java.text.DecimalFormat
@@ -39,8 +42,8 @@ data class Consumption(
     val uidApr: String              ="",
     val uuidConsumption:String      ="",/** Identificador único de consumo de agua*/
     val medidorNumber: Int          =0,
-    val dateLectureNew: Date = Date(),
-    val dateLectureOld: Date = Date(),
+    val dateLectureNew: Date        = Date(),
+    val dateLectureOld: Date        = Date(),
     val logLectureNew:Double        = 0.0,/** lectura anterior */
     val logLectureOld:Double        = 0.0,/** lectura actual */
     val consumptionCurrent:Double   = 0.0,/** total consumo m3 */
@@ -54,7 +57,7 @@ data class Consumption(
     /** Firebase operations */
 
     //cargar nuevo consumo a Firebase
-    internal fun upload(dialog: AlertDialog, context: Context){
+    private fun upload(context: Context,dialog:AlertDialog){
         /** instando base de datos firebase*/
         /** guardar objeto en 2 partes distintas, collecciòn particular del cliente
          * para la app cliente y un main collection para efectos de app administrador*/
@@ -72,7 +75,7 @@ data class Consumption(
 
         refSubCollection.set(this)
             .addOnSuccessListener {
-                Log.d("Consumption", "guardado en sub-coleccion del cliente")
+                Log.d("Consumption", "uploaded:$this")
                 //arrancar actividad de login
                 Toast.makeText(context, "new consumption Costumer: ${this.medidorNumber} volumen: ${this.consumptionCurrent} m3", Toast.LENGTH_SHORT ).show()
                 dialog.dismiss()
@@ -80,7 +83,9 @@ data class Consumption(
             .addOnFailureListener {
                 Log.d("Consumption", "fallo almacenamiento en Firestore")
                 Toast.makeText(context, "Error en guardar cliente ${this.medidorNumber} ", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
             }
+
 
         /*--CLOUD FUNCTION: incrementa deuda del consumidor*/
         /*--CLOUD FUNCTION: incrementa estadística global de UserAPR*/
@@ -118,7 +123,7 @@ data class Consumption(
     }
 
     //actualizar estado de pago
-    internal fun paymentUpdate(payCheckBox: CheckBox){
+    internal fun update(payCheckBox: CheckBox){
 
         /* botón actualización de estado de pago */
         if (payCheckBox.isChecked){
@@ -234,7 +239,7 @@ data class Consumption(
             checkBox.isClickable = true
             /** Boton cambio de estado de pago*/
             dialog.payStatus_checkbox_opConsumption.setOnClickListener {
-                this.paymentUpdate(checkBox)
+                this.update(checkBox)
             }
         }
         /** botón borrar (sólo si es el último registro de la serie) */
@@ -292,50 +297,67 @@ data class Consumption(
     }
 
     //DIALOG create consumption
-    fun createDialog(context: Context,imageUri: Uri?){
+    fun initDialog(context: Context,costumer: Costumer?,imageUri: Uri?){
+        if(remainingDays >=0){
+            //onSuccess start creating consumption
+            createDialog(context,costumer,imageUri)
+
+        }else{
+            //onFailure: no remaining days
+            overlimitDialog(context, remainingDays)
+        }
+
+    }
+
+    private fun createDialog(context: Context,costumer:Costumer?,imageUri: Uri?){
 
         /** para fragments context= requireActivity()
          * para activities context= this */
 
-        //Cargando cuadro de diálogo de carga
-        val view         = LayoutInflater.from(context).inflate(R.layout.section_add_consumption, null) /** Instando dialogView */
-        val builder = AlertDialog.Builder(context) /** Inflado del cuadro de dialogo */
+        //Inflating create Dialog
+        val view= LayoutInflater.from(context).inflate(R.layout.section_add_consumption, null)
+        val builder = AlertDialog.Builder(context)
                 .setView(view)
                 .setTitle("nueva lectura")
-        val  dialog = builder.show()/** show dialog */
+        val  dialog = builder.show()
 
-        //Setting data de fecha y timestamp
+        //Shows current date
         val today  = Calendar.getInstance().time
         val format   = SimpleDateFormat("EEE dd 'de' MMM 'de' yyyy 'a las' h:mm aaa")
         val todayString= format.format(today)
         view.currentDate_textView_consumption.text = todayString
 
-        //CAMERA button
+        //Load costumer data if it's not NULL
+        costumer?.let {
+            view.number_autoTextView_consumption.setText(it.medidorNumber.toString())
+            view.number_autoTextView_consumption.isFocusable = false
+        }
+
+        //Erase image button
         view.photo_button_consumption?.setOnClickListener{
-            F01ConsumptionFragment().openCamera()
             dialog.dismiss()
         }
 
-        //si el Uri es no es nulo: set imageView
-        if(imageUri != null){
+        //Create bitmap and set main imageView
+        imageUri?.let{
             /*http://androidtrainningcenter.blogspot.com/2012/05/bitmap-operations-like-re-sizing.html*/
-
+            //Create bitmap from Uri rotate
             val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver,imageUri)
             val matrix = Matrix()
             matrix.postRotate(90f)  /* Rotate the Bitmap thanks to a rotated matrix. This seems to work */
-            val bitmapOutput        = Bitmap.createBitmap(bitmap!!,0, 0, bitmap!!.width, bitmap!!.height, matrix, true)
-            val outputStream = context.contentResolver.openOutputStream(imageUri!!)
-            bitmapOutput.compress(Bitmap.CompressFormat.JPEG, 10, outputStream)
-            Log.d("Picture", "P02 imageUri dirección : ${imageUri.toString()}")
+            val bitmapR        = Bitmap.createBitmap(bitmap,0, 0, bitmap.width, bitmap.height, matrix, true)
+
+            //Compress bitmap and compress Image Uri on memory
+            val outputStream = context.contentResolver.openOutputStream(imageUri)
+            bitmapR.compress(Bitmap.CompressFormat.JPEG, 10, outputStream)
+            Log.d("Picture", "P02 imageUri dirección : $imageUri")
             outputStream?.flush()
             outputStream?.close()
 
-            //val matrix = Matrix()
-            //matrix.postRotate(270f)  /* Rotate the Bitmap thanks to a rotated matrix. This seems to work */
-            //val bitmapRotated = Bitmap.createBitmap(bitmap!!,0, 0, bitmap!!.width, bitmap!!.height, matrix, true)
-            view.photo_button_consumption.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_ico_refresh))
+            //set imageView
+            view.photo_button_consumption.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_delete_black_24dp))
             view.photo_button_consumption.alpha = 0.5f
-            view.photo_imageView_consumption.setImageBitmap(bitmapOutput)
+            view.photo_imageView_consumption.setImageBitmap(bitmapR)
         }
 
         //Carga de AutoCompleteTextView y generando listado de números de clientes
@@ -343,58 +365,83 @@ data class Consumption(
 
         //SAVE button
         view.save_button_consumption.setOnClickListener {
-            val timeStamp        = System.currentTimeMillis()/1000
+
+            //Getting editText values
             val medidorNumber   = view.number_autoTextView_consumption.text.toString()
             val lecturaEntero   = view.logEntero_editText_consumption.text.toString()
             val lecturaDecimal  = if (view.logDecimal_editText_consumption.text.isNotEmpty()){
                 view.logDecimal_editText_consumption.text.toString()
-            }else{"00"} /* si la parte decimal no se llena, queda se setea en 0  */
+            }else{"00"}
 
 
             //Chequear datos ingresados
-            val checkingInputs = checkInput(view,context,lecturaEntero,medidorNumber,costumerNumberList,imageUri)
+            val result = checkInput(view,context,lecturaEntero,medidorNumber,costumerNumberList,imageUri)
 
-            if (checkingInputs){
+            if (result){
                 /*Comenzar proceso de carga a firebase*/
-                assembly(context, lecturaEntero,lecturaDecimal,medidorNumber,today,timeStamp,imageUri!!)
+                building(context, lecturaEntero,lecturaDecimal,medidorNumber,imageUri!!)
                 dialog.dismiss()
             }else{
                 return@setOnClickListener //retorna al listener sin cerrar el diálogo
             }
-            //bitmap = null /** borrar el bitmap */
         }
+
         //CANCEL button
         view.cancel_button_consumption.setOnClickListener {
             dialog.dismiss()
-            //bitmap = null
         }
     }
 
-    /**Funciones de cálculo */
+    private fun overlimitDialog(context: Context, days:Short){
+        //Inflate dialog
+        val view = LayoutInflater.from(context).inflate(R.layout.section_add_consumption_alert, null) /** Instando dialogView */
+        val builder = AlertDialog.Builder(context)
+                .setView(view)
+                .setTitle("fecha límite")
+                .setNegativeButton("no gracias\t|", null)
+                .setPositiveButton("comprar", null)
+        builder.show()/* show dialog */
+
+        //Setting text
+        val formatDate        = SimpleDateFormat("EEEE dd 'de' MMMM 'de' yyyy")
+        val formatedDate    = "fecha límite: ${formatDate.format(A01SplashActivity.currentApr!!.dateLimitBuy)}"
+        view.dateLimit_textView_consumptionAlert.text = formatedDate
+        view.daysDeuda_textView_consumptionAlert.text = "${days*-1} días"
+    }
+
+    /**Funciones axiliares */
 
     //generador de listado de medidores y autoCompleteView
     private fun costumerList(view:View, context: Context):List<Short>{
         /* https://tutorialwing.com/android-multiautocompletetextview-using-kotlin-with-example/ */
         /* https://stackoverflow.com/questions/46003242/multiautocompletetextview-not-showing-dropdown-in-alertdialog */
 
-        val costumerNumberList:ArrayList<Short> = arrayListOf()
-        for (element in F02CostumerFragment.costumerList){ costumerNumberList.add(element.medidorNumber.toShort()) } /** Cargando Array List */
-        Log.d("Consumption", "Array Medidores: $costumerNumberList")
-        val adapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line,costumerNumberList)
-        view.number_autoTextView_consumption.setAdapter(adapter)
-        view.number_autoTextView_consumption.threshold=1 /* minimo de caracteres para comenzar con el autocomplete */
-        view.number_autoTextView_consumption.requestFocus()
-        return costumerNumberList.toList()
+        //List of costumers numbers
+        val list:ArrayList<Short> = arrayListOf()
+        for (costumer in F02CostumerFragment.costumerList) {
+            list.add(costumer.medidorNumber.toShort())
+        }
+
+        //Deploy list inflate
+        Log.d("Consumption", "Array Medidores: $list")
+        val adapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line,list)
+
+        //Autocomplete textView
+        val input = view.number_autoTextView_consumption
+        input.setAdapter(adapter)
+        input.threshold=1 /* minimo de caracteres para comenzar con el autocomplete */
+        input.requestFocus()
+        return list.toList()
     }
 
     //chequeo de los valores de entrada diálogo
     private fun checkInput(view: View, context:Context, lecturaEntero:String, medidorNumber:String, costumerNumberList:List<Short>,imageUri: Uri?):Boolean{
-        while (lecturaEntero.isEmpty()){
+        while (lecturaEntero.isBlank()){
             Toast.makeText(context,"ERROR: lectura vacía", Toast.LENGTH_SHORT).show()
             view.logEntero_editText_consumption.error = "vacio"
             return false
         }
-        while (medidorNumber.isEmpty()){
+        while (medidorNumber.isBlank()){
             Toast.makeText(context,"ERROR: medidor vacío", Toast.LENGTH_SHORT).show()
             view.number_autoTextView_consumption.error = "vacio"
             return false}
@@ -406,31 +453,31 @@ data class Consumption(
         imageUri?:run{
             return false
         }
-        while (lecturaEntero.toInt()>99999){
+        while (lecturaEntero.toInt()>9999){
             Toast.makeText(context,"Revise lectura", Toast.LENGTH_SHORT).show()
             view.logEntero_editText_consumption.error = "número grande"
             return false
         }
-
         return true
     }
 
-    //Ensamblado de objeto consumo
-    private fun assembly(context:Context,lecturaEntero:String, lecturaDecimal:String, medidorNumber:String, currentDate:Date, timeStamp:Long,imageUri: Uri){
-        //F01.02. Cargando cuadro de diálogo de carga*/
-        val mDialogLoadingView = LayoutInflater.from(context).inflate(R.layout.section_add_consumption_loading, null) /* Instando dialogo "cargando" */
-        val mBuilderLoading = AlertDialog.Builder(context).setView(mDialogLoadingView)   /* Inflado del cuadro de dialogo "cargando" */
-        val mAlertDialogLoading = mBuilderLoading.show() /* show dialog "cargando" */
 
-        //F02.B.0 Instando firebase*/
-        val uidApr          = A01SplashActivity.currentApr!!.uidApr
-        val uuidConsumption = UUID.randomUUID().toString()/** identificador único de consumo*/
-        /*F02.B.1 Ensamblando variables actuales y fetch de última lectura*/
+
+    //Ensamblado de objeto consumo
+    private fun building(context:Context, lecturaEntero:String, lecturaDecimal:String, medidorNumber:String, imageUri: Uri){
+        //build uploading dialog
+        val dialog = Tools().dialogUploading(context)
+
+        //Fetching and generating identificators
+        val time    = Calendar.getInstance()
+        val uidApr     = currentApr!!.uidApr
+
+        //Joint lectures components
         val logLectureNew = ("$lecturaEntero.$lecturaDecimal").toDouble()
 
-        // fetching última lectura pasada del cliente */
-        var logLectureOld = logLectureNew
-        var dateLectureOld = currentDate
+        // Init previous consumption */
+        var logLectureOld:Double
+        var dateLectureOld: Date
 
         val refLastConsumption = FirebaseFirestore.getInstance()
             .collection("userApr")
@@ -444,14 +491,16 @@ data class Consumption(
         refLastConsumption.get()
             .addOnSuccessListener { result ->
                 if (result.documents.size!=0){
-                    val document = result.documents[0].toObject(Consumption::class.java)
-                    Log.d("lastConsumption", "documento obtenido: $document")
-                    logLectureOld = document!!.logLectureNew
-                    dateLectureOld = document.dateLectureNew
+                    val previousConsumption = result.documents.firstOrNull()?.toObject(Consumption::class.java)
+                    Log.d("lastConsumption", "documento obtenido: $previousConsumption")
+                    logLectureOld = previousConsumption?.logLectureNew?:logLectureNew
+                    dateLectureOld = previousConsumption?.dateLectureNew?:time.time
 
                 }else{
                     Log.d("lastConsumption", "documento obtenido: vacio/nulo ")
+                    return@addOnSuccessListener
                 }
+
                 /* Calculo el consumo en caso de medidor retorna a 0 */
                 val consumptionCurrent= calculateConsumption(logLectureNew,logLectureOld)
 
@@ -460,39 +509,40 @@ data class Consumption(
 
                 /**F02.B.1 Cargando IMAGEN CONSUMO a base de datos*/
                 /* nombrar archivo de imagen*/
-                val formaterDateYM          = SimpleDateFormat("yyyy.MM")
-                val formatedDateYM   = formaterDateYM.format(currentDate)
-                val formaterDateYMD         = SimpleDateFormat("yyyyMMdd")
-                val formatedDateYMD  = formaterDateYMD.format(currentDate)
+                val formatShort          = SimpleDateFormat("yyyy.MM")
+                val formatedDateYM   = formatShort.format(time.time)
+                val formatLong         = SimpleDateFormat("yyyyMMdd")
+                val formatedDateYMD  = formatLong.format(time.time)
                 val uidAprLt = uidApr.substring(startIndex = 0, endIndex = 5) /* id corto */
                 val filename = "$uidAprLt.$formatedDateYMD.$medidorNumber " /* genera un nombre largo*/
                 val refPic = FirebaseStorage.getInstance().reference.child("/lectureBackupPic/$formatedDateYM/$uidAprLt/$filename")
+
                 /* subiendo imagen y obteniendo url */
-
-
                 refPic.putFile(imageUri)
                     .addOnSuccessListener{ it ->
                         Log.d("Consumption","Se subió la foto: ${it.metadata?.path}")
                         refPic.downloadUrl.addOnSuccessListener {
-                            val consumptionPicUrl= it.toString()
+                            val url= it.toString()
                             Log.d("Consumption","Ubicación foto: $it")
+
                             val consumption = Consumption(
-                                timeStamp,
+                                time.timeInMillis/1000, /** time in seconds */
                                 uidApr,
-                                uuidConsumption,
+                                UUID.randomUUID().toString(),
                                 medidorNumber.toInt(),
-                                currentDate,
+                                time.time,
                                 dateLectureOld,
                                 logLectureNew,
                                 logLectureOld,
                                 consumptionCurrent,
                                 listOf(mapOf("0" to 0.0)),  /* cálculo en cloud function */
                                 0.0,        /* cálculo en cloud function*/
-                                consumptionPicUrl,
+                                url,
                                 paymentStatus
                             )
+                            Log.d("builded","consumption:$consumption")
 
-                            consumption.upload(mAlertDialogLoading,context)
+                            consumption.upload(context,dialog)
 
                         }
                     }
@@ -506,7 +556,7 @@ data class Consumption(
         /* RES: https://cursokotlin.com/capitulo-10-listas-en-kotlin/ */
         /* RES : https://stackoverflow.com/questions/46868903/sort-data-from-a-mutablelist-in-kotlin */
 
-    }// fin assembly
+    }
 
     //Calc current volumen consumption
     private fun calculateConsumption(logLectureNew:Double, logLectureOld:Double):Double{

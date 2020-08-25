@@ -123,7 +123,7 @@
                             android:textColorHint="@color/purpleMedium"
                             android:textSize="14sp" />
 
-                        <EditText
+                        <com.santalu.maskara.widget.MaskEditText
                             android:id="@+id/phone_editText_costumerActivity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -134,7 +134,11 @@
                             android:hint="teléfono"
                             android:inputType="phone"
                             android:textColorHint="@color/purpleMedium"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            app:mask="+56 # ### ## ###"
+                            app:maskCharacter="#"
+                            app:maskStyle="normal"
+                            />
 
                     </TableRow>
 
@@ -191,9 +195,9 @@
                         android:id="@+id/consumptionOnDebt_textView_costumerActivity"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginStart="8dp"
                         android:text="50.34"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView27"
@@ -203,7 +207,7 @@
                         android:id="@+id/textView24"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="4dp"
                         android:text="m3"
                         android:textSize="10sp"
                         app:layout_constraintBottom_toBottomOf="@+id/consumptionOnDebt_textView_costumerActivity"
@@ -225,10 +229,54 @@
                         android:id="@+id/textView27"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="deuda"
-                        android:textSize="12sp"
+                        android:layout_marginStart="16dp"
+                        android:text="impago"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView29"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.6" />
+
+                    <TextView
+                        android:id="@+id/textView33"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="media"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/consumptionTotal_textView_costumerActivity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="Promedio"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView33"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.6"
+                        tools:text="25.25" />
+
+                    <TextView
+                        android:id="@+id/textView29"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="m3"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/consumptionTotal_textView_costumerActivity"
+                        app:layout_constraintStart_toEndOf="@+id/consumptionTotal_textView_costumerActivity" />
+
+                    <TextView
+                        android:id="@+id/textView31"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="deuda"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/debt_textView_costumerActivity"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -250,7 +298,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.github.mikephil.charting.charts.CombinedChart
+                    <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/consumption_chart_costumerActivity"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

@@ -23,25 +23,11 @@ data class AprUser(
     val planId:Int             = 30,/**tipo de plan suscrito 30:gratuito de prueba  o más; planes con precios*/
     val userStatus:Boolean       = false         /**1 activo 0 inactivo*/
 ): Parcelable{
-    var suscriptionPlan:SuscriptionPlan?=null
-
-    private fun fetchSuscriptionPlan():SuscriptionPlan?{
-        var suscriptionPlan:SuscriptionPlan?=null
-        val ref = FirebaseFirestore.getInstance()
-            .collection("suscriptionPlan")
-            .document(planId.toString())
-
-        ref.get().addOnSuccessListener {
-            suscriptionPlan = it.toObject(SuscriptionPlan::class.java)
-            Log.d("Suscription", "current suscription :$suscriptionPlan ")
-
-        }.addOnFailureListener {
-            Log.d("Suscription", "Error getting documents: ", it)
-        }
-        return suscriptionPlan
-    }
+    /** main functions */
 
 
+    /** dialogs */
 
+    /** auxiliar functions */
 
 }

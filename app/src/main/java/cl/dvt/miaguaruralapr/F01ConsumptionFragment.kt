@@ -49,7 +49,13 @@ class F01ConsumptionFragment : Fragment() {
 
         //agregar consumo
         addConsumption_floatingActionButton_consumo.setOnClickListener{
-            dialogIsExpired()
+            //diálogo ingreso de consumo
+            if (requestCameraResult || camPermissionBoolean){
+                //Capurar imagen camera y arrancar
+                openCamera()
+            }else{
+                Toast.makeText(requireContext(), "cámara denegada", Toast.LENGTH_SHORT).show()
+            }
         }
 
         //switch filtro mostrar all/sin_pagos
@@ -65,58 +71,23 @@ class F01ConsumptionFragment : Fragment() {
 
     }/* onViewCreated */
 
-    private fun dialogIsExpired(){
-        if(remainingDays>=0){
-
-            //diálogo ingreso de consumo
-            if (requestCameraResult || camPermissionBoolean){
-                //Capurar imagen camera y arrancar
-                openCamera()
-            }else{
-                Toast.makeText(requireContext(), "cámara denegada", Toast.LENGTH_SHORT).show()
-            }
-
-        }else{
-            //diálogo de tiempo expirado: compra más tokens
-            dialogExpiredTime(requireActivity())
-        }
-    }
 
 
-    // tiempo expirado
-    @SuppressLint("SimpleDateFormat", "SetTextI18n")
-    private fun dialogExpiredTime(context: Context){
-        /* dialogo por tiempo expirado */
-        val view = LayoutInflater.from(context).inflate(R.layout.section_add_consumption_alert, null) /** Instando dialogView */
-        val mBuilder = AlertDialog.Builder(context) /** Inflado del cuadro de diálogo */
-                .setView(view)
-                .setTitle("fecha límite")
-                .setNegativeButton("no gracias\t|", null)
-                .setPositiveButton("comprar", null)
-        mBuilder.show()/* show dialog */
-
-        //F01.04 Setting date limit y current debt
-        val formatDate        = SimpleDateFormat("EEEE dd 'de' MMMM 'de' yyyy")
-        val formatedDate    = "fecha límite: ${formatDate.format(currentApr!!.dateLimitBuy)}"
-        view.dateLimit_textView_consumptionAlert.text = formatedDate
-        view.daysDeuda_textView_consumptionAlert.text = "${remainingDays*-1} días"
-    }
-
-
-    //F04 Módulo de CÁMARA
-    private var imageUri: Uri? = null /* el para subir a firestore requiere un URI */
+    //Módulo de CÁMARA
+    private var imageUri: Uri? = null
     private val captureCODE = 1001
 
-    fun openCamera(){
+    private fun openCamera(){
         /*http://androidtrainningcenter.blogspot.com/2012/05/bitmap-operations-like-re-sizing.html*/
-        imageUri            = this.view?.context?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues())
+        val context = this.view?.context
+
+        imageUri            = context?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues())
         val cameraIntent    = Intent(MediaStore.ACTION_IMAGE_CAPTURE)  /* captura de foto */
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)    /* instando imagen */
         Log.d("Picture", "P01 imagen guardada como : ${MediaStore.EXTRA_OUTPUT}")
 
         startActivityForResult(cameraIntent, captureCODE)
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         /* called when image was captured from camera intent */
         if (resultCode == Activity.RESULT_OK){
@@ -124,7 +95,7 @@ class F01ConsumptionFragment : Fragment() {
                 Log.d("Picture", "P02 imageUri dirección : ${imageUri.toString()}")
             }catch( e1: FileNotFoundException){ e1.printStackTrace()}
             catch( e2: IOException){ e2.printStackTrace()}
-            Consumption().createDialog(requireActivity(),imageUri)
+            Consumption().initDialog(requireActivity(),null,imageUri)
         }
     }
 

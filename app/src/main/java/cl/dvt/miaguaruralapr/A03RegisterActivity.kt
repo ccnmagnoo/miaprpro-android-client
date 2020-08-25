@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.text.TextUtils
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -41,7 +40,7 @@ class A03RegisterActivity : AppCompatActivity() {
 
         autoCompleteDataCities() /*Asistencia autocompletado de Registros de ciudades*/
         toLogin_textView_register.setOnClickListener {returnLoginActivity()} /*ir a loggin */
-        register_button_register.setOnClickListener { performRegister()}    /* realizar registro */
+        register_button_register.setOnClickListener { checkInputs()}    /* realizar registro */
     }/**Fin onCreate*/
 
     //F.01 Función Cargar Array de Comuna desde Resources
@@ -60,16 +59,17 @@ class A03RegisterActivity : AppCompatActivity() {
     }
 
     //F.03 Función Registro
-    private fun performRegister(){
+    private fun checkInputs(){
 
         /*Extrayendo variables de formulario*/
         val email       = email_editText_register.text.toString()
         val emailR      = emailR_editText_register.text.toString()
         val password    = password_editText_register.text.toString()
         val passwordR   = passwordR_editText_register.text.toString()
+        val rol = rol_editText_register.text.toString()
 
-        //Filtrando errores de digitado en registro
-        val listOfInputs = arrayOf(
+        //List of editText
+        val listOfInputs = listOf(
             email_editText_register,
             emailR_editText_register,
             password_editText_register,
@@ -82,15 +82,15 @@ class A03RegisterActivity : AppCompatActivity() {
             dir_editText_register
         )
 
-        for (input in listOfInputs){
-            while (input.text.toString().isEmpty()){
-                input.error = "vacio"
-                input.requestFocus()
+        for (it in listOfInputs){
+            while (it.text.toString().isEmpty()){
+                it.error = "vacio"
+                it.requestFocus()
                 return
             }
         }
 
-        if (!email.isEmailValid()){
+        if (!Tools().isEmailValid(email)){
             email_editText_register?.error = "inválido"
             email_editText_register.requestFocus()
             return }
@@ -108,27 +108,33 @@ class A03RegisterActivity : AppCompatActivity() {
             passwordR_editText_register.requestFocus()
             return}
 
+        val rolResult = Tools().isSocialNumberValid(rol)
+        if(!rolResult.first){
+            rol_editText_register?.error = rolResult.second
+            passwordR_editText_register.requestFocus()
+        }
+
         register_button_register.text = "registrando..."
         //Llamando función F.04
-        createNewUser(email,password)
+        authentication(email,password)
     }
 
-    //F.04 Registrado USER Authentication en Firebase
-    private fun createNewUser(email:String, password:String){
+    //authenticaction new User
+    private fun authentication(email:String, password:String){
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if(!it.isSuccessful) return@addOnCompleteListener
                 Log.d("Register","Usuario registrado correctamente: ${it.result?.user?.uid}")
                 emailVerification()
-                saveUserDataOnDatabase()/*Llamando función guardar datos en base de datos*/
+                newUser()/*Llamando función guardar datos en base de datos*/
             }
             .addOnFailureListener{
                 Log.d("Register", "Fallo la creación usuario: ${it.message}")
             }
     }
 
-    //F.05 : Guardando datos de usuario en base de datos Firestore
-    private fun saveUserDataOnDatabase(){
+    //building New user APR
+    private fun newUser(){
         //F.05.01 : declarando Firestore
         val uid = FirebaseAuth.getInstance().uid?:""
         val ref = FirebaseFirestore.getInstance()
@@ -167,7 +173,7 @@ class A03RegisterActivity : AppCompatActivity() {
         val userStatus      = true     /* true: activo */
 
         //F.05.03 Cargando object UserApr
-        val userAprData = AprUser(
+        val newUser = AprUser(
                 uid,
                 email,
                 razonSocial,
@@ -185,10 +191,10 @@ class A03RegisterActivity : AppCompatActivity() {
             )
 
         //F.05.04 Conectando a Base de datos
-        ref.set(userAprData)
+        ref.set(newUser)
             .addOnSuccessListener {
                 Log.d("RegisterActivity","Guardado en Firestore $uid")
-                currentApr = userAprData /* creando parceleable de usuario actual*/
+                currentApr = newUser /* creando parceleable de usuario actual*/
                 createTramo()      /* crear plan de precios del APR automático*/
 
                 //arrancar actividad de login
@@ -334,12 +340,6 @@ class A03RegisterActivity : AppCompatActivity() {
                 getLastLocation()
             }
         }
-    }
-
-
-    //Función AUX verificar email
-    private fun String.isEmailValid(): Boolean {
-        return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
     }
 
     private fun emailVerification(){

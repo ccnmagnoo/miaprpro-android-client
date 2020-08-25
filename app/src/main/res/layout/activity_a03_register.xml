@@ -176,27 +176,35 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_ico_group_24dp"
-                    android:ems="10"
-                    android:hint="razón social"
-                    android:inputType="textPersonName" />
+                    android:ems="12"
+                    android:hint="nombre del APR"
+                    android:inputType="textPersonName"
+                    />
 
-                <EditText
+                <com.santalu.maskara.widget.MaskEditText
                     android:id="@+id/rol_editText_register"
                     style="@style/app_bar_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Rol sociedad"
-                    android:inputType="number" />
+                    android:hint="rol sociedad"
+                    app:mask="##.###.###-#"
+                    app:maskCharacter="#"
+                    app:maskStyle="normal"
+                    />
 
-                <EditText
+                <com.santalu.maskara.widget.MaskEditText
                     android:id="@+id/phone_editText_register"
                     style="@style/app_bar_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="fono contacto"
-                    android:inputType="phone" />
+                    android:inputType="phone"
+                    app:mask="+56 # ### ## ###"
+                    app:maskCharacter="#"
+                    app:maskStyle="normal"
+                    />
 
                 <TextView
                     android:id="@+id/textView4"
