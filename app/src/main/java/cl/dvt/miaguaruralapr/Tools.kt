@@ -41,7 +41,7 @@ class Tools() {
                 .replace(".","") /*removes points*/
                 .chunked(1)
             if (rolBody.contains("k").or(rolBody.contains("K"))){
-                return Pair(false,"carácter inválido")
+                return Pair(false,"rol mal escrito")
             }
 
             //Body sumatory
