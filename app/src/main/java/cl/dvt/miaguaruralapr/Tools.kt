@@ -61,7 +61,7 @@ class Tools() {
             val calcCv = if(code!=10){code.toString()}else{"K"}
 
             //comparison
-            return if(calcCv==rolCv.toUpperCase()){
+            return if(calcCv==rolCv.toUpperCase(Locale.ROOT)) {
                 Pair(true,null)
             }else{
                 Pair(false,"rol inválido")
