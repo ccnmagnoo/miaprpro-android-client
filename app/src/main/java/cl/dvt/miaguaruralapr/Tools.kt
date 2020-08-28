@@ -29,7 +29,7 @@ class Tools() {
     fun isSocialNumberValid(rol:String):Pair<Boolean,String?>{
         /** return pair value
          * pair.first: boolean response if it's valid
-         * pair.second: string with the cause of false
+         * pair.second: string with the cause of invalidation
          * */
 
         fun verification(rol:String):Pair<Boolean,String?>{
