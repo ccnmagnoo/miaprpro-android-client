@@ -131,7 +131,7 @@
                             android:drawableStart="@android:drawable/stat_sys_speakerphone"
                             android:drawableTint="@color/purpleLight"
                             android:ems="10"
-                            android:hint="teléfono"
+                            android:hint="teléfono movil"
                             android:inputType="phone"
                             android:textColorHint="@color/purpleMedium"
                             android:textSize="14sp"

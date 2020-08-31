@@ -1,9 +1,7 @@
 package cl.dvt.miaguaruralapr
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,16 +14,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
 import cl.dvt.miaguaruralapr.MainActivity.Companion.camPermissionBoolean
-import cl.dvt.miaguaruralapr.MainActivity.Companion.remainingDays
 import cl.dvt.miaguaruralapr.MainActivity.Companion.requestCameraResult
 import com.google.firebase.firestore.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_f01_consumo.*
-import kotlinx.android.synthetic.main.section_add_consumption_alert.view.*
 import java.io.FileNotFoundException
 import java.io.IOException
-import java.text.SimpleDateFormat
 
 class F01ConsumptionFragment : Fragment() {
 
@@ -44,7 +39,7 @@ class F01ConsumptionFragment : Fragment() {
         fetchConsumption()
 
         // mostrar en pantalla días remanentes
-        remainingDays_textView_consumption.text = remainingDays.toString() /* set textView de dias remanentes */
+        remainingDays_textView_consumption.text = AprUser().getRemainingDays(currentApr).toString()/* set textView de dias remanentes */
         remainingDays_textView_consumption.bringToFront()
 
         //agregar consumo
@@ -117,6 +112,7 @@ class F01ConsumptionFragment : Fragment() {
 
         ref
             .addSnapshotListener(MetadataChanges.INCLUDE) { result, e ->
+
                 if (e != null) {
                     Log.d("Consumption", "Listen failed.", e)
                     return@addSnapshotListener
@@ -152,13 +148,13 @@ class F01ConsumptionFragment : Fragment() {
 
 
 
-        ref.firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).build()/* almacenamiento de datos sin conexión*/
+        //ref.firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).build()/* almacenamiento de datos sin conexión*/
 
         /** click en el item del recyclerView */
         adapter.setOnItemClickListener {item, view ->
-            val consumption = item as ConsumptionItemAdapter
+            val consumptionItemAdapter = item as ConsumptionItemAdapter
             //ConsumptionOperation(consumptionItem.consumption).updateConsumptionDialog(requireActivity())
-            consumption.consumption.editDialog(requireActivity())
+            consumptionItemAdapter.consumption.editDialog(requireActivity())
         }
 
 

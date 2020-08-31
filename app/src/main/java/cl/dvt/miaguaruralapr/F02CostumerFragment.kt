@@ -3,6 +3,7 @@ package cl.dvt.miaguaruralapr
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -64,72 +65,58 @@ class F02CostumerFragment : Fragment(){
 
         //Add Costumer to database
         addcostumer_floatingActionButton_costumer.setOnClickListener{
-            addCostumerCheck(currentCostumerLimit.toInt())
+            initDialog(currentCostumerLimit.toInt())
         }/* add costumer*/
 
     }/* onViewCreated */
 
     //F01. Función abrir box dialogo
-    private fun addCostumerCheck(currentLimit:Int){
+    private fun initDialog(currentLimit:Int){
         /*Verify number of user*/
         Log.d("CurrentPlan", "Límite plan: $currentLimit, usados: $costumersCount")
 
-        val costumerLimit:Short? = null
-
-
         if(currentLimit>costumersCount){
-            addCostumerDialog()/*start add Costumer function*/
+            addCostumerDialog(requireActivity())/*start add Costumer function*/
         }else{
             addCostumerLimitDialog() /* number or costumer sucription reach limit*/
         }
     }
 
-    private fun addCostumerLimitDialog(){
-        /** alert limit of costumers reached*/
-        val mDialogViewA = LayoutInflater.from(requireActivity()).inflate(R.layout.section_add_costumer_alert, null)
-        val mBuilderA = AlertDialog.Builder(requireActivity())
-            .setView(mDialogViewA)
-            .setTitle("Alerta de Límite")
-            .setNegativeButton("OK", null)
-            .setPositiveButton("AUMENTAR PLAN", null)
-        mBuilderA.show()
-    }
-
-    private fun addCostumerDialog(){
+    private fun addCostumerDialog(context: Context){
         /** https://devofandroid.blogspot.com/2018/04/alertdialog-with-custom-layout-kotlin.html
          * agregar al context This "requiredContext()"
          * extraer datos de dialog: https://demonuts.com/android-custom-dialog-edittext/
          * https://code.luasoftware.com/tutorials/android/android-text-input-dialog-with-inflated-view-kotlin/ */
-        //F01.01 Inflate the dialog with custom view
+
+        //Inflate dialog
         val numberOfCostumersPlus1=costumersCount+1
-        val mDialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.section_add_costumer, null)
-        /*F01.02 AlertDialogBuilder*/
-        val mBuilder = AlertDialog.Builder(requireActivity())
+        val mDialogView = LayoutInflater.from(context).inflate(R.layout.section_add_costumer, null)
+        val mBuilder = AlertDialog.Builder(context)
             .setView(mDialogView)
             .setTitle("Ingresar nuevo cliente $numberOfCostumersPlus1 de $currentCostumerLimit ")
-            /*.setPositiveButton("Guardar", null)*/
-            /*.setNegativeButton("Cancel", null)*/
+        /*.setPositiveButton("Guardar", null)*/
+        /*.setNegativeButton("Cancel", null)*/
         val  mAlertDialog = mBuilder.show()
 
-        /*F01.03 Llamando locationServices*/
-        costumerFusedLocation = LocationServices.getFusedLocationProviderClient(requireActivity())
+        //Fetch current location
+        costumerFusedLocation = LocationServices.getFusedLocationProviderClient(context)
         var geoSwitchState    = false
 
         //F01.04 show map*/
         val mMapView = mDialogView.map_mapView_costumer
 
 
-        //F01.5 Acción de los botones de dialoxBox
-            //GPS button
+        //Action button
+        /*on location button*/
         mDialogView.location_button_costumer.setOnClickListener {
             mAlertDialog.location_button_costumer.text = getLocationValueManual()
             geoSwitchState = true
         }
-            //CANCEL button
+        //CANCEL button
         mDialogView.cancel_button_costumer.setOnClickListener {
             mAlertDialog.dismiss()
         }
-            //GUARDAR button
+        //Save button
         mDialogView.save_button_costumer.setOnClickListener{
             val userCostumerName    = mDialogView.name_editText_costumer.text.toString()
             val medidorNumber       = mDialogView.medidorNumber_editText_costumer.text.toString()
@@ -145,6 +132,17 @@ class F02CostumerFragment : Fragment(){
                 return@setOnClickListener
             }
         }
+    }
+
+    private fun addCostumerLimitDialog(){
+        /** alert limit of costumers reached*/
+        val mDialogViewA = LayoutInflater.from(requireActivity()).inflate(R.layout.section_add_costumer_alert, null)
+        val mBuilderA = AlertDialog.Builder(requireActivity())
+            .setView(mDialogViewA)
+            .setTitle("Alerta de Límite")
+            .setNegativeButton("OK", null)
+            .setPositiveButton("AUMENTAR PLAN", null)
+        mBuilderA.show()
     }
 
 
@@ -307,6 +305,7 @@ class F02CostumerFragment : Fragment(){
     }
 
     //F05. descargando límite de suscripción "planId"
+
     private fun checkRemainingCostumers(){
         val ref = FirebaseFirestore.getInstance().collection("suscriptionPlan")
         ref.document(currentApr!!.planId.toString()).get()
@@ -371,6 +370,7 @@ class F02CostumerFragment : Fragment(){
             .collection("userApr")
             .document(uidApr)
             .collection("userCostumer")
+
         ref
             .orderBy("medidorNumber", Query.Direction.ASCENDING)
             .addSnapshotListener(MetadataChanges.INCLUDE) { documents, e ->

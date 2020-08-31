@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
+import cl.dvt.miaguaruralapr.F02CostumerFragment.Companion.costumerList
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
+
     companion object{
         var QUERY_KEY:String? = "QUERY_WORD"
         var block_key:Boolean = false
@@ -34,9 +36,6 @@ class MainActivity : AppCompatActivity() {
         var requestCameraResult = false
 
         //permisos del uso del GPS
-
-        //días de operación remanentes
-        var remainingDays:Short = 0 /* RES : https://www.mkyong.com/java/java-how-to-add-days-to-current-date/ */
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         //fech camera permissions
         requestCameraResult = requestCameraPermission() /* permisos de cámara */
         //fech remaining days
-        remainingDays = getRemainingDays(currentApr)
 
         //verify current user: apr Type
         verifyUserIsLoggedIn() /* verificando usuario si no ir a login */
@@ -53,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         //setting tab buttons
         setTabMenu()   /* instando pestañas */
 
-        //setting menu toolbar
+        //Menu popup
         menu_Button_toolbar.setOnClickListener {
             // res popup menu coding: https://www.youtube.com/watch?v=ncHjCsoj0Ws
             val popupMenu = PopupMenu(this, it)
@@ -65,15 +63,34 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
-
+        //Search submit
         search_searchView_toolbar.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d("Search", "query word : $query")
-                val intent = Intent(this@MainActivity, A04SearchActivity::class.java)
-                intent.putExtra(QUERY_KEY, query)
-                startActivity(intent)
+
+                //there's a costumer with this search number?
+                val finder = costumerList.any { costumer -> costumer.medidorNumber.toString() == query  }
+
+                if(finder){
+                    //clear focus
+                    with(search_searchView_toolbar){
+                        setQuery("",false)
+                        clearFocus()
+                    }
+
+                    //inflate search Activity
+                    val intent = Intent(this@MainActivity, A04SearchActivity::class.java)
+                    intent.putExtra(QUERY_KEY, query)
+                    startActivity(intent)
+                }else{
+                    with(search_searchView_toolbar){
+                        queryHint = "busque otro arranque"
+                        setQuery("",false)
+                        clearFocus()
+                    }
+                }
                 return false
+
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -83,7 +100,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //F01. FUNCIÓN verificar Loggin;
+    //verify current user
     private fun verifyUserIsLoggedIn(){
         val uid = FirebaseAuth.getInstance().uid /**buscar la uid actual*/
         Log.d("CurrentUser", "UID : $uid")
@@ -97,7 +114,9 @@ class MainActivity : AppCompatActivity() {
 
     }/**fin verifyUserIsLoggedIn*/
 
-    //F02. FUNCIÓN TabLayout
+
+
+    //Build tab buttons
     private fun setTabMenu(){
         tabLayout_main.addTab(tabLayout_main.newTab().setText("Consumo").setIcon(R.drawable.ic_ico_clock_24dp))
         tabLayout_main.addTab(tabLayout_main.newTab().setText("Usuarios").setIcon(R.drawable.ic_ico_person_20dp))
@@ -122,7 +141,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    //on menu popup actions
+    //Menu popup actions
     private fun onMenuItemSelected(item:MenuItem?):Boolean{
         return when (item?.itemId){
             R.id.logOut_menuItem_main -> {
@@ -131,6 +150,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, A02LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 this.startActivity(intent)
+                finish()
                 true
             }
             else -> {
@@ -140,10 +160,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //F04 Permisos de cámara
+    //Camera permision request
     private fun requestCameraPermission():Boolean{
         /*if system os is Marshmallow or Above, we need to request runtime permission*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+
             if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA)== PackageManager.PERMISSION_DENIED ||
                 ContextCompat.checkSelfPermission(
                     this,
@@ -153,14 +174,11 @@ class MainActivity : AppCompatActivity() {
                 val permission = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 /* show popup to request permission */
                 requestPermissions(permission, camPermissionCode)
-            }else{
-                //permission already granted
-                /**openCamera()*/
-                return true}
+            }else{ return true}
+
         }else{
-            //system os is < marshmallow
-            /**openCamera()*/
-            return true}
+            return true
+        }
         return false
     }
 
@@ -178,31 +196,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-
-
-    //Calculate Remaining Days for operation
-    private fun getRemainingDays(apr:AprUser?):Short{
-        return when (apr?.planId){
-            30      ->  {
-                30 /* id 30: plan gratuito inicial */
-            }
-            null    ->  {
-                0 /* id null: error no hay plan */
-            }
-            else    ->  {
-                val currentTime     = Calendar.getInstance()
-                val dateLastPayment = Calendar.getInstance()
-                dateLastPayment.time          = apr.dateLimitBuy /* fecha límite de operación */
-                val days = TimeUnit.MILLISECONDS.toDays((dateLastPayment.timeInMillis - currentTime.timeInMillis)).toShort()
-                Log.d("Consumption", "Tiempo remanente para carga de consumos $days dias")
-
-                days
-            }
-        }
-    }
-
-    //getBitmap
 
 }
 

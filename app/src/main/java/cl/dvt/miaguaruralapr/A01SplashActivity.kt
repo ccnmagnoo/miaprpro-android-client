@@ -48,13 +48,13 @@ class A01SplashActivity : AppCompatActivity() {
         ref.get()
             .addOnSuccessListener {document  ->
                 currentApr = document.toObject(AprUser::class.java)
-                Log.d("CurrentUser", "User Data: $currentApr")
+                Log.d("User", "User Data: $currentApr")
                 startActivity(Intent(this,MainActivity::class.java)) /* cargar MainActivity */
                 finish()                                                            /* close this activity*/
 
             }
             .addOnFailureListener{
-                Log.d("CurrentUser", "User Data: error listener",it)
+                Log.d("User", "User Data: error listener",it)
             }
     }
 

@@ -14,15 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
 import cl.dvt.miaguaruralapr.MainActivity.Companion.block_key
-import com.github.mikephil.charting.charts.CombinedChart
-import com.github.mikephil.charting.charts.CombinedChart.DrawOrder
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.LimitLine
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.ValueFormatter
-import com.google.common.graph.Graph
 import com.google.firebase.firestore.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -30,23 +21,12 @@ import kotlinx.android.synthetic.main.activity_a05_costumer.*
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.math.roundToInt
 
 
 @Suppress("IMPLICIT_CAST_TO_ANY", "NAME_SHADOWING",
     "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
 )
 class A05Costumer : AppCompatActivity() {
-
-
-    override fun onStart() {
-        super.onStart()
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,7 +85,7 @@ class A05Costumer : AppCompatActivity() {
                 if (document != null && document.exists()) {
                     val costumer = document.toObject(Costumer::class.java)
                     Log.d("costumerActivity", "$source data: $costumer")
-                    loadingData(costumer)
+                    populateValues(costumer)
 
                 } else {
                     Log.d("costumerActivity", "$source data: null")
@@ -113,7 +93,7 @@ class A05Costumer : AppCompatActivity() {
             }
     }
 
-    private fun loadingData(costumer:Costumer?){
+    private fun populateValues(costumer:Costumer?){
         // formatos
         val format      = DecimalFormat("$ #,###")
         // cargando datos inmutables */
@@ -299,9 +279,7 @@ class A05Costumer : AppCompatActivity() {
                 consumptionOnDebt_textView_costumerActivity.text = statistics["consumptionOnDebt"].toString()
 
                 /** cargar chart */
-                //buildCombinedChart(listConsumption, this.consumption_chart_costumerActivity)
-                //Chart(this, listConsumption).buildCombined(consumption_chart_costumerActivity)
-                Chart(this, listConsumption).buildBar(consumption_chart_costumerActivity)
+                 Chart(this, listConsumption).buildBar(consumption_chart_costumerActivity)
 
 
             }

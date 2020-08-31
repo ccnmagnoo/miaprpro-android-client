@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.parcel.Parcelize
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 @Parcelize
 data class AprUser(
@@ -29,5 +30,28 @@ data class AprUser(
     /** dialogs */
 
     /** auxiliar functions */
+
+    fun getRemainingDays(apr:AprUser?):Short{
+        /** input apr user class and return remaining days */
+        return when (apr?.planId){
+            30      ->  {
+                30 /* id 30: plan gratuito inicial */
+            }
+            null    ->  {
+                0 /* id null: error no hay plan */
+            }
+            else    ->  {
+                //get current time
+                val currentTime     = Calendar.getInstance()
+                //fetch user limit date
+                val dateLastPayment = Calendar.getInstance()
+                dateLastPayment.time          = apr.dateLimitBuy /* fecha límite de operación */
+                //calculate remaining days
+                val days = TimeUnit.MILLISECONDS.toDays((dateLastPayment.timeInMillis - currentTime.timeInMillis)).toShort()
+                Log.d("Consumption", "Tiempo remanente para carga de consumos $days dias")
+                days
+            }
+        }
+    }
 
 }

@@ -50,7 +50,7 @@ class F03TramoFragment : Fragment() {
         val ref   = FirebaseFirestore.getInstance()
             .collection("userApr")
             .document(currentApr!!.uidApr)
-            .collection("userPrices")
+            .collection("userTramo")
             .orderBy("consumptionBase", Query.Direction.ASCENDING)
         ref
             .addSnapshotListener(MetadataChanges.INCLUDE){result, e ->

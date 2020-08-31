@@ -21,11 +21,12 @@ import kotlin.math.roundToInt
 
 
 class Tools() {
-
+    //verification email@ formar
     fun isEmailValid(email:String): Boolean {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
+    //validator of social number
     fun isSocialNumberValid(rol:String):Pair<Boolean,String?>{
         /** return pair value
          * pair.first: boolean response if this is valid
@@ -93,6 +94,7 @@ class Tools() {
         }
     }
 
+    //shows loading animation dialog
     fun dialogUploading(context:Context):AlertDialog{
         //Show dialog "uploading"
         val mDialogLoadingView = LayoutInflater.from(context).inflate(R.layout.section_add_consumption_loading, null) /* Instando dialogo "cargando" */

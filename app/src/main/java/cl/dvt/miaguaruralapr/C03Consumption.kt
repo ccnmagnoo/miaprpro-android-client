@@ -16,7 +16,6 @@ import android.widget.CheckBox
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
-import cl.dvt.miaguaruralapr.MainActivity.Companion.remainingDays
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
@@ -32,6 +31,7 @@ import kotlinx.android.synthetic.main.section_op_consumption_alert01yes.view.*
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -298,14 +298,17 @@ data class Consumption(
 
     //DIALOG create consumption
     fun initDialog(context: Context,costumer: Costumer?,imageUri: Uri?){
-        if(remainingDays >=0){
-            //onSuccess start creating consumption
-            createDialog(context,costumer,imageUri)
 
-        }else{
-            //onFailure: no remaining days
-            overlimitDialog(context, remainingDays)
-        }
+        val remainingDays = AprUser().getRemainingDays(currentApr)
+
+            if(remainingDays >= 0){
+                //onSuccess start creating consumption
+                createDialog(context,costumer,imageUri)
+
+            }else{
+                //onFailure: no remaining days
+                overlimitDialog(context, remainingDays)
+            }
 
     }
 

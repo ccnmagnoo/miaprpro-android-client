@@ -24,6 +24,7 @@ data class Costumer(
 ): Parcelable{
     /** Main functions */
 
+
     /** Dialogs */
 
     /** Secondary functions */

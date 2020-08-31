@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
+import cl.dvt.miaguaruralapr.F02CostumerFragment.Companion.costumerList
 import cl.dvt.miaguaruralapr.MainActivity.Companion.block_key
 import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
@@ -25,7 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class A04SearchActivity : AppCompatActivity() {
-    //var query:String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_a04_search)
@@ -34,7 +35,7 @@ class A04SearchActivity : AppCompatActivity() {
         search_searchView_search.isEnabled = true
 
         if(!query.isNullOrBlank()){
-            fetchCostumers(query.toString())
+            fetchCostumer(query.toString())
             fetchConsumption(query.toString())
         }
 
@@ -47,19 +48,35 @@ class A04SearchActivity : AppCompatActivity() {
                 return false
             }
             override fun onQueryTextChange(newQuery: String?): Boolean {
-                if (newQuery?.isEmpty()!!){
-                    search_searchView_search.queryHint = "busca cliente medidor"
-                }else{
-                    fetchCostumers(newQuery.toString())
-                    fetchConsumption(newQuery.toString())
+                val finder = costumerList.any { costumer -> costumer.medidorNumber.toString()==newQuery  }
+
+                return when{
+                    newQuery?.isBlank()!!->{
+                        search_searchView_search.queryHint = "busca cliente medidor"
+                        false
+                    }
+                    !finder ->{
+                        search_searchView_search.queryHint = "no encontrado"
+                        false
+                    }
+                    finder ->{
+                        val costumer = costumerList.find { costumer -> costumer.medidorNumber.toString() == newQuery  }
+                        fetchCostumer(newQuery.toString())
+                        fetchConsumption(newQuery.toString())
+                        false
+                    }
+                    else->{
+
+                        false
+                    }
+
                 }
-                return false
             }
         })
     }
 
 
-    private fun fetchCostumers(query:String){
+    private fun fetchCostumer(query:String){
         val adapter  = GroupAdapter<GroupieViewHolder>()
         costumerSearchResult_recyclerView_search.adapter = adapter /* Cargando el ReclyclerView de esta Actividad */
 
@@ -79,15 +96,15 @@ class A04SearchActivity : AppCompatActivity() {
                     when (document.type){
                         DocumentChange.Type.ADDED ->{
                             /* costumer agregado */
-                            val costumerObject = document.document.toObject(Costumer::class.java)
-                            Log.d("Search", "Descargando: $costumerObject")
-                            adapter.add(CostumerItemAdapter(costumerObject))    /* cargando datos a los items del adaptador personalizado */
+                            val costumer = document.document.toObject(Costumer::class.java)
+                            Log.d("Search", "Descargando: $costumer")
+                            adapter.add(CostumerItemAdapter(costumer))    /* cargando datos a los items del adaptador personalizado */
                         }
                         DocumentChange.Type.MODIFIED ->{
-                            val costumerObject = document.document.toObject(Costumer::class.java)
-                            Log.d("Search", "Update: $costumerObject on ${document.oldIndex}")
+                            val costumer = document.document.toObject(Costumer::class.java)
+                            Log.d("Search", "Update: $costumer on ${document.oldIndex}")
                             adapter.removeGroupAtAdapterPosition(document.oldIndex)
-                            adapter.add(document.oldIndex,CostumerItemAdapter(costumerObject))
+                            adapter.add(document.oldIndex,CostumerItemAdapter(costumer))
                             adapter.notifyDataSetChanged()
                         }
                         DocumentChange.Type.REMOVED ->{/***/}
