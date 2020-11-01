@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".F01ConsumptionFragment">
+    tools:context=".fragments.ConsumptionFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,11 +33,11 @@
             android:layout_height="wrap_content"
             android:elevation="7dp"
             android:text="40"
-            app:layout_constraintEnd_toEndOf="@+id/addConsumption_floatingActionButton_consumo"
-            app:layout_constraintTop_toTopOf="@+id/addConsumption_floatingActionButton_consumo" />
+            app:layout_constraintEnd_toEndOf="@+id/addConsumption_floatingActionButton_consumption"
+            app:layout_constraintTop_toTopOf="@+id/addConsumption_floatingActionButton_consumption" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addConsumption_floatingActionButton_consumo"
+            android:id="@+id/addConsumption_floatingActionButton_consumption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
@@ -77,14 +77,14 @@
                     android:paddingEnd="5dp">
 
                     <TextView
-                        android:id="@+id/numberOfConsumption_textView_consumo"
+                        android:id="@+id/numberOfConsumption_textView_consumption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
                         android:text="útimos 30 ingresos" />
 
                     <Switch
-                        android:id="@+id/debtFilter_switch_costumer"
+                        android:id="@+id/debtFilter_switch_consumption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -93,7 +93,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/consumption_recyclerView_consumo"
+                    android:id="@+id/consumption_recyclerView_consumption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

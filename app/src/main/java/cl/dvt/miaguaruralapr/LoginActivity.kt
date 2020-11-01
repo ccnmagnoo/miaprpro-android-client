@@ -8,12 +8,13 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
+import cl.dvt.miaguaruralapr.SplashActivity.Companion.user
+import cl.dvt.miaguaruralapr.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_a02_login.*
+import kotlinx.android.synthetic.main.activity_login.*
 
-class A02LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     companion object{
         val TAG="Login"
@@ -21,7 +22,7 @@ class A02LoginActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_a02_login)
+        setContentView(R.layout.activity_login)
 
         //F.01 Login campos
         login_button_login.setOnClickListener{
@@ -50,7 +51,7 @@ class A02LoginActivity : AppCompatActivity() {
 
         //F02. Botón Ir a Registro
         goToRegister_textView_login.setOnClickListener {
-            val intent = Intent(this, cl.dvt.miaguaruralapr.A03RegisterActivity::class.java)
+            val intent = Intent(this, cl.dvt.miaguaruralapr.RegisterActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                 .or(Intent.FLAG_ACTIVITY_NEW_TASK) /** cuando vuelves se cierra el activity register*/
             startActivity(intent)
@@ -108,8 +109,8 @@ class A02LoginActivity : AppCompatActivity() {
             .document(uidApr)
         ref.get()
             .addOnSuccessListener {documentSnapshot  ->
-                currentApr = documentSnapshot.toObject(AprUser::class.java)
-                Log.d("CurrentUser", "User Data: $currentApr")
+                user = documentSnapshot.toObject(User::class.java)
+                Log.d("CurrentUser", "User Data: $user")
                 //Iniciar Main screen
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

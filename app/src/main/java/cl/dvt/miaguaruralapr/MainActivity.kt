@@ -13,16 +13,13 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
-import cl.dvt.miaguaruralapr.F02CostumerFragment.Companion.costumerList
+import cl.dvt.miaguaruralapr.adapters.MainTabAdapter
+import cl.dvt.miaguaruralapr.fragments.CostumerFragment.Companion.costumerList
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.section_toolbar_main.*
-
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -79,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     //inflate search Activity
-                    val intent = Intent(this@MainActivity, A04SearchActivity::class.java)
+                    val intent = Intent(this@MainActivity, SearchActivity::class.java)
                     intent.putExtra(QUERY_KEY, query)
                     startActivity(intent)
                 }else{
@@ -106,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("CurrentUser", "UID : $uid")
         val ref = FirebaseFirestore.getInstance().collection("userApr").document("$uid")
         if (uid==null){
-            val intent = Intent(this, A02LoginActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             finish()
@@ -122,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         tabLayout_main.addTab(tabLayout_main.newTab().setText("Usuarios").setIcon(R.drawable.ic_ico_person_20dp))
         tabLayout_main.addTab(tabLayout_main.newTab().setText("Tramos").setIcon(R.drawable.ic_ico_coin_20dp))
         tabLayout_main.addTab(tabLayout_main.newTab().setText("Producción").setIcon(R.drawable.ic_ico_production_20dp))
-        val fragmentAdapter = X01MainTabPagerAdapter(
+        val fragmentAdapter = MainTabAdapter(
             supportFragmentManager,
             tabLayout_main.tabCount
         )
@@ -139,15 +136,13 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-
-
     //Menu popup actions
     private fun onMenuItemSelected(item:MenuItem?):Boolean{
         return when (item?.itemId){
             R.id.logOut_menuItem_main -> {
                 Toast.makeText(this, "login out",Toast.LENGTH_SHORT).show()
                 FirebaseAuth.getInstance().signOut()
-                val intent = Intent(this, A02LoginActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 this.startActivity(intent)
                 finish()

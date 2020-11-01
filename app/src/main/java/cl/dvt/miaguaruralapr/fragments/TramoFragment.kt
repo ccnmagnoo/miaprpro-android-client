@@ -1,4 +1,4 @@
-package cl.dvt.miaguaruralapr
+package cl.dvt.miaguaruralapr.fragments
 
 import android.app.AlertDialog
 import android.content.Context
@@ -9,7 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
+import cl.dvt.miaguaruralapr.SplashActivity.Companion.user
+import cl.dvt.miaguaruralapr.R
+import cl.dvt.miaguaruralapr.models.Tramo
+import cl.dvt.miaguaruralapr.adapters.TramoItemAdapter
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -20,19 +23,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
-import kotlinx.android.synthetic.main.fragment_f03_cobros.*
-import kotlinx.android.synthetic.main.section_op_tramo.view.*
+import kotlinx.android.synthetic.main.fragment_tramo.*
+import kotlinx.android.synthetic.main.dialog_update_tramo.view.*
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class F03TramoFragment : Fragment() {
+class TramoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_f03_cobros, container, false)
+        return inflater!!.inflate(R.layout.fragment_tramo, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,7 +52,7 @@ class F03TramoFragment : Fragment() {
 
         val ref   = FirebaseFirestore.getInstance()
             .collection("userApr")
-            .document(currentApr!!.uidApr)
+            .document(user!!.uidApr)
             .collection("userTramo")
             .orderBy("consumptionBase", Query.Direction.ASCENDING)
         ref
@@ -64,14 +67,14 @@ class F03TramoFragment : Fragment() {
                         DocumentChange.Type.ADDED ->{
                             Log.d("Tramo", "Indice del tramo : ${document.newIndex}")
                             val tramo = document.document.toObject(Tramo::class.java)
-                            adapter.add(document.newIndex,TramoItemAdapter(tramo)) /* IMPORTANTE : cargando datos a los items del adaptador personalizado */
+                            adapter.add(document.newIndex, TramoItemAdapter(tramo)) /* IMPORTANTE : cargando datos a los items del adaptador personalizado */
                             adapter.notifyDataSetChanged()
                         }
                         DocumentChange.Type.MODIFIED    ->{
                             /* https://stackoverflow.com/questions/50754912/firebase-firestore-document-changes */
                             val tramo = document.document.toObject(Tramo::class.java)
                             adapter.removeGroupAtAdapterPosition(document.oldIndex)
-                            adapter.add(document.oldIndex,TramoItemAdapter(tramo))
+                            adapter.add(document.oldIndex, TramoItemAdapter(tramo))
                             adapter.notifyItemChanged(document.oldIndex)     /*actualizando datos a los items del adaptador personalizado*/
                             Log.d("Tramo", "id del documento modificado: ${document.document.id}")
                         }
@@ -99,7 +102,7 @@ class F03TramoFragment : Fragment() {
 
     private fun updateTramoDialog(tramo: Tramo, context: Context, adapter: GroupAdapter<GroupieViewHolder>?) {
         //abriendo diálogo
-        val mDialogview = LayoutInflater.from(context).inflate(R.layout.section_op_tramo,null)
+        val mDialogview = LayoutInflater.from(context).inflate(R.layout.dialog_update_tramo,null)
         val mBuilder = AlertDialog.Builder(context).setView(mDialogview)
         val mDialogBuilder = mBuilder.show()
 
@@ -137,7 +140,7 @@ class F03TramoFragment : Fragment() {
         val description   = if(mDialogview.description_editText_tramoOp.text.toString().isEmpty())   { oldTramo.description}   else{mDialogview.description_editText_tramoOp.text.toString()}
 
         //buil newTramo
-        val newTramo:Tramo = Tramo(
+        val newTramo: Tramo = Tramo(
             name,
             base,
             price,
@@ -161,8 +164,8 @@ class F03TramoFragment : Fragment() {
 
         //index del tramo actualmente en edición
         val index = tramoListSorted.indexOf(oldTramo)
-        val tramoDown:Tramo? = tramoListSorted.elementAtOrNull(index-1)
-        val tramoUp:Tramo? = tramoListSorted.elementAtOrNull(index+1)
+        val tramoDown: Tramo? = tramoListSorted.elementAtOrNull(index-1)
+        val tramoUp: Tramo? = tramoListSorted.elementAtOrNull(index+1)
 
         //checking limits Range values
 
@@ -188,7 +191,7 @@ class F03TramoFragment : Fragment() {
 
         //validar password
         val pass = mDialogview.password_editText_tramoOp
-        val email = currentApr?.userAprEmail
+        val email = user?.userAprEmail
 
         when {
             pass.text.toString().isEmpty() -> {

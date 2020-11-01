@@ -5,6 +5,7 @@ import android.content.Context
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
+import cl.dvt.miaguaruralapr.models.Consumption
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.AxisBase
@@ -21,7 +22,7 @@ import kotlin.math.roundToInt
 
 
 class Tools() {
-    //verification email@ formar
+    //verification email@ formart
     fun isEmailValid(email:String): Boolean {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
@@ -97,7 +98,7 @@ class Tools() {
     //shows loading animation dialog
     fun dialogUploading(context:Context):AlertDialog{
         //Show dialog "uploading"
-        val mDialogLoadingView = LayoutInflater.from(context).inflate(R.layout.section_add_consumption_loading, null) /* Instando dialogo "cargando" */
+        val mDialogLoadingView = LayoutInflater.from(context).inflate(R.layout.dialog_loading_animation, null) /* Instando dialogo "cargando" */
         val mBuilderLoading = AlertDialog.Builder(context).setView(mDialogLoadingView)   /* Inflado del cuadro de dialogo "cargando" */
         return mBuilderLoading.show()
     }
@@ -367,9 +368,9 @@ class Chart(val context: Context, private val list: ArrayList<Consumption>){
 
         subList.isNotEmpty().let{
             //Max consumption
-            max = subList.maxBy { it -> it.consumptionCurrent  }?.consumptionCurrent?:0.0
+            max = subList.maxByOrNull { it.consumptionCurrent }?.consumptionCurrent?:0.0
             //Min consumption
-            min = subList.minBy { it -> it.consumptionCurrent   }?.consumptionCurrent?:0.0
+            min = subList.minByOrNull { it.consumptionCurrent }?.consumptionCurrent?:0.0
 
             //Total consumption and total  unpayed consumption
             sumConsumption = subList.sumByDouble { it->it.consumptionCurrent }

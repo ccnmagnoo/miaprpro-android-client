@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".A05Costumer">
+    tools:context=".CostumerActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarCostumer"
@@ -64,8 +64,10 @@
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarCostumer">
+        app:layout_constraintTop_toBottomOf="@+id/toolbarCostumer"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout8"
@@ -94,7 +96,7 @@
                         android:layout_height="match_parent">
 
                         <EditText
-                            android:id="@+id/name_editText_consumptionActivity"
+                            android:id="@+id/name_editText_costumerActivity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -102,9 +104,10 @@
                             android:drawableTint="@color/purpleLight"
                             android:ems="10"
                             android:hint="nombre cliente"
-                            android:inputType="textPersonName"
+                            android:inputType="textCapWords"
                             android:textColorHint="@color/purpleMedium"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            tools:text="carlos campos" />
                     </TableRow>
 
                     <TableRow
@@ -137,8 +140,7 @@
                             android:textSize="14sp"
                             app:mask="+56 # ### ## ###"
                             app:maskCharacter="#"
-                            app:maskStyle="normal"
-                            />
+                            app:maskStyle="normal" />
 
                     </TableRow>
 

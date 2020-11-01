@@ -9,27 +9,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
-import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
-import cl.dvt.miaguaruralapr.F02CostumerFragment.Companion.costumerList
+import cl.dvt.miaguaruralapr.SplashActivity.Companion.user
+import cl.dvt.miaguaruralapr.fragments.CostumerFragment.Companion.costumerList
 import cl.dvt.miaguaruralapr.MainActivity.Companion.block_key
+import cl.dvt.miaguaruralapr.adapters.ConsumptionItemAdapter
+import cl.dvt.miaguaruralapr.adapters.ConsumptionItemDetailAdapter
+import cl.dvt.miaguaruralapr.adapters.CostumerItemAdapter
+import cl.dvt.miaguaruralapr.fragments.CostumerFragment
+import cl.dvt.miaguaruralapr.models.*
 import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
-import kotlinx.android.synthetic.main.activity_a04_search.*
-import kotlinx.android.synthetic.main.section_op_consumption.view.*
-import kotlinx.android.synthetic.main.section_op_consumption_alert01yes.view.*
+import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.dialog_update_consumption.view.*
+import kotlinx.android.synthetic.main.dialog_update_consumption_allow.view.*
 import java.lang.Exception
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class A04SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_a04_search)
+        setContentView(R.layout.activity_search)
 
         val query= intent.getStringExtra(MainActivity.QUERY_KEY)
         search_searchView_search.isEnabled = true
@@ -82,7 +87,7 @@ class A04SearchActivity : AppCompatActivity() {
 
         val ref = FirebaseFirestore.getInstance()
             .collection("userApr")
-            .document(currentApr!!.uidApr)
+            .document(user!!.uidApr)
             .collection("userCostumer")
             .whereEqualTo("uidCostumer",query)
             .limit(1)
@@ -104,7 +109,7 @@ class A04SearchActivity : AppCompatActivity() {
                             val costumer = document.document.toObject(Costumer::class.java)
                             Log.d("Search", "Update: $costumer on ${document.oldIndex}")
                             adapter.removeGroupAtAdapterPosition(document.oldIndex)
-                            adapter.add(document.oldIndex,CostumerItemAdapter(costumer))
+                            adapter.add(document.oldIndex, CostumerItemAdapter(costumer))
                             adapter.notifyDataSetChanged()
                         }
                         DocumentChange.Type.REMOVED ->{/***/}
@@ -116,8 +121,8 @@ class A04SearchActivity : AppCompatActivity() {
         adapter.setOnItemClickListener {item, view ->
             val costumer = item as CostumerItemAdapter
             Log.d("Costumer", "abriendo detalle del costumer : ${costumer.costumer}")
-            val intent = Intent(this, A05Costumer::class.java)
-            intent.putExtra(F02CostumerFragment.COSTUMER_KEY, costumer.costumer)
+            val intent = Intent(this, CostumerActivity::class.java)
+            intent.putExtra(CostumerFragment.costumerKey, costumer.costumer)
             startActivity(intent)
         }
 
@@ -129,7 +134,7 @@ class A04SearchActivity : AppCompatActivity() {
         consumptionSearchResult_recyclerView_search.adapter = adapter /**Cargando el ReclyclerView de esta Actividad*/
         val ref   = FirebaseFirestore.getInstance()
                 .collection("userApr")
-                .document(currentApr!!.uidApr)
+                .document(user!!.uidApr)
                 .collection("userCostumer")
                 .document(query)
                 .collection("costumerConsumptionPersonal")
@@ -150,7 +155,9 @@ class A04SearchActivity : AppCompatActivity() {
                             Log.d("Consumption", "Indice del modificado : ${document.oldIndex}")
                             val consumptionObject = document.document.toObject(Consumption::class.java)
                             adapter.removeGroupAtAdapterPosition(document.oldIndex)
-                            adapter.add(document.oldIndex,ConsumptionItemAdapter(consumptionObject,true))
+                            adapter.add(document.oldIndex,
+                                ConsumptionItemAdapter(consumptionObject,true)
+                            )
                             adapter.notifyItemChanged(document.oldIndex)/*actualizando datos a los items del adaptador personalizado*/
 
                         }
@@ -172,11 +179,11 @@ class A04SearchActivity : AppCompatActivity() {
     }/* fin del fetchConsumption() */
 
     @SuppressLint("SimpleDateFormat")
-    private fun openOpConsumptionDialog(consumptionItem:ConsumptionItemAdapter){
+    private fun openOpConsumptionDialog(consumptionItem: ConsumptionItemAdapter){
         val consumption = consumptionItem.consumption
 
         /*Abriendo dialogo*/
-        val mDialogView = LayoutInflater.from(this).inflate(R.layout.section_op_consumption, null) /** Instando dialogView */
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_update_consumption, null) /** Instando dialogView */
         val mBuilder = AlertDialog.Builder(this) /** Inflado del cuadro de dialogo */
                 .setView(mDialogView)
         val  mAlertDialog = mBuilder.show()/** show dialog */
@@ -213,7 +220,7 @@ class A04SearchActivity : AppCompatActivity() {
         mDialogView.consumptionDetail_recyclerView_opConsumption.adapter = adapter
         for ((index, billingData) in consumption.consumptionBillDetail.withIndex()){
             if (index > 0 ){
-                adapter.add(ConsumptionDetailAdapter(billingData))
+                adapter.add(ConsumptionItemDetailAdapter(billingData))
             }
         }
 
@@ -233,7 +240,7 @@ class A04SearchActivity : AppCompatActivity() {
             if (consumption.uuidConsumption == lastConsumptionUUID){
                 /* en caso que sea el último registro y  se permite borrar*/
                 mAlertDialog.dismiss()
-                val mDialogAlertYesView         = LayoutInflater.from(this).inflate(R.layout.section_op_consumption_alert01yes, null)
+                val mDialogAlertYesView         = LayoutInflater.from(this).inflate(R.layout.dialog_update_consumption_allow, null)
                 val mBuilderAlertYes  = AlertDialog.Builder(this)
                     .setView(mDialogAlertYesView)
                     .setTitle("advertencia")
@@ -247,7 +254,7 @@ class A04SearchActivity : AppCompatActivity() {
             }else{
                 /* en caso que NO sea el último registro*/
                 mAlertDialog.dismiss()
-                val mDialogAlertNoView         = LayoutInflater.from(this).inflate(R.layout.section_op_consumption_alert02no, null)
+                val mDialogAlertNoView         = LayoutInflater.from(this).inflate(R.layout.dialog_update_consumption_denied, null)
                 val mBuilderAlertNo  = AlertDialog.Builder(this)
                     .setView(mDialogAlertNoView)
                     .setTitle("no se puede borrar")

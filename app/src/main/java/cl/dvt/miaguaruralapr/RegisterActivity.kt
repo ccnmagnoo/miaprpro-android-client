@@ -15,15 +15,17 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import cl.dvt.miaguaruralapr.A01SplashActivity.Companion.currentApr
+import cl.dvt.miaguaruralapr.SplashActivity.Companion.user
+import cl.dvt.miaguaruralapr.models.Tramo
+import cl.dvt.miaguaruralapr.models.User
 import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_a03_register.*
+import kotlinx.android.synthetic.main.activity_register.*
 import java.util.*
 
 
-class A03RegisterActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
     companion object{
         //Valor de localización
         val PERMISSION_ID = 42
@@ -33,7 +35,7 @@ class A03RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_a03_register)
+        setContentView(R.layout.activity_register)
         //Permisos de Geolocalización
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLastLocation()
@@ -53,7 +55,7 @@ class A03RegisterActivity : AppCompatActivity() {
 
     //F.02 Función retornar a pantalla Login
     private fun returnLoginActivity(){
-        val intent = Intent(this, A02LoginActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -173,7 +175,7 @@ class A03RegisterActivity : AppCompatActivity() {
         val userStatus      = true     /* true: activo */
 
         //F.05.03 Cargando object UserApr
-        val newUser = AprUser(
+        val newUser = User(
                 uid,
                 email,
                 razonSocial,
@@ -194,11 +196,11 @@ class A03RegisterActivity : AppCompatActivity() {
         ref.set(newUser)
             .addOnSuccessListener {
                 Log.d("RegisterActivity","Guardado en Firestore $uid")
-                currentApr = newUser /* creando parceleable de usuario actual*/
+                user = newUser /* creando parceleable de usuario actual*/
                 createTramo()      /* crear plan de precios del APR automático*/
 
                 //arrancar actividad de login
-                val intent = Intent(this, A02LoginActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
