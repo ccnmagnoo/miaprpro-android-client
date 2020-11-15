@@ -45,7 +45,7 @@ data class Costumer(
     val userCostumerDebt:Double     = 0.0,  /** deuda actual del consumidor */
     val userCostumerLastPayDate: Date = Date() /** fecha del último pago */
 ): Parcelable{
-    /** public functions */
+    /** public functions request */
     fun fetchConsumption(context: Context, recyclerView: RecyclerView,consumptionTotal:TextView?,consumptionDebt:TextView?,barChart:BarChart){
         /** fetch ALL costumer's consumptions from secondary firebase's Database */
         //Instando adapter
