@@ -46,9 +46,8 @@ data class Costumer(
     val userCostumerLastPayDate: Date = Date() /** fecha del último pago */
 ): Parcelable{
     /** public functions */
-
-
     fun fetchConsumption(context: Context, recyclerView: RecyclerView,consumptionTotal:TextView?,consumptionDebt:TextView?,barChart:BarChart){
+        /** fetch ALL costumer's consumptions from secondary firebase's Database */
         //Instando adapter
         val adapter = GroupAdapter<GroupieViewHolder>()
         recyclerView.adapter = adapter /**Cargando el ReclyclerView de esta Actividad*/
@@ -119,13 +118,9 @@ data class Costumer(
 
     }
 
-    /** Main CRUD functions */
-
-
-
+    /** CRUD functions */
     private fun instance(context: Context,medidorNumber:String, medidorSerial:String, userCostumerRut:String, geoSwitchState:Boolean){
         /** function to build Costumer Object */
-
         val uploadingDialog = Tools().dialogUploading(context)
 
         /*F03.02 Asignando valores a variables*/

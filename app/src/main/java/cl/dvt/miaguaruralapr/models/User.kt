@@ -43,9 +43,7 @@ data class User(
     /** properties */
     var suscriptionPlan:SuscriptionPlan = SuscriptionPlan()
     var costumerList= mutableListOf<Costumer>()
-
-
-    /** main functions */
+    /** public functions */
     fun fetchCostumers(context: Context,recyclerView:RecyclerView,costumerCounterTextView:TextView){
         //fetching suscribed Costumers
 
@@ -183,6 +181,9 @@ data class User(
 
 
     }
+
+    /** CRUD functions */
+
 
     /** dialogs */
 
