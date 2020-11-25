@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat
 
 class TramoItemAdapter(val tramo: Tramo): Item<GroupieViewHolder>(){
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        /* populating basic data */
         viewHolder.itemView.consumptionBase_textView_tramoAdapter.text = tramo.consumptionBase.toString()
         viewHolder.itemView.price_textView_tramoAdapter.text = tramo.priceBase.toString()
         viewHolder.itemView.name_textView_tramoAdapter.text = tramo.name

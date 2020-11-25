@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:visibility="gone"
-    tools:visibility="visible">
+    android:padding="8dp">
 
     <EditText
         android:id="@+id/name_editText_tramoOp"
@@ -145,11 +143,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="2dp"
         android:clickable="true"
+        android:visibility="gone"
         app:backgroundTint="@color/purpleMedium"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/name_editText_tramoOp"
         app:layout_constraintEnd_toEndOf="@+id/name_editText_tramoOp"
         app:layout_constraintTop_toTopOf="@+id/name_editText_tramoOp"
-        app:srcCompat="@drawable/ic_delete_black_24dp" />
+        app:srcCompat="@drawable/ic_delete_black_24dp"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

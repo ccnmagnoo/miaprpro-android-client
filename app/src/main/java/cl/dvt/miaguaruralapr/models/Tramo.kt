@@ -6,6 +6,7 @@ import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
@@ -434,14 +435,17 @@ data class Tramo(
         dialogView.price_editText_tramoOp.hint         = (tramo.priceBase.toString())
         dialogView.description_editText_tramoOp.hint   = (tramo.description)
 
-        //configurando edible base
+        //turning "delete button" visible
+        dialogView.delete_flotaingButton_tramoOp.visibility = VISIBLE
+
+        //config base editText edible or not in case is base 0.0m3
         if (!tramo.edible){
             dialogView.base_editText_tramoOp.isEnabled = false
+            dialogView.base_editText_tramoOp.setBackgroundColor(getColor(context,R.color.greySilver))
         }
 
+        //ok button
         dialogView.ok_button_tramoOp.setOnClickListener {
-
-
             /*verify changes on tramo object, check user account and build new object tramo */
             if (!instanceUpdate(context,dialogView,mDialogBuilder,tramo,tramoList)) {
                 return@setOnClickListener
@@ -450,9 +454,17 @@ data class Tramo(
             }
         }
 
+        //dismiss button
         dialogView.cancel_button_tramoOp.setOnClickListener {
             mDialogBuilder.dismiss()
         }
+
+        //delete button
+        dialogView.delete_flotaingButton_tramoOp.setOnClickListener {
+            //TODO: delete function
+        }
+
+
     }
 
     /** Auxiliar functions */

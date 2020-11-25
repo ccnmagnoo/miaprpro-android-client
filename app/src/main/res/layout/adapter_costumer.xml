@@ -5,7 +5,7 @@
     android:id="@+id/costumerAdapter_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/grayUltraLight"
+    android:background="@color/greyUltraLight"
     android:elevation="5dp"
     android:orientation="vertical">
 
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:cardBackgroundColor="@color/grayUltraLight"
+        app:cardBackgroundColor="@color/greyUltraLight"
         app:cardCornerRadius="16dp"
         app:cardElevation="2dp"
         app:contentPadding="8dp"

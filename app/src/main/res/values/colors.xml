@@ -9,7 +9,8 @@
     <color name="blueLight">#91CFE8</color>
     <color name="white">#FFFFFF</color>
     <color name="whiteAlpha50">#99FFFFFF</color>
-    <color name="grayUltraLight">#F5F5F5</color>
+    <color name="greyUltraLight">#F5F5F5</color>
+    <color name="greySilver">#D3D3D3</color>
     <color name="whiteAlpha10">#1AFFFFFF</color>
     <color name="blackAlpha50">#4D000000</color>
     <color name="blackAlpha80">#80000000</color>

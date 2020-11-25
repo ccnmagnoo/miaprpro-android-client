@@ -67,7 +67,7 @@
                 android:id="@+id/costumerTitle_textView_search"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:background="@color/grayUltraLight"
+                android:background="@color/greyUltraLight"
                 android:text="clientes"
                 android:textColor="@color/purpleMedium" />
 
@@ -82,7 +82,7 @@
                 android:id="@+id/consumptionTitle_textView_search"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:background="@color/grayUltraLight"
+                android:background="@color/greyUltraLight"
                 android:text="consumos"
                 android:textColor="@color/purpleMedium" />
 
