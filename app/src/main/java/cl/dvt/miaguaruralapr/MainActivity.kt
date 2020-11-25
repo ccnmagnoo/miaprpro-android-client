@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     companion object{
         var QUERY_KEY:String? = "QUERY_WORD"
         var block_key:Boolean = false
-        //permisos de uso de cámara
+        /*permisos de uso de cámara*/
         const val camPermissionCode = 1000
         var camPermissionBoolean = false
         var requestCameraResult = false

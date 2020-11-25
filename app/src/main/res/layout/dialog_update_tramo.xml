@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:visibility="gone"
+    tools:visibility="visible">
 
     <EditText
         android:id="@+id/name_editText_tramoOp"
@@ -22,14 +24,14 @@
     <EditText
         android:id="@+id/base_editText_tramoOp"
         style="@style/app_bar_style_digit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
         android:layout_margin="8dp"
         android:drawableLeft="@drawable/ic_ico_clock_24dp"
-        android:ems="4"
+        android:ems="7"
         android:inputType="numberDecimal"
-        android:textAlignment="viewStart"
-        android:textSize="24sp"
+        android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_editText_tramoOp"
         tools:text="16" />
@@ -51,14 +53,15 @@
         android:id="@+id/price_editText_tramoOp"
         style="@style/app_bar_style_digit"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_margin="8dp"
         android:drawableLeft="@drawable/ic_ico_coin_20dp"
         android:ems="4"
         android:inputType="number"
-        android:textAlignment="viewStart"
-        android:textSize="24sp"
+        android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.304"
         app:layout_constraintStart_toEndOf="@+id/base_editText_tramoOp"
         app:layout_constraintTop_toBottomOf="@+id/name_editText_tramoOp"
         tools:text="800" />
@@ -97,7 +100,7 @@
         android:id="@+id/description_editText_tramoOp"
         style="@style/app_bar_style_light"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/app_draw_edittext_dark"
         android:drawableLeft="@drawable/ic_ico_baseline_edit_24"
@@ -108,8 +111,8 @@
         android:padding="8dp"
         android:textAlignment="viewStart"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/name_editText_tramoOp"
+        app:layout_constraintStart_toStartOf="@+id/name_editText_tramoOp"
         app:layout_constraintTop_toBottomOf="@+id/base_editText_tramoOp"
         tools:text="tramo de cobros intensivos por sobre 16 m3 de consumo del periodo" />
 
@@ -135,5 +138,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_editText_tramoOp"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/delete_flotaingButton_tramoOp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:clickable="true"
+        app:backgroundTint="@color/purpleMedium"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="@+id/name_editText_tramoOp"
+        app:layout_constraintEnd_toEndOf="@+id/name_editText_tramoOp"
+        app:layout_constraintTop_toTopOf="@+id/name_editText_tramoOp"
+        app:srcCompat="@drawable/ic_delete_black_24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

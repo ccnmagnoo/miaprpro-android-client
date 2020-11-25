@@ -70,7 +70,7 @@ class RegisterActivity : AppCompatActivity() {
         val passwordR   = passwordR_editText_register.text.toString()
         val rol = rol_editText_register.text.toString()
 
-        //List of editText
+        /*List of editText*/
         val listOfInputs = listOf(
             email_editText_register,
             emailR_editText_register,

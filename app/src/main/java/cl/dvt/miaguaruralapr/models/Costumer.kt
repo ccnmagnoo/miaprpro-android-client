@@ -45,8 +45,9 @@ data class Costumer(
     val userCostumerDebt:Double     = 0.0,  /** deuda actual del consumidor */
     val userCostumerLastPayDate: Date = Date() /** fecha del último pago */
 ): Parcelable{
+
     /** public functions request */
-    fun fetchConsumption(context: Context, recyclerView: RecyclerView,consumptionTotal:TextView?,consumptionDebt:TextView?,barChart:BarChart){
+    public fun fetchConsumption(context: Context, recyclerView: RecyclerView,consumptionTotal:TextView?,consumptionDebt:TextView?,barChart:BarChart){
         /** fetch ALL costumer's consumptions from secondary firebase's Database */
         //Instando adapter
         val adapter = GroupAdapter<GroupieViewHolder>()
@@ -190,7 +191,7 @@ data class Costumer(
             }
     }
 
-    fun update(context: Context,name:EditText,email:EditText,phone:EditText,dir:EditText,updateStatus:TextView,floatingButton:FloatingActionButton){
+    public fun update(context: Context,name:EditText,email:EditText,phone:EditText,dir:EditText,updateStatus:TextView,floatingButton:FloatingActionButton){
         //costumer reference
         val ref = FirebaseFirestore.getInstance()
             .collection("userApr")
@@ -243,9 +244,10 @@ data class Costumer(
     }
 
     /** Dialogs */
-
-    //Init dialog to create costumer
     fun initDialog(context: Context, currentLimit:Int){
+        /** initializer dialog, to give limit advise
+         * or allow to proceed create data */
+
         /*Verify number of user*/
         Log.d("CurrentPlan", "Límite plan: $currentLimit, usados: ${CostumerFragment.costumersCount}")
 
@@ -256,7 +258,6 @@ data class Costumer(
         }
     }
 
-    //Dialog in case of allow create costumer
     private fun createDialog(context: Context){
         /** https://devofandroid.blogspot.com/2018/04/alertdialog-with-custom-layout-kotlin.html
          * agregar al context This "requiredContext()"
@@ -306,7 +307,6 @@ data class Costumer(
         }
     }
 
-    //Dialog in case of overpass costumer limits suscription
     private fun limitDialog(context: Context){
         /** alert limit of costumers reached*/
         val view = LayoutInflater.from(context).inflate(R.layout.dialog_create_costumer_denied, null)
@@ -320,8 +320,8 @@ data class Costumer(
 
     /** Auxiliar functions */
 
-    //Check value's inputs values on create Dialog form
     private fun checkInput(view: View,context: Context, userCostumerName:String, medidorNumber:String, medidorNumberR:String, geoSwitchState:Boolean):Boolean{
+        /**Check value's inputs values on create Dialog form*/
         while (userCostumerName.isEmpty()){
             Toast.makeText(context,"ERROR: nombre vacio", Toast.LENGTH_SHORT).show()
             view.name_editText_costumer.error = "Vacio"

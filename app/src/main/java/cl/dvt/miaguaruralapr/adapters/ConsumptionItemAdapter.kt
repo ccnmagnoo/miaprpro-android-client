@@ -16,27 +16,32 @@ class ConsumptionItemAdapter(val consumption: Consumption, private val consumpti
     @SuppressLint("SimpleDateFormat")
     override fun bind(viewHolder: GroupieViewHolder, position: Int){
         //cargado textView del adaptador
+
         /* carga de valores de lectura */
         val view = viewHolder.itemView
         view.medidorNumber_textView_consumptionAdapter.text  = consumption.medidorNumber.toString()
         view.logNew_textView_consumptionAdapter.text         = consumption.logLectureNew.toString()
         view.logOld_textView_consumptionAdapter.text         = consumption.logLectureOld.toString()
+
         /* carga de valores de consumo */
         val formatDateLong      = SimpleDateFormat("EEEE dd MMMM yyyy")
         val formatedDate = formatDateLong.format(consumption.dateLectureNew)
-        view.date_textView_consumptionAdapter.text           = formatedDate.toString()
+        view.date_textView_consumptionAdapter.text           = formatedDate
         view.consumption_textView_consumptionAdapter.text    = consumption.consumptionCurrent.toString()
+
         /* carga de valores deuda */
         val formatCurrency      = DecimalFormat("$ #,###")
         view.importe_textView_consumptionAdapter.text        = formatCurrency.format(consumption.consumptionBill.toInt())
         view.payStatus_checkbox_ConsumptionAdapter.isChecked =  consumption.paymentStatus
 
         if (consumption.consumptionBill.toInt() == 0){
+
             view.payStatus_checkbox_ConsumptionAdapter.isClickable = false /* checkbox inhabilitado si consumo es 0 m3 */
         }else{
-            view.payStatus_checkbox_ConsumptionAdapter.isClickable = true /* checkbox habilitado */
-            /* Modificación del estado de pago de consumo */
 
+            view.payStatus_checkbox_ConsumptionAdapter.isClickable = true /* checkbox habilitado */
+
+            /* Modificación del estado de pago de consumo */
             view.payStatus_checkbox_ConsumptionAdapter.setOnClickListener {
                 consumption.update(it.payStatus_checkbox_ConsumptionAdapter)
             }//fin del onClick

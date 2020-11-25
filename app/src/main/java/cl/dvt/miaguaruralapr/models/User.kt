@@ -34,21 +34,23 @@ data class User(
     val userAprDir:String       = "",
     val userAprComuna:List<String>          = listOf(),
     val userLocation: Map<String,Double>?   = mapOf("Latitude" to 0.0 ,"Longitude" to 0.0),
-    val dateRegister: Date = Date(),/** fecha de registro de usuario APR */
-    val dateLimitBuy: Date = Date(),/** fecha límite de compra activa SIN USAR*/
-    val typeUser:Int            = 2,/**tipo de usuario  administrador=1, apr=2, costumer=3*/
-    val planId:Int             = 30,/**tipo de plan suscrito 30:gratuito de prueba  o más; planes con precios*/
-    val userStatus:Boolean       = false         /**1 activo 0 inactivo*/
+    val dateRegister: Date = Date(), /* fecha de registro de usuario APR */
+    val dateLimitBuy: Date = Date(), /* fecha límite de compra activa SIN USAR*/
+    val typeUser:Int            = 2, /* tipo de usuario  administrador=1, apr=2, costumer=3*/
+    val planId:Int             = 30, /* tipo de plan suscrito 30:gratuito de prueba  o más; planes con precios*/
+    val userStatus:Boolean       = false         /* false activo 0 inactivo*/
 ): Parcelable{
     /** properties */
     var suscriptionPlan:SuscriptionPlan = SuscriptionPlan()
     var costumerList= mutableListOf<Costumer>()
+    var tramoList = arrayListOf<Tramo>()
+
     /** public functions */
     fun fetchCostumers(context: Context,recyclerView:RecyclerView,costumerCounterTextView:TextView){
         //fetching suscribed Costumers
 
-        val adapter = GroupAdapter<GroupieViewHolder>()    /* declarando el groupie adapter*/
-        recyclerView.adapter = adapter   /* cargando el ReclyclerView de esta Actividad*/
+        val adapter = GroupAdapter<GroupieViewHolder>() /* declarando el groupie adapter*/
+        recyclerView.adapter = adapter /* cargando el ReclyclerView de esta Actividad*/
 
         val ref = FirebaseFirestore.getInstance()
             .collection("userApr")
